@@ -192,6 +192,7 @@ docs/rill/
 
 # Development and test files
 test-rpc.ts
+test-*.ts
 *test*.html
 debug*.html
 index*.html
