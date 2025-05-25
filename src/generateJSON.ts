@@ -61,21 +61,106 @@ export interface DashboardData {
 }
 
 export async function generateDashboardData(): Promise<DashboardData> {
-  console.log('📊 Generating dashboard JSON data...');
+  console.log('📊 Generating dashboard data...');
 
   try {
-    // Summary statistics
-    const summaryResult = await db.query(`
-      SELECT
-        SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
-        CAST(COUNT(*) AS INTEGER) as total_nfts,
-        CAST(COUNT(DISTINCT owner) AS INTEGER) as unique_holders
-      FROM venfts
-      WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
-    `);
+    // Run independent queries in parallel for better performance
+    console.log('🔄 Running parallel dashboard queries...');
+    
+    const [
+      summaryArray,
+      topNFTsArray,
+      topHoldersArray,
+      unlockTimelineArray,
+      allNFTsArray,
+      allHoldersArray
+    ] = await Promise.all([
+      // Summary stats
+      db.query(`
+        SELECT
+          (SELECT COUNT(DISTINCT owner) FROM owner_daily WHERE total_voting_power > 0) as total_owners,
+          (SELECT SUM(nft_count) FROM owner_daily WHERE total_voting_power > 0) as total_nfts,
+          (SELECT SUM(total_voting_power) FROM owner_daily WHERE total_voting_power > 0) as total_voting_power,
+          (SELECT MAX(last_nft_snapshot_within_day) FROM owner_daily) as last_built_raw
+      `).then((result: any) => result.toArray()),
 
-    const summaryArray = (summaryResult as any).toArray();
-    console.log('Summary result:', summaryArray);
+      // Top 10 NFTs
+      db.query(`
+        SELECT
+          v.token_id,
+          v.owner as owner_address,
+          CAST(v.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
+          v.unlock_date,
+          v.lock_end_timestamp,
+          v.is_locked,
+          e.name as owner_ens_name
+        FROM venfts v
+        LEFT JOIN ens_names e ON v.owner = e.address
+        WHERE CAST(v.balance_raw AS DECIMAL(38,0)) > 0
+        ORDER BY CAST(v.balance_raw AS DECIMAL(38,0)) DESC
+        LIMIT 10
+      `).then((result: any) => result.toArray()),
+
+      // Top 10 Holders
+      db.query(`
+        SELECT
+          od.owner as owner_address,
+          od.total_voting_power,
+          od.nft_count,
+          e.name as owner_ens_name
+        FROM owner_daily od
+        LEFT JOIN ens_names e ON od.owner = e.address
+        WHERE od.total_voting_power > 0
+        ORDER BY od.total_voting_power DESC
+        LIMIT 10
+      `).then((result: any) => result.toArray()),
+
+      // Unlock timeline
+      db.query(`
+        SELECT
+          substr(unlock_date, 1, 7) as month,
+          COUNT(*) as nft_count,
+          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as voting_power
+        FROM venfts
+        WHERE unlock_date IS NOT NULL
+        GROUP BY unlock_date
+        ORDER BY unlock_date
+        LIMIT 20
+      `).then((result: any) => result.toArray()),
+
+      // All NFTs
+      db.query(`
+        SELECT
+          v.token_id,
+          v.owner as owner_address,
+          CAST(v.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
+          v.unlock_date,
+          v.lock_end_timestamp,
+          v.is_locked,
+          e.name as owner_ens_name
+        FROM venfts v
+        LEFT JOIN ens_names e ON v.owner = e.address
+        WHERE CAST(v.balance_raw AS DECIMAL(38,0)) > 0
+        ORDER BY CAST(v.balance_raw AS DECIMAL(38,0)) DESC
+      `).then((result: any) => result.toArray()),
+
+      // All Holders
+      db.query(`
+        SELECT
+          od.owner as owner_address,
+          od.total_voting_power,
+          od.nft_count,
+          e.name as owner_ens_name
+        FROM owner_daily od
+        LEFT JOIN ens_names e ON od.owner = e.address
+        WHERE od.total_voting_power > 0
+        ORDER BY od.total_voting_power DESC
+      `).then((result: any) => result.toArray())
+    ]);
+
+    console.log('✅ Parallel dashboard queries completed');
+
+    // Process results
     const summary = summaryArray[0];
 
     if (!summary) {
@@ -83,49 +168,49 @@ export async function generateDashboardData(): Promise<DashboardData> {
     }
 
     // Top NFTs by voting power
-    const topNFTsResult = await db.query(`
-      SELECT
-        ROW_NUMBER() OVER (ORDER BY CAST(venfts.balance_raw AS DECIMAL(38,0)) DESC) as rank,
-        venfts.token_id as nft_id,
-        venfts.unlock_date,
-        venfts.owner,
-        CAST(venfts.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
-        venfts.is_locked,
-        venfts.lock_end_timestamp,
-        ens_names.name as owner_ens_name
-      FROM venfts
-      LEFT JOIN ens_names ON venfts.owner = ens_names.address
-      WHERE CAST(venfts.balance_raw AS DECIMAL(38,0)) > 0
-      ORDER BY CAST(venfts.balance_raw AS DECIMAL(38,0)) DESC
-      LIMIT 50
-    `);
-    const topNFTsArray = (topNFTsResult as any).toArray();
+    // const topNFTsResult = await db.query(`
+    //   SELECT
+    //     ROW_NUMBER() OVER (ORDER BY CAST(venfts.balance_raw AS DECIMAL(38,0)) DESC) as rank,
+    //     venfts.token_id as nft_id,
+    //     venfts.unlock_date,
+    //     venfts.owner,
+    //     CAST(venfts.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
+    //     venfts.is_locked,
+    //     venfts.lock_end_timestamp,
+    //     ens_names.name as owner_ens_name
+    //   FROM venfts
+    //   LEFT JOIN ens_names ON venfts.owner = ens_names.address
+    //   WHERE CAST(venfts.balance_raw AS DECIMAL(38,0)) > 0
+    //   ORDER BY CAST(venfts.balance_raw AS DECIMAL(38,0)) DESC
+    //   LIMIT 50
+    // `);
+    // const topNFTsArray = (topNFTsResult as any).toArray();
 
     // Top holders by total voting power
-    const topHoldersResult = await db.query(`
-      SELECT
-        ROW_NUMBER() OVER (ORDER BY total_voting_power DESC) as rank,
-        s.owner as holder_address,
-        s.total_voting_power,
-        s.nft_count,
-        s.top_nft_id,
-        ens_names.name as ens_name,
-        (s.total_voting_power / SUM(s.total_voting_power) OVER ()) * 100 as percentage_of_total_vp
-      FROM (
-        SELECT
-          owner,
-          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
-          COUNT(*) as nft_count,
-          FIRST(token_id ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC) as top_nft_id
-        FROM venfts
-        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
-        GROUP BY owner
-      ) s
-      LEFT JOIN ens_names ON s.owner = ens_names.address
-      ORDER BY total_voting_power DESC
-      LIMIT 100
-    `);
-    const topHoldersArray = (topHoldersResult as any).toArray();
+    // const topHoldersResult = await db.query(`
+    //   SELECT
+    //     ROW_NUMBER() OVER (ORDER BY total_voting_power DESC) as rank,
+    //     s.owner as holder_address,
+    //     s.total_voting_power,
+    //     s.nft_count,
+    //     s.top_nft_id,
+    //     ens_names.name as ens_name,
+    //     (s.total_voting_power / SUM(s.total_voting_power) OVER ()) * 100 as percentage_of_total_vp
+    //   FROM (
+    //     SELECT
+    //       owner,
+    //       SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
+    //       COUNT(*) as nft_count,
+    //       FIRST(token_id ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC) as top_nft_id
+    //     FROM venfts
+    //     WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
+    //     GROUP BY owner
+    //   ) s
+    //   LEFT JOIN ens_names ON s.owner = ens_names.address
+    //   ORDER BY total_voting_power DESC
+    //   LIMIT 100
+    // `);
+    // const topHoldersArray = (topHoldersResult as any).toArray();
 
     // Voting power distribution for charts
     const distributionResult = await db.query(`
@@ -158,58 +243,58 @@ export async function generateDashboardData(): Promise<DashboardData> {
     const distributionArray = (distributionResult as any).toArray();
 
     // Unlock timeline
-    const unlockTimelineResult = await db.query(`
-      SELECT
-        unlock_date as date,
-        COUNT(*) as count,
-        SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_power
-      FROM venfts
-      WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0 AND unlock_date IS NOT NULL
-      GROUP BY unlock_date
-      ORDER BY unlock_date
-      LIMIT 20
-    `);
-    const unlockTimelineArray = (unlockTimelineResult as any).toArray();
+    // const unlockTimelineResult = await db.query(`
+    //   SELECT
+    //     unlock_date as date,
+    //     COUNT(*) as count,
+    //     SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_power
+    //   FROM venfts
+    //   WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0 AND unlock_date IS NOT NULL
+    //   GROUP BY unlock_date
+    //   ORDER BY unlock_date
+    //   LIMIT 20
+    // `);
+    // const unlockTimelineArray = (unlockTimelineResult as any).toArray();
 
     // Fetch ALL NFTs
-    const allNFTsResult = await db.query(`
-      SELECT
-        v.token_id,
-        v.owner as owner_address,
-        CAST(v.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
-        v.unlock_date,
-        v.lock_end_timestamp,
-        v.is_locked,
-        e.name as owner_ens_name
-      FROM venfts v
-      LEFT JOIN ens_names e ON v.owner = e.address
-      WHERE CAST(v.balance_raw AS DECIMAL(38,0)) > 0
-      ORDER BY CAST(v.balance_raw AS DECIMAL(38,0)) DESC
-    `);
-    const allNFTsArray = (allNFTsResult as any).toArray();
+    // const allNFTsResult = await db.query(`
+    //   SELECT
+    //     v.token_id,
+    //     v.owner as owner_address,
+    //     CAST(v.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
+    //     v.unlock_date,
+    //     v.lock_end_timestamp,
+    //     v.is_locked,
+    //     e.name as owner_ens_name
+    //   FROM venfts v
+    //   LEFT JOIN ens_names e ON v.owner = e.address
+    //   WHERE CAST(v.balance_raw AS DECIMAL(38,0)) > 0
+    //   ORDER BY CAST(v.balance_raw AS DECIMAL(38,0)) DESC
+    // `);
+    // const allNFTsArray = (allNFTsResult as any).toArray();
 
     // Fetch ALL Holders
-    const allHoldersResult = await db.query(`
-      SELECT
-        ROW_NUMBER() OVER (ORDER BY s.total_voting_power DESC) as rank,
-        s.owner as holder_address,
-        e.name as ens_name,
-        s.total_voting_power,
-        (s.total_voting_power / SUM(s.total_voting_power) OVER ()) * 100 as percentage_of_total_vp,
-        s.nft_count
-      FROM (
-        SELECT
-          owner,
-          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
-          COUNT(*) as nft_count
-        FROM venfts
-        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
-        GROUP BY owner
-      ) s
-      LEFT JOIN ens_names e ON s.owner = e.address
-      ORDER BY s.total_voting_power DESC
-    `);
-    const allHoldersArray = (allHoldersResult as any).toArray();
+    // const allHoldersResult = await db.query(`
+    //   SELECT
+    //     ROW_NUMBER() OVER (ORDER BY s.total_voting_power DESC) as rank,
+    //     s.owner as holder_address,
+    //     e.name as ens_name,
+    //     s.total_voting_power,
+    //     (s.total_voting_power / SUM(s.total_voting_power) OVER ()) * 100 as percentage_of_total_vp,
+    //     s.nft_count
+    //   FROM (
+    //     SELECT
+    //       owner,
+    //       SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
+    //       COUNT(*) as nft_count
+    //     FROM venfts
+    //     WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
+    //     GROUP BY owner
+    //   ) s
+    //   LEFT JOIN ens_names e ON s.owner = e.address
+    //   ORDER BY s.total_voting_power DESC
+    // `);
+    // const allHoldersArray = (allHoldersResult as any).toArray();
 
 
     // Format the data

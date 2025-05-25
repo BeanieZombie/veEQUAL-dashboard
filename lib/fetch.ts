@@ -213,9 +213,9 @@ export async function fetchSnapshot(): Promise<void> {
   for (let i = 0; i < chunks.length; i += PARALLEL) {
     const batchNumber = Math.floor(i / PARALLEL) + 1;
     const totalBatches = Math.ceil(chunks.length / PARALLEL);
-    
+
     console.log(`Processing batch ${batchNumber}/${totalBatches}...`);
-    
+
     const batch = chunks.slice(i, i + PARALLEL);
     const promises = batch.map(chunk => fetchNFTBatch(chunk));
 
@@ -250,14 +250,14 @@ export async function fetchSnapshot(): Promise<void> {
 
     } catch (error) {
       console.error(`Error processing batch ${batchNumber}:`, error);
-      
+
       // Check if it's a rate limit error and add extra delay before retrying
       const errorMessage = error instanceof Error ? error.message : String(error);
       if (isRateLimitError(errorMessage)) {
         console.log('Rate limit detected in batch processing, adding extra delay...');
         await sleep(5000); // 5 second delay for rate limits
       }
-      
+
       throw error;
     }
   }

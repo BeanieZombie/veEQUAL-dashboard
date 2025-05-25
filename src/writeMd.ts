@@ -167,91 +167,114 @@ export async function writeMd(): Promise<void> {
   console.log('Generating markdown report...');
 
   try {
-    // 1. Fetch Summary Data
-    const summaryQuery = `
-      SELECT
-        (SELECT COUNT(DISTINCT owner) FROM owner_daily WHERE total_voting_power > 0) as total_owners,
-        (SELECT SUM(nft_count) FROM owner_daily WHERE total_voting_power > 0) as total_nfts,
-        (SELECT MAX(last_nft_snapshot_within_day) FROM owner_daily) as last_built_raw
-    `;
-    // Correctly access toArray()
-    const summaryResultArray = (await db.query(summaryQuery) as any).toArray();
+    // Run independent queries in parallel for better performance
+    console.log('🔄 Running parallel queries...');
+
+    const [
+      summaryResultArray,
+      topNftsResult,
+      topHoldersResult,
+      leaderboardHoldersResult,
+      grandTotalVpResultArray,
+      concentrationStatsResult,
+      unlockScheduleResult
+    ] = await Promise.all([
+      // 1. Summary Data
+      db.query(`
+        SELECT
+          (SELECT COUNT(DISTINCT owner) FROM owner_daily WHERE total_voting_power > 0) as total_owners,
+          (SELECT SUM(nft_count) FROM owner_daily WHERE total_voting_power > 0) as total_nfts,
+          (SELECT MAX(last_nft_snapshot_within_day) FROM owner_daily) as last_built_raw
+      `).then((result: any) => result.toArray()),
+
+      // 2. Top 10 NFTs by Balance
+      db.query(`
+        SELECT token_id, owner, balance_raw, token_balance_raw, unlock_date
+        FROM venfts
+        WHERE CAST(token_balance_raw AS DECIMAL(38,0)) > 0
+        ORDER BY CAST(token_balance_raw AS DECIMAL(38,0)) DESC
+        LIMIT 10
+      `).then((result: any) => result.toArray()),
+
+      // 3. Top 10 Holders by Total Voting Power
+      db.query(`
+        SELECT
+          od.owner,
+          od.nft_count,
+          od.total_voting_power,
+          SUM(CAST(vf.token_balance_raw AS DECIMAL(38,0)) / 1e18) as total_token_balance,
+          od.next_overall_unlock_date as next_unlock_date
+        FROM owner_daily od
+        JOIN venfts vf ON od.owner = vf.owner
+        WHERE od.total_voting_power > 0
+        GROUP BY od.owner, od.nft_count, od.total_voting_power, od.next_overall_unlock_date
+        ORDER BY od.total_voting_power DESC
+        LIMIT 10
+      `).then((result: any) => result.toArray()),
+
+      // 4. Leaderboard Holders Data
+      db.query(`
+        SELECT
+          od.owner,
+          od.total_voting_power,
+          SUM(CAST(vf.token_balance_raw AS DECIMAL(38,0)) / 1e18) as total_token_balance
+        FROM owner_daily od
+        JOIN venfts vf ON od.owner = vf.owner
+        WHERE od.total_voting_power > 0
+        GROUP BY od.owner, od.total_voting_power
+        ORDER BY od.total_voting_power DESC
+      `).then((result: any) => result.toArray()),
+
+      // 5. Grand Total Voting Power
+      db.query(`SELECT SUM(total_voting_power) as grand_total_vp FROM owner_daily WHERE total_voting_power > 0`)
+        .then((result: any) => result.toArray()),
+
+      // 6. Concentration Statistics (Gini)
+      db.query(`
+        SELECT gini_coefficient
+        FROM concentration
+        ORDER BY analysis_date DESC
+        LIMIT 1
+      `).then((result: any) => result.toArray()),
+
+      // 7. Unlock Schedule Analysis
+      db.query(`
+        SELECT
+          substr(unlock_date, 1, 7) as month,
+          SUM(CAST(token_balance_raw AS DECIMAL(38,0)) / 1e18) as token_balance,
+          COUNT(*) as nft_count
+        FROM venfts
+        WHERE unlock_date IS NOT NULL
+          AND unlock_date > '${new Date().toISOString().split('T')[0]}'
+          AND CAST(token_balance_raw AS DECIMAL(38,0)) / 1e18 > 0
+        GROUP BY substr(unlock_date, 1, 7)
+        ORDER BY month
+        LIMIT 12
+      `).then((result: any) => result.toArray())
+    ]);
+
+    console.log('✅ Parallel queries completed');
+
+    // Process results from parallel queries
     const summaryData: SummaryData = summaryResultArray[0] || { total_owners: 0, total_nfts: 0, last_built_raw: null };
     const totalOwners = summaryData.total_owners || 0;
     const totalNFTs = summaryData.total_nfts || 0;
     const lastBuiltDate = summaryData.last_built_raw ? new Date(summaryData.last_built_raw).toUTCString() : 'N/A';
 
-    // 1.5. Analyze EQUAL Token Governance Landscape - Section removed
-    // console.log('🔍 Analyzing EQUAL token governance...');
-    // const equalGovernanceAnalysis = await analyzeEqualGovernance();
-
-    // 2. Fetch Top 10 NFTs by Balance (now True Balance)
-    const topNftsQuery = `
-      SELECT token_id, owner, balance_raw, token_balance_raw, unlock_date
-      FROM venfts
-      WHERE CAST(token_balance_raw AS DECIMAL(38,0)) > 0
-      ORDER BY CAST(token_balance_raw AS DECIMAL(38,0)) DESC
-      LIMIT 10
-    `;
-    // Correctly access toArray() before map
-    const topNftsResult = (await db.query(topNftsQuery) as any).toArray();
     const topNfts: NftRow[] = topNftsResult.map((row: any) => row as NftRow);
-
-    // 3. Fetch Top 10 Holders by Total Voting Power (and now include Total Token Balance)
-    const topHoldersQuery = `
-      SELECT
-        od.owner,
-        od.nft_count,
-        od.total_voting_power,
-        SUM(CAST(vf.token_balance_raw AS DECIMAL(38,0)) / 1e18) as total_token_balance,
-        od.next_overall_unlock_date as next_unlock_date
-      FROM owner_daily od
-      JOIN venfts vf ON od.owner = vf.owner -- Join to get individual NFT balances
-      WHERE od.total_voting_power > 0
-      GROUP BY od.owner, od.nft_count, od.total_voting_power, od.next_overall_unlock_date
-      ORDER BY od.total_voting_power DESC
-      LIMIT 10
-    `;
-    // Correctly access toArray() before map
-    const topHoldersResult = (await db.query(topHoldersQuery) as any).toArray();
-    // console.log(topHoldersResult); // Potential source of hex output, commented out
     const topHolders: HolderRow[] = topHoldersResult.map((row: any) => row as HolderRow);
-
-    // 4. Fetch Data for Leaderboard - Show ALL owners with NFTs (and now include Total Token Balance)
-    const leaderboardHoldersQuery = `
-      SELECT
-        od.owner,
-        od.total_voting_power,
-        SUM(CAST(vf.token_balance_raw AS DECIMAL(38,0)) / 1e18) as total_token_balance
-      FROM owner_daily od
-      JOIN venfts vf ON od.owner = vf.owner -- Join to get individual NFT balances
-      WHERE od.total_voting_power > 0
-      GROUP BY od.owner, od.total_voting_power
-      ORDER BY od.total_voting_power DESC
-    `;
-    // Correctly access toArray() before map
-    const leaderboardHoldersResult = (await db.query(leaderboardHoldersQuery) as any).toArray();
     const leaderboardHoldersData: LeaderboardHolder[] = leaderboardHoldersResult.map((row: any) => row as LeaderboardHolder);
 
-    const grandTotalVotingPowerQuery = `SELECT SUM(total_voting_power) as grand_total_vp FROM owner_daily WHERE total_voting_power > 0`;
-    // Correctly access toArray()
-    const grandTotalVpResultArray = (await db.query(grandTotalVotingPowerQuery) as any).toArray();
     const grandTotalVpData: GrandTotalVotingPower = grandTotalVpResultArray[0] || { grand_total_vp: 0 };
     const grandTotalVotingPower = grandTotalVpData.grand_total_vp || 0;
 
-    // 5. Advanced Analytics - Concentration Risk
-    // const votingPowers = leaderboardHoldersData.map(h => h.total_voting_power);
-    // const giniCoefficient = calculateGiniCoefficient(votingPowers); // Gini is now fetched from the database
-
-    // Fetch Gini from the concentration table (most recent record)
-    const concentrationStatsQuery = `
-      SELECT gini_coefficient
-      FROM concentration
-      ORDER BY analysis_date DESC
-      LIMIT 1
-    `;
-    const concentrationStatsResult = (await db.query(concentrationStatsQuery) as any).toArray();
     const giniCoefficient = concentrationStatsResult[0]?.gini_coefficient || 0;
+
+    const unlockScheduleData: UnlockScheduleData[] = unlockScheduleResult.map((row: any) => ({
+      month: row.month,
+      token_balance: row.token_balance || 0,
+      nft_count: row.nft_count || 0
+    }));
 
     // Calculate top percentile concentrations
     const totalHolders = leaderboardHoldersData.length;
@@ -262,27 +285,6 @@ export async function writeMd(): Promise<void> {
     const top1Power = leaderboardHoldersData.slice(0, top1Count).reduce((sum, h) => sum + h.total_voting_power, 0);
     const top5Power = leaderboardHoldersData.slice(0, top5Count).reduce((sum, h) => sum + h.total_voting_power, 0);
     const top10Power = leaderboardHoldersData.slice(0, top10Count).reduce((sum, h) => sum + h.total_voting_power, 0);
-
-    // 6. Unlock Schedule Analysis
-    const unlockScheduleQuery = `
-      SELECT
-        substr(unlock_date, 1, 7) as month,
-        SUM(CAST(token_balance_raw AS DECIMAL(38,0)) / 1e18) as token_balance, -- Changed from balance_raw to token_balance_raw
-        COUNT(*) as nft_count
-      FROM venfts
-      WHERE unlock_date IS NOT NULL
-        AND unlock_date > '${new Date().toISOString().split('T')[0]}' -- Use current date dynamically
-        AND CAST(token_balance_raw AS DECIMAL(38,0)) / 1e18 > 0 -- Ensure we are summing actual token balances
-      GROUP BY substr(unlock_date, 1, 7)
-      ORDER BY month
-      LIMIT 12
-    `;
-    const unlockScheduleResult = (await db.query(unlockScheduleQuery) as any).toArray();
-    const unlockScheduleData: UnlockScheduleData[] = unlockScheduleResult.map((row: any) => ({
-      month: row.month,
-      token_balance: row.token_balance || 0, // New field for token balance
-      nft_count: row.nft_count || 0
-    }));
 
     // 7. Power Distribution Bands
     const distributionBands = [
@@ -455,8 +457,40 @@ export async function writeMd(): Promise<void> {
     });
     markdown += '\n';
 
-    // Pending NFT Unlock: 90 Days section
+    // Unlockable veEQUAL (Expired NFTs) section
     const currentDate = new Date();
+    const currentDateStr = currentDate.toISOString().split('T')[0];
+
+    const unlockableNftsQuery = `
+      SELECT token_id, owner, balance_raw, token_balance_raw, unlock_date
+      FROM venfts
+      WHERE unlock_date IS NOT NULL
+        AND unlock_date <= '${currentDateStr}'
+        AND CAST(token_balance_raw AS DECIMAL(38,0)) > 0
+      ORDER BY CAST(token_balance_raw AS DECIMAL(38,0)) DESC
+    `;
+
+    const unlockableNftsResult = (await db.query(unlockableNftsQuery) as any).toArray();
+    const unlockableNfts: NftRow[] = unlockableNftsResult.map((row: any) => row as NftRow);
+
+    markdown += `## Unlockable veEQUAL\n\n`;
+    if (unlockableNfts.length > 0) {
+      markdown += `*${unlockableNfts.length} NFTs are ready to unlock (sorted by True Balance)*\n\n`;
+      markdown += `| NFT ID | Owner | True Balance | Voting Power | Unlock Date |\n`;
+      markdown += `|--------|-------|--------------|--------------|-------------|\n`;
+      unlockableNfts.forEach((nft) => {
+        const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
+        const tokenBalance = formatBalance(nft.token_balance_raw);
+        const votingPower = formatBalance(nft.balance_raw);
+        const nftLink = createNftLink(nft.token_id);
+        markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(tokenBalance)} | ${formatVotingPower(votingPower)} | ${formatUnlockDateDisplay(nft.unlock_date)} |\n`;
+      });
+    } else {
+      markdown += `*No NFTs are currently ready to unlock.*\n`;
+    }
+    markdown += '\n';
+
+    // Pending NFT Unlock: 90 Days section (grouped by unlock date)
     const ninetyDaysFromNow = new Date();
     ninetyDaysFromNow.setDate(currentDate.getDate() + 90);
 
@@ -464,10 +498,10 @@ export async function writeMd(): Promise<void> {
       SELECT token_id, owner, balance_raw, token_balance_raw, unlock_date
       FROM venfts
       WHERE unlock_date IS NOT NULL
-        AND unlock_date > '${currentDate.toISOString().split('T')[0]}'
+        AND unlock_date > '${currentDateStr}'
         AND unlock_date <= '${ninetyDaysFromNow.toISOString().split('T')[0]}'
         AND CAST(token_balance_raw AS DECIMAL(38,0)) > 0
-      ORDER BY CAST(token_balance_raw AS DECIMAL(38,0)) DESC
+      ORDER BY unlock_date ASC, CAST(token_balance_raw AS DECIMAL(38,0)) DESC
     `;
 
     const pendingUnlocksResult = (await db.query(pendingUnlocksQuery) as any).toArray();
@@ -475,15 +509,36 @@ export async function writeMd(): Promise<void> {
 
     markdown += `## Pending NFT Unlock: 90 Days\n\n`;
     if (pendingUnlocks.length > 0) {
-      markdown += `| NFT ID | Owner | True Balance | Voting Power | Unlock Date |\n`;
-      markdown += `|--------|-------|--------------|--------------|-------------|\n`;
-      pendingUnlocks.forEach((nft) => {
-        const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
-        const unlockWarning = isUnlockingSoon(nft.unlock_date, 30) ? ' ⚠️' : '';
-        const tokenBalance = formatBalance(nft.token_balance_raw);
-        const votingPower = formatBalance(nft.balance_raw);
-        const nftLink = createNftLink(nft.token_id);
-        markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(tokenBalance)} | ${formatVotingPower(votingPower)} | ${formatUnlockDateDisplay(nft.unlock_date)}${unlockWarning} |\n`;
+      // Group NFTs by unlock date
+      const groupedUnlocks: { [date: string]: NftRow[] } = {};
+      pendingUnlocks.forEach(nft => {
+        const unlockDate = formatUnlockDateDisplay(nft.unlock_date);
+        if (!groupedUnlocks[unlockDate]) {
+          groupedUnlocks[unlockDate] = [];
+        }
+        groupedUnlocks[unlockDate].push(nft);
+      });
+
+      const sortedDates = Object.keys(groupedUnlocks).sort();
+
+      sortedDates.forEach(date => {
+        const nftsForDate = groupedUnlocks[date];
+        const totalTokenBalance = nftsForDate.reduce((sum, nft) => sum + formatBalance(nft.token_balance_raw), 0);
+        const isUnlockingSoonDate = isUnlockingSoon(nftsForDate[0].unlock_date, 30);
+
+        markdown += `### ${date}${isUnlockingSoonDate ? ' ⚠️' : ''}\n`;
+        markdown += `*${nftsForDate.length} NFTs unlocking • Total: ${formatVotingPower(totalTokenBalance)} tokens*\n\n`;
+        markdown += `| NFT ID | Owner | True Balance | Voting Power |\n`;
+        markdown += `|--------|-------|--------------|-------------|\n`;
+
+        nftsForDate.forEach((nft) => {
+          const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
+          const tokenBalance = formatBalance(nft.token_balance_raw);
+          const votingPower = formatBalance(nft.balance_raw);
+          const nftLink = createNftLink(nft.token_id);
+          markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(tokenBalance)} | ${formatVotingPower(votingPower)} |\n`;
+        });
+        markdown += '\n';
       });
     } else {
       markdown += `*No NFTs scheduled to unlock in the next 90 days.*\n`;

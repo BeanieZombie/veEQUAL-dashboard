@@ -1,6 +1,7 @@
 import { fetchSnapshot } from '../lib/fetch.ts';
 import { runAllSql } from '../lib/runSql.ts';
 import { writeMd } from './writeMd.ts';
+import { exportDashboardJSON } from './generateJSON.ts';
 import { db } from '../lib/db.ts';
 
 async function main() {
@@ -18,6 +19,10 @@ async function main() {
     // Step 3: Generate markdown report
     console.log('📄 Generating markdown report...');
     await writeMd();
+
+    // Step 4: Generate JSON data for API endpoints
+    console.log('📊 Generating JSON data...');
+    await exportDashboardJSON();
 
     console.log('✅ Data pipeline completed successfully!');
     console.log('📊 Data available via API endpoints');
