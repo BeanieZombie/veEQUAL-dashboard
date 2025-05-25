@@ -436,9 +436,41 @@ export async function writeMd(): Promise<void> {
     });
     markdown += '\n';
 
+    // Pending NFT Unlock: 90 Days section
+    const currentDate = new Date();
+    const ninetyDaysFromNow = new Date();
+    ninetyDaysFromNow.setDate(currentDate.getDate() + 90);
+    
+    const pendingUnlocksQuery = `
+      SELECT token_id, owner, balance_formatted, unlock_date
+      FROM venfts
+      WHERE unlock_date IS NOT NULL 
+        AND unlock_date > '${currentDate.toISOString().split('T')[0]}'
+        AND unlock_date <= '${ninetyDaysFromNow.toISOString().split('T')[0]}'
+        AND balance_formatted > 0
+      ORDER BY balance_formatted DESC
+    `;
+    
+    const pendingUnlocksResult = (await db.query(pendingUnlocksQuery) as any).toArray();
+    const pendingUnlocks: NftRow[] = pendingUnlocksResult.map((row: any) => row as NftRow);
+
+    markdown += `## Pending NFT Unlock: 90 Days\n\n`;
+    if (pendingUnlocks.length > 0) {
+      markdown += `| NFT ID | Owner | Balance | Unlock Date |\n`;
+      markdown += `|--------|-------|---------|-------------|\n`;
+      pendingUnlocks.forEach((nft) => {
+        const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
+        const unlockWarning = isUnlockingSoon(nft.unlock_date, 30) ? ' ⚠️' : '';
+        markdown += `| ${nft.token_id} | ${ownerLink} | ${formatVotingPower(nft.balance_formatted)} | ${formatUnlockDateDisplay(nft.unlock_date)}${unlockWarning} |\n`;
+      });
+    } else {
+      markdown += `*No NFTs scheduled to unlock in the next 90 days.*\n`;
+    }
+    markdown += '\n';
+
     markdown += `## veEQUAL Leaderboard\n\n`;
-    markdown += `| Rank | Owner | Voting Power | Influence | NFTs Id (Unlock ⚠️) |\n`;
-    markdown += `|------|-------|--------------|-----------|----------------------|\n`;
+    markdown += `| Rank | Owner | Balance | Voting Power | Influence | NFTs Id (Unlock ⚠️) |\n`;
+    markdown += `|------|-------|---------|--------------|-----------|----------------------|\n`;
     leaderboardHoldersData.forEach((holder, index) => {
       const influence = grandTotalVotingPower > 0 ? ((holder.total_voting_power / grandTotalVotingPower) * 100).toFixed(5) + '%' : '0.00000%';
       const ownerNfts = nftsByOwnerForLeaderboard[holder.owner] || [];
@@ -446,7 +478,7 @@ export async function writeMd(): Promise<void> {
         `${nft.token_id}${isUnlockingSoon(nft.unlock_date) ? '⚠️' : ''}`
       ).join(', ');
       const ownerLink = `[${truncateAddress(holder.owner)}](${createDebankLink(holder.owner)})`;
-      markdown += `| ${index + 1} | ${ownerLink} | ${formatVotingPower(holder.total_voting_power)} | ${influence} | ${nftIdList || '–'} |\n`;
+      markdown += `| ${index + 1} | ${ownerLink} | ${formatVotingPower(holder.total_voting_power)} | ${formatVotingPower(holder.total_voting_power)} | ${influence} | ${nftIdList || '–'} |\n`;
     });
     markdown += '\n';
 
