@@ -1,0 +1,23 @@
+{
+  "name": "veequal-dashboard",
+  "version": "1.0.0",
+  "description": "veEQUAL data pipeline and API",
+  "type": "module",
+  "scripts": {
+    "update": "bun run src/update.ts",
+    "api": "bun run api.ts",
+    "dev": "bun run src/update.ts && bun run api.ts",
+    "start": "bun run api.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@duckdb/duckdb-wasm": "^1.29.1-dev132.0",
+    "duckdb": "^1.2.1",
+    "viem": "^2.30.0"
+  }
+}

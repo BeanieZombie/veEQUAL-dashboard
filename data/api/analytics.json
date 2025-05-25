@@ -1,0 +1,163 @@
+{
+  "whaleAnalysis": [
+    {
+      "tier": "M.E.G.A Whale (≥50K)",
+      "holderCount": 9,
+      "tierVotingPower": "662.9K",
+      "powerPercentage": 30.95,
+      "holderPercentage": 0.24,
+      "avgPowerPerHolder": "73.7K",
+      "avgNftsPerHolder": 2.4444444444444446
+    },
+    {
+      "tier": "Major Holder (20K-50K)",
+      "holderCount": 17,
+      "tierVotingPower": "505.1K",
+      "powerPercentage": 23.58,
+      "holderPercentage": 0.46,
+      "avgPowerPerHolder": "29.7K",
+      "avgNftsPerHolder": 6.9411764705882355
+    },
+    {
+      "tier": "Equalest (5K-20K)",
+      "holderCount": 49,
+      "tierVotingPower": "424.0K",
+      "powerPercentage": 19.8,
+      "holderPercentage": 1.33,
+      "avgPowerPerHolder": "8.7K",
+      "avgNftsPerHolder": 7.081632653061225
+    },
+    {
+      "tier": "More Equal (1K-5K)",
+      "holderCount": 153,
+      "tierVotingPower": "374.9K",
+      "powerPercentage": 17.5,
+      "holderPercentage": 4.15,
+      "avgPowerPerHolder": "2.5K",
+      "avgNftsPerHolder": 3.6470588235294117
+    },
+    {
+      "tier": "Equal (<1K)",
+      "holderCount": 3459,
+      "tierVotingPower": "175.0K",
+      "powerPercentage": 8.17,
+      "holderPercentage": 93.82,
+      "avgPowerPerHolder": "50.58",
+      "avgNftsPerHolder": 1.1257588898525586
+    }
+  ],
+  "unlockImpact": [
+    {
+      "month": "2025-06-01T00:00:00.000Z",
+      "unlockingNfts": 861,
+      "unlockingPower": "29.8K",
+      "affectedHolders": 789,
+      "powerImpactPercentage": 1.39,
+      "nftImpactPercentage": 17.43,
+      "holderImpactPercentage": 21.4,
+      "cumulativePowerPercentage": 1.39
+    },
+    {
+      "month": "2025-07-01T00:00:00.000Z",
+      "unlockingNfts": 1005,
+      "unlockingPower": "42.6K",
+      "affectedHolders": 987,
+      "powerImpactPercentage": 1.99,
+      "nftImpactPercentage": 20.35,
+      "holderImpactPercentage": 26.77,
+      "cumulativePowerPercentage": 3.38
+    },
+    {
+      "month": "2025-08-01T00:00:00.000Z",
+      "unlockingNfts": 454,
+      "unlockingPower": "52.2K",
+      "affectedHolders": 412,
+      "powerImpactPercentage": 2.44,
+      "nftImpactPercentage": 9.19,
+      "holderImpactPercentage": 11.17,
+      "cumulativePowerPercentage": 5.82
+    },
+    {
+      "month": "2025-09-01T00:00:00.000Z",
+      "unlockingNfts": 260,
+      "unlockingPower": "108.8K",
+      "affectedHolders": 174,
+      "powerImpactPercentage": 5.08,
+      "nftImpactPercentage": 5.26,
+      "holderImpactPercentage": 4.72,
+      "cumulativePowerPercentage": 10.9
+    },
+    {
+      "month": "2025-10-01T00:00:00.000Z",
+      "unlockingNfts": 949,
+      "unlockingPower": "226.4K",
+      "affectedHolders": 726,
+      "powerImpactPercentage": 10.57,
+      "nftImpactPercentage": 19.21,
+      "holderImpactPercentage": 19.69,
+      "cumulativePowerPercentage": 21.47
+    },
+    {
+      "month": "2025-11-01T00:00:00.000Z",
+      "unlockingNfts": 1393,
+      "unlockingPower": "1.7M",
+      "affectedHolders": 654,
+      "powerImpactPercentage": 78.49,
+      "nftImpactPercentage": 28.2,
+      "holderImpactPercentage": 17.74,
+      "cumulativePowerPercentage": 99.95
+    }
+  ],
+  "top10Analysis": [
+    {
+      "groupType": "Top 10",
+      "holderCount": 10,
+      "totalPower": "710.3K",
+      "avgPower": "71.0K"
+    },
+    {
+      "groupType": "Rest",
+      "holderCount": 3677,
+      "totalPower": "1.4M",
+      "avgPower": "389.33"
+    }
+  ],
+  "nftSizeDistribution": [
+    {
+      "range": "M.E.G.A (≥50K)",
+      "nftCount": 5,
+      "totalPower": "310.2K",
+      "avgPower": "62.0K",
+      "percentage": 0.1
+    },
+    {
+      "range": "Major (20K-50K)",
+      "nftCount": 13,
+      "totalPower": "431.6K",
+      "avgPower": "33.2K",
+      "percentage": 0.26
+    },
+    {
+      "range": "Equalest (5K-20K)",
+      "nftCount": 51,
+      "totalPower": "484.9K",
+      "avgPower": "9.5K",
+      "percentage": 1.03
+    },
+    {
+      "range": "More Equal (1K-5K)",
+      "nftCount": 217,
+      "totalPower": "495.9K",
+      "avgPower": "2.3K",
+      "percentage": 4.39
+    },
+    {
+      "range": "Equal (<1K)",
+      "nftCount": 4653,
+      "totalPower": "419.2K",
+      "avgPower": "90.10",
+      "percentage": 94.21
+    }
+  ],
+  "lastUpdated": "2025-05-24T12:50:10.492Z"
+}
