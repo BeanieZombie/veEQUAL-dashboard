@@ -67,11 +67,11 @@ export async function generateDashboardData(): Promise<DashboardData> {
     // Summary statistics
     const summaryResult = await db.query(`
       SELECT
-        SUM(balance_formatted) as total_voting_power,
-        COUNT(*) as total_nfts,
-        COUNT(DISTINCT owner) as unique_holders
+        SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
+        CAST(COUNT(*) AS INTEGER) as total_nfts,
+        CAST(COUNT(DISTINCT owner) AS INTEGER) as unique_holders
       FROM venfts
-      WHERE balance_formatted > 0
+      WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
     `);
 
     const summaryArray = (summaryResult as any).toArray();
@@ -85,18 +85,18 @@ export async function generateDashboardData(): Promise<DashboardData> {
     // Top NFTs by voting power
     const topNFTsResult = await db.query(`
       SELECT
-        ROW_NUMBER() OVER (ORDER BY venfts.balance_formatted DESC) as rank,
+        ROW_NUMBER() OVER (ORDER BY CAST(venfts.balance_raw AS DECIMAL(38,0)) DESC) as rank,
         venfts.token_id as nft_id,
         venfts.unlock_date,
         venfts.owner,
-        venfts.balance_formatted as voting_power,
+        CAST(venfts.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
         venfts.is_locked,
         venfts.lock_end_timestamp,
         ens_names.name as owner_ens_name
       FROM venfts
       LEFT JOIN ens_names ON venfts.owner = ens_names.address
-      WHERE venfts.balance_formatted > 0
-      ORDER BY venfts.balance_formatted DESC
+      WHERE CAST(venfts.balance_raw AS DECIMAL(38,0)) > 0
+      ORDER BY CAST(venfts.balance_raw AS DECIMAL(38,0)) DESC
       LIMIT 50
     `);
     const topNFTsArray = (topNFTsResult as any).toArray();
@@ -114,11 +114,11 @@ export async function generateDashboardData(): Promise<DashboardData> {
       FROM (
         SELECT
           owner,
-          SUM(balance_formatted) as total_voting_power,
+          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
           COUNT(*) as nft_count,
-          FIRST(token_id ORDER BY balance_formatted DESC) as top_nft_id
+          FIRST(token_id ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC) as top_nft_id
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
         GROUP BY owner
       ) s
       LEFT JOIN ens_names ON s.owner = ens_names.address
@@ -132,14 +132,14 @@ export async function generateDashboardData(): Promise<DashboardData> {
       WITH power_ranges AS (
         SELECT
           CASE
-            WHEN balance_formatted >= 20000 THEN 'M.E.G.A (≥20K)'
-            WHEN balance_formatted >= 5000 THEN 'Equalest (5K-20K)'
-            WHEN balance_formatted >= 1000 THEN 'More Equal (1K-5K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 20000 THEN 'M.E.G.A (≥20K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 5000 THEN 'Equalest (5K-20K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 1000 THEN 'More Equal (1K-5K)'
             ELSE 'Equal (<1K)'
           END as range,
-          balance_formatted as voting_power
+          CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
       )
       SELECT
         range,
@@ -162,9 +162,9 @@ export async function generateDashboardData(): Promise<DashboardData> {
       SELECT
         unlock_date as date,
         COUNT(*) as count,
-        SUM(balance_formatted) as total_power
+        SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_power
       FROM venfts
-      WHERE balance_formatted > 0 AND unlock_date IS NOT NULL
+      WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0 AND unlock_date IS NOT NULL
       GROUP BY unlock_date
       ORDER BY unlock_date
       LIMIT 20
@@ -176,15 +176,15 @@ export async function generateDashboardData(): Promise<DashboardData> {
       SELECT
         v.token_id,
         v.owner as owner_address,
-        v.balance_formatted as voting_power,
+        CAST(v.balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
         v.unlock_date,
         v.lock_end_timestamp,
         v.is_locked,
         e.name as owner_ens_name
       FROM venfts v
       LEFT JOIN ens_names e ON v.owner = e.address
-      WHERE v.balance_formatted > 0
-      ORDER BY v.balance_formatted DESC
+      WHERE CAST(v.balance_raw AS DECIMAL(38,0)) > 0
+      ORDER BY CAST(v.balance_raw AS DECIMAL(38,0)) DESC
     `);
     const allNFTsArray = (allNFTsResult as any).toArray();
 
@@ -200,10 +200,10 @@ export async function generateDashboardData(): Promise<DashboardData> {
       FROM (
         SELECT
           owner,
-          SUM(balance_formatted) as total_voting_power,
+          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
           COUNT(*) as nft_count
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
         GROUP BY owner
       ) s
       LEFT JOIN ens_names e ON s.owner = e.address
@@ -300,10 +300,10 @@ export async function generateWalletNFTMapping(): Promise<void> {
     const result = await db.query(`
       SELECT
         owner,
-        SUM(balance_formatted) as total_voting_power,
+        SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
         COUNT(*) as nft_count
       FROM venfts
-      WHERE balance_formatted > 0
+      WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
       GROUP BY owner
       ORDER BY total_voting_power DESC
     `);
@@ -316,12 +316,12 @@ export async function generateWalletNFTMapping(): Promise<void> {
       const nftsResult = await db.query(`
         SELECT
           token_id as nft_id,
-          balance_formatted as voting_power,
+          CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
           unlock_date,
           unlock_timestamp
         FROM venfts
-        WHERE owner = '${row.owner}' AND balance_formatted > 0
-        ORDER BY balance_formatted DESC
+        WHERE owner = '${row.owner}' AND CAST(balance_raw AS DECIMAL(38,0)) > 0
+        ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC
       `);
 
       const nftsArray = (nftsResult as any).toArray();
@@ -367,10 +367,10 @@ export async function generateAdvancedAnalytics(): Promise<void> {
       WITH top_holders AS (
         SELECT
           owner,
-          SUM(balance_formatted) as total_voting_power,
-          ROW_NUMBER() OVER (ORDER BY SUM(balance_formatted) DESC) as rank
+          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
+          ROW_NUMBER() OVER (ORDER BY SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) DESC) as rank
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
         GROUP BY owner
       )
       SELECT
@@ -388,25 +388,25 @@ export async function generateAdvancedAnalytics(): Promise<void> {
       WITH nft_ranges AS (
         SELECT
           CASE
-            WHEN balance_formatted >= 50000 THEN 'M.E.G.A (≥50K)'
-            WHEN balance_formatted >= 20000 THEN 'Major (20K-50K)'
-            WHEN balance_formatted >= 5000 THEN 'Equalest (5K-20K)'
-            WHEN balance_formatted >= 1000 THEN 'More Equal (1K-5K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 50000 THEN 'M.E.G.A (≥50K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 20000 THEN 'Major (20K-50K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 5000 THEN 'Equalest (5K-20K)'
+            WHEN CAST(balance_raw AS DECIMAL(38,0)) / 1e18 >= 1000 THEN 'More Equal (1K-5K)'
             ELSE 'Equal (<1K)'
           END as range,
-          balance_formatted
+          CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
       )
       SELECT
         range,
         COUNT(*) as nft_count,
-        SUM(balance_formatted) as total_power,
-        AVG(balance_formatted) as avg_power,
+        SUM(voting_power) as total_power,
+        AVG(voting_power) as avg_power,
         ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) as percentage
       FROM nft_ranges
       GROUP BY range
-      ORDER BY AVG(balance_formatted) DESC
+      ORDER BY AVG(voting_power) DESC
     `);
     const nftSizeArray = (nftSizeResult as any).toArray();
 

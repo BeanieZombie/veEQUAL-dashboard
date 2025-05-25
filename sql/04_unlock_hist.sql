@@ -3,20 +3,20 @@ CREATE TABLE unlock_hist AS
 WITH daily_unlocks AS (
   SELECT
     CAST(unlock_date AS DATE) as specific_unlock_date,
-    SUM(balance_formatted) as total_amount_unlocking
+    SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_amount_unlocking
   FROM venfts
-  WHERE balance_formatted > 0 AND unlock_timestamp > 0
+  WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0 AND lock_end_timestamp > 0
   GROUP BY CAST(unlock_date AS DATE)
 ),
 unlock_buckets AS (
   SELECT
     token_id,
     owner,
-    balance_formatted,
+    CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as balance_formatted,
     unlock_date,
-    unlock_timestamp,
+    lock_end_timestamp,
     CASE
-      WHEN unlock_timestamp = 0 THEN 'Never'
+      WHEN lock_end_timestamp = 0 THEN 'Never'
       WHEN CAST(unlock_date AS DATE) <= CURRENT_DATE THEN 'Expired'
       WHEN CAST(unlock_date AS DATE) <= CURRENT_DATE + INTERVAL 1 MONTH THEN 'This Month'
       WHEN CAST(unlock_date AS DATE) <= CURRENT_DATE + INTERVAL 3 MONTH THEN '1-3 Months'
@@ -26,7 +26,7 @@ unlock_buckets AS (
       ELSE '2+ Years'
     END as unlock_bucket
   FROM venfts
-  WHERE balance_formatted > 0
+  WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
 )
 SELECT
   b.unlock_bucket,
@@ -35,7 +35,7 @@ SELECT
   COUNT(DISTINCT b.owner) as holder_count,
   SUM(b.balance_formatted) as total_voting_power,
   du.total_amount_unlocking as total_daily_amount_unlocking,
-  ROUND(SUM(b.balance_formatted) * 100.0 / (SELECT SUM(balance_formatted) FROM unlock_buckets WHERE unlock_timestamp > 0), 2) as percentage_of_supply,
+  ROUND(SUM(b.balance_formatted) * 100.0 / (SELECT SUM(balance_formatted) FROM unlock_buckets WHERE lock_end_timestamp > 0), 2) as percentage_of_supply,
   ROUND(AVG(b.balance_formatted), 2) as avg_voting_power
 FROM unlock_buckets b
 LEFT JOIN daily_unlocks du ON CAST(b.unlock_date AS DATE) = du.specific_unlock_date
@@ -52,3 +52,27 @@ ORDER BY
     WHEN '2+ Years' THEN 8
   END,
   b.unlock_date;
+
+-- NFTs that are still locked
+SELECT
+  token_id,
+  owner,
+  CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as balance_formatted,
+  lock_end_timestamp,
+  DATE_TRUNC('day', TO_TIMESTAMP(lock_end_timestamp)) AS unlock_date,
+  (lock_end_timestamp - EXTRACT(EPOCH FROM CURRENT_TIMESTAMP)) / (24 * 60 * 60) AS days_to_unlock
+FROM venfts
+WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0 AND lock_end_timestamp > 0
+ORDER BY unlock_date ASC
+LIMIT 1000;
+
+-- History of all NFT unlocks
+SELECT
+  token_id,
+  owner,
+  CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as balance_formatted,
+  lock_end_timestamp AS unlock_timestamp,
+  DATE_TRUNC('day', TO_TIMESTAMP(lock_end_timestamp)) AS unlock_date
+FROM venfts
+WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
+ORDER BY unlock_timestamp ASC;

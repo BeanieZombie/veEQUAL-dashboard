@@ -3,14 +3,14 @@ CREATE TABLE total_supply AS
 WITH daily_supply AS (
   SELECT
     CAST(snapshot_time AS DATE) as date,
-    SUM(balance_formatted) as total_supply_value,
+    SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_supply_value,
     COUNT(*) as total_nfts,
     COUNT(DISTINCT owner) as unique_holders,
-    AVG(balance_formatted) as avg_voting_power,
-    MAX(balance_formatted) as max_voting_power,
-    MIN(balance_formatted) as min_voting_power
+    AVG(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as avg_voting_power,
+    MAX(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as max_voting_power,
+    MIN(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as min_voting_power
   FROM venfts
-  WHERE balance_formatted > 0
+  WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
   GROUP BY CAST(snapshot_time AS DATE)
 )
 SELECT

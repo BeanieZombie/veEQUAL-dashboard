@@ -14,7 +14,7 @@ await new Promise<void>((resolve, reject) => {
       token_id BIGINT PRIMARY KEY,
       owner VARCHAR NOT NULL,
       balance_raw VARCHAR NOT NULL,
-      balance_formatted DOUBLE NOT NULL,
+      token_balance_raw VARCHAR NOT NULL,
       unlock_timestamp BIGINT NOT NULL,
       unlock_date VARCHAR,
       is_locked BOOLEAN,

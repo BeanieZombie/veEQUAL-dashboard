@@ -16,10 +16,10 @@ WITH holder_tiers AS (
   FROM (
     SELECT
       owner,
-      SUM(balance_formatted) as total_voting_power,
+      SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_voting_power,
       COUNT(*) as nft_count
     FROM venfts
-    WHERE balance_formatted > 0
+    WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
     GROUP BY owner
   )
 )

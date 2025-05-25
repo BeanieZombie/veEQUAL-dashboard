@@ -2,17 +2,17 @@
   {
     "rank": 1,
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-    "votingPower": "130.7K",
+    "votingPower": "129.6K",
     "nftCount": 3,
     "topNFTId": "1761",
     "holder_address": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
     "ens_name": null,
-    "percentage_of_total_vp": 6.1
+    "percentage_of_total_vp": 6.11
   },
   {
     "rank": 2,
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "74.1K",
+    "votingPower": "73.5K",
     "nftCount": 5,
     "topNFTId": "4112",
     "holder_address": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
@@ -22,7 +22,7 @@
   {
     "rank": 3,
     "owner": "0xa064B34DC0aEeF23e48B400DC4b0A3f940B55865",
-    "votingPower": "72.2K",
+    "votingPower": "71.6K",
     "nftCount": 3,
     "topNFTId": "23",
     "holder_address": "0xa064B34DC0aEeF23e48B400DC4b0A3f940B55865",
@@ -31,28 +31,28 @@
   },
   {
     "rank": 4,
-    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "votingPower": "67.4K",
-    "nftCount": 4,
-    "topNFTId": "2508",
-    "holder_address": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+    "owner": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
+    "votingPower": "66.8K",
+    "nftCount": 1,
+    "topNFTId": "1120",
+    "holder_address": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
     "ens_name": null,
     "percentage_of_total_vp": 3.15
   },
   {
     "rank": 5,
-    "owner": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
-    "votingPower": "67.3K",
-    "nftCount": 1,
-    "topNFTId": "1120",
-    "holder_address": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
+    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+    "votingPower": "66.2K",
+    "nftCount": 4,
+    "topNFTId": "2508",
+    "holder_address": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
     "ens_name": null,
-    "percentage_of_total_vp": 3.14
+    "percentage_of_total_vp": 3.12
   },
   {
     "rank": 6,
     "owner": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
-    "votingPower": "66.3K",
+    "votingPower": "65.8K",
     "nftCount": 1,
     "topNFTId": "106",
     "holder_address": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
@@ -62,7 +62,7 @@
   {
     "rank": 7,
     "owner": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
-    "votingPower": "62.5K",
+    "votingPower": "62.0K",
     "nftCount": 2,
     "topNFTId": "1756",
     "holder_address": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
@@ -72,7 +72,7 @@
   {
     "rank": 8,
     "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
-    "votingPower": "61.7K",
+    "votingPower": "61.2K",
     "nftCount": 2,
     "topNFTId": "143",
     "holder_address": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
@@ -82,17 +82,17 @@
   {
     "rank": 9,
     "owner": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
-    "votingPower": "60.7K",
+    "votingPower": "60.2K",
     "nftCount": 1,
     "topNFTId": "1778",
     "holder_address": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
     "ens_name": null,
-    "percentage_of_total_vp": 2.83
+    "percentage_of_total_vp": 2.84
   },
   {
     "rank": 10,
     "owner": "0x300f31c44F6Aaf8c0925e25B2C655926FFa9eA45",
-    "votingPower": "47.4K",
+    "votingPower": "47.0K",
     "nftCount": 1,
     "topNFTId": "9",
     "holder_address": "0x300f31c44F6Aaf8c0925e25B2C655926FFa9eA45",
@@ -102,7 +102,7 @@
   {
     "rank": 11,
     "owner": "0x7a4a37dd112e8BBC6799B26F82Faa76c3Fc94078",
-    "votingPower": "37.2K",
+    "votingPower": "36.9K",
     "nftCount": 1,
     "topNFTId": "1069",
     "holder_address": "0x7a4a37dd112e8BBC6799B26F82Faa76c3Fc94078",
@@ -112,9 +112,9 @@
   {
     "rank": 12,
     "owner": "0x7CD89748411CD0b8d27D319869d8FA974dF04754",
-    "votingPower": "36.0K",
+    "votingPower": "35.7K",
     "nftCount": 19,
-    "topNFTId": "3731",
+    "topNFTId": "3732",
     "holder_address": "0x7CD89748411CD0b8d27D319869d8FA974dF04754",
     "ens_name": null,
     "percentage_of_total_vp": 1.68
@@ -122,7 +122,7 @@
   {
     "rank": 13,
     "owner": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
-    "votingPower": "35.1K",
+    "votingPower": "34.8K",
     "nftCount": 6,
     "topNFTId": "2351",
     "holder_address": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
@@ -132,7 +132,7 @@
   {
     "rank": 14,
     "owner": "0x137a48f028BE804425428cdd1591675A583235e0",
-    "votingPower": "35.0K",
+    "votingPower": "34.7K",
     "nftCount": 4,
     "topNFTId": "5915",
     "holder_address": "0x137a48f028BE804425428cdd1591675A583235e0",
@@ -142,7 +142,7 @@
   {
     "rank": 15,
     "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
-    "votingPower": "33.0K",
+    "votingPower": "32.6K",
     "nftCount": 2,
     "topNFTId": "2655",
     "holder_address": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
@@ -152,7 +152,7 @@
   {
     "rank": 16,
     "owner": "0xC606e3D6C5dd451aB79B554d3A560833FFF2E5Dc",
-    "votingPower": "32.1K",
+    "votingPower": "31.9K",
     "nftCount": 1,
     "topNFTId": "163",
     "holder_address": "0xC606e3D6C5dd451aB79B554d3A560833FFF2E5Dc",
@@ -162,7 +162,7 @@
   {
     "rank": 17,
     "owner": "0x424e5AF4A2FB8933f1d31cc5b00B105049a9A09d",
-    "votingPower": "30.7K",
+    "votingPower": "30.3K",
     "nftCount": 4,
     "topNFTId": "108",
     "holder_address": "0x424e5AF4A2FB8933f1d31cc5b00B105049a9A09d",
@@ -172,7 +172,7 @@
   {
     "rank": 18,
     "owner": "0xB11b08BB78E16B35703E79c340F8A58926649111",
-    "votingPower": "29.5K",
+    "votingPower": "29.3K",
     "nftCount": 10,
     "topNFTId": "69",
     "holder_address": "0xB11b08BB78E16B35703E79c340F8A58926649111",
@@ -182,7 +182,7 @@
   {
     "rank": 19,
     "owner": "0xB34ee365B63B317DA18bBFB1f30Acfd55cEbd9De",
-    "votingPower": "28.8K",
+    "votingPower": "28.6K",
     "nftCount": 20,
     "topNFTId": "707",
     "holder_address": "0xB34ee365B63B317DA18bBFB1f30Acfd55cEbd9De",
@@ -192,7 +192,7 @@
   {
     "rank": 20,
     "owner": "0x04fd414cAcdbd8742C8ADC46230BB11445203C99",
-    "votingPower": "28.4K",
+    "votingPower": "28.2K",
     "nftCount": 1,
     "topNFTId": "5",
     "holder_address": "0x04fd414cAcdbd8742C8ADC46230BB11445203C99",
@@ -202,7 +202,7 @@
   {
     "rank": 21,
     "owner": "0x08Eb99E41A37cf7898EE1979C14F461Cd42d6792",
-    "votingPower": "23.6K",
+    "votingPower": "23.4K",
     "nftCount": 19,
     "topNFTId": "194",
     "holder_address": "0x08Eb99E41A37cf7898EE1979C14F461Cd42d6792",
@@ -212,7 +212,7 @@
   {
     "rank": 22,
     "owner": "0x5a4CC0a1a90fE4a57B4Bc09d81687123bF665EC2",
-    "votingPower": "23.5K",
+    "votingPower": "23.3K",
     "nftCount": 2,
     "topNFTId": "1032",
     "holder_address": "0x5a4CC0a1a90fE4a57B4Bc09d81687123bF665EC2",
@@ -222,7 +222,7 @@
   {
     "rank": 23,
     "owner": "0x4A21B7DB2439B1c792f11FC5cEd890E8C193f367",
-    "votingPower": "21.7K",
+    "votingPower": "21.5K",
     "nftCount": 9,
     "topNFTId": "1153",
     "holder_address": "0x4A21B7DB2439B1c792f11FC5cEd890E8C193f367",
@@ -232,7 +232,7 @@
   {
     "rank": 24,
     "owner": "0x8fcf29F004fdfb0b8C2EC7c3C219CF57fb7D2ff9",
-    "votingPower": "21.2K",
+    "votingPower": "21.1K",
     "nftCount": 1,
     "topNFTId": "242",
     "holder_address": "0x8fcf29F004fdfb0b8C2EC7c3C219CF57fb7D2ff9",
@@ -242,7 +242,7 @@
   {
     "rank": 25,
     "owner": "0x95C73fBE7274BeC91657C8146018AB4B25e15AB7",
-    "votingPower": "21.0K",
+    "votingPower": "20.9K",
     "nftCount": 3,
     "topNFTId": "4642",
     "holder_address": "0x95C73fBE7274BeC91657C8146018AB4B25e15AB7",
@@ -252,7 +252,7 @@
   {
     "rank": 26,
     "owner": "0xD674d9DBEa02B7457408Ed2Cd21051498ec8d13c",
-    "votingPower": "20.8K",
+    "votingPower": "20.6K",
     "nftCount": 15,
     "topNFTId": "166",
     "holder_address": "0xD674d9DBEa02B7457408Ed2Cd21051498ec8d13c",
@@ -262,17 +262,17 @@
   {
     "rank": 27,
     "owner": "0x2Dc2285E1Cc1cC72c3487F5bE7A6CBcA048DCd84",
-    "votingPower": "18.7K",
+    "votingPower": "19.3K",
     "nftCount": 7,
     "topNFTId": "863",
     "holder_address": "0x2Dc2285E1Cc1cC72c3487F5bE7A6CBcA048DCd84",
     "ens_name": null,
-    "percentage_of_total_vp": 0.87
+    "percentage_of_total_vp": 0.91
   },
   {
     "rank": 28,
     "owner": "0xe9b502c1b4f246cc3f2f9Bf3d048d75164f1BCf0",
-    "votingPower": "17.5K",
+    "votingPower": "17.3K",
     "nftCount": 1,
     "topNFTId": "2543",
     "holder_address": "0xe9b502c1b4f246cc3f2f9Bf3d048d75164f1BCf0",
@@ -282,7 +282,7 @@
   {
     "rank": 29,
     "owner": "0x1295c6d02137402a0799C6397A8161c2590805c2",
-    "votingPower": "16.5K",
+    "votingPower": "16.4K",
     "nftCount": 1,
     "topNFTId": "2397",
     "holder_address": "0x1295c6d02137402a0799C6397A8161c2590805c2",
@@ -292,7 +292,7 @@
   {
     "rank": 30,
     "owner": "0xa9D3b1408353d05064d47DAF0Dc98E104eb9c98A",
-    "votingPower": "15.2K",
+    "votingPower": "15.1K",
     "nftCount": 6,
     "topNFTId": "4979",
     "holder_address": "0xa9D3b1408353d05064d47DAF0Dc98E104eb9c98A",
@@ -302,7 +302,7 @@
   {
     "rank": 31,
     "owner": "0x74293A57d7f6B9F6C5580CE50aaE3f10A0a09C56",
-    "votingPower": "15.0K",
+    "votingPower": "14.8K",
     "nftCount": 2,
     "topNFTId": "2",
     "holder_address": "0x74293A57d7f6B9F6C5580CE50aaE3f10A0a09C56",
@@ -312,7 +312,7 @@
   {
     "rank": 32,
     "owner": "0xd87EcC6C74F486B044824a222326A96F696fCfA2",
-    "votingPower": "14.8K",
+    "votingPower": "14.7K",
     "nftCount": 1,
     "topNFTId": "139",
     "holder_address": "0xd87EcC6C74F486B044824a222326A96F696fCfA2",
@@ -322,7 +322,7 @@
   {
     "rank": 33,
     "owner": "0x2b75BAc8d122A55534C946950E2751DC0366e9a0",
-    "votingPower": "14.5K",
+    "votingPower": "14.4K",
     "nftCount": 2,
     "topNFTId": "2536",
     "holder_address": "0x2b75BAc8d122A55534C946950E2751DC0366e9a0",
@@ -332,9 +332,9 @@
   {
     "rank": 34,
     "owner": "0xf86FC8541E1596573137C982819e9eC160028056",
-    "votingPower": "13.8K",
+    "votingPower": "13.7K",
     "nftCount": 4,
-    "topNFTId": "404",
+    "topNFTId": "4922",
     "holder_address": "0xf86FC8541E1596573137C982819e9eC160028056",
     "ens_name": null,
     "percentage_of_total_vp": 0.65
@@ -342,7 +342,7 @@
   {
     "rank": 35,
     "owner": "0x5B3067C5e26fEC823d6fBf8F315e43632658D2F6",
-    "votingPower": "13.0K",
+    "votingPower": "12.9K",
     "nftCount": 2,
     "topNFTId": "915",
     "holder_address": "0x5B3067C5e26fEC823d6fBf8F315e43632658D2F6",
@@ -362,12 +362,12 @@
   {
     "rank": 37,
     "owner": "0xA740522eCaff98D1F2eBB29d5CAA19Fd4cF5D92F",
-    "votingPower": "11.9K",
+    "votingPower": "11.8K",
     "nftCount": 2,
     "topNFTId": "4",
     "holder_address": "0xA740522eCaff98D1F2eBB29d5CAA19Fd4cF5D92F",
     "ens_name": null,
-    "percentage_of_total_vp": 0.55
+    "percentage_of_total_vp": 0.56
   },
   {
     "rank": 38,
@@ -382,7 +382,7 @@
   {
     "rank": 39,
     "owner": "0x18907a779cFcF032be79e9f638319a10861Fa41B",
-    "votingPower": "10.3K",
+    "votingPower": "10.2K",
     "nftCount": 10,
     "topNFTId": "727",
     "holder_address": "0x18907a779cFcF032be79e9f638319a10861Fa41B",
@@ -392,7 +392,7 @@
   {
     "rank": 40,
     "owner": "0xdc46Bb979Bf5102d78ece8e9A91DbAec932e756a",
-    "votingPower": "9.9K",
+    "votingPower": "9.8K",
     "nftCount": 1,
     "topNFTId": "1351",
     "holder_address": "0xdc46Bb979Bf5102d78ece8e9A91DbAec932e756a",
@@ -402,7 +402,7 @@
   {
     "rank": 41,
     "owner": "0x494C68311042a3bd66C40D58e9913BA0480f514a",
-    "votingPower": "9.5K",
+    "votingPower": "9.4K",
     "nftCount": 4,
     "topNFTId": "347",
     "holder_address": "0x494C68311042a3bd66C40D58e9913BA0480f514a",
@@ -412,7 +412,7 @@
   {
     "rank": 42,
     "owner": "0xC02ea53A80a0C1069fC13cD7e4469B28a32b73EE",
-    "votingPower": "9.4K",
+    "votingPower": "9.3K",
     "nftCount": 13,
     "topNFTId": "5364",
     "holder_address": "0xC02ea53A80a0C1069fC13cD7e4469B28a32b73EE",
@@ -422,7 +422,7 @@
   {
     "rank": 43,
     "owner": "0x472542A27301757647B81E52E8b053C42cE9979f",
-    "votingPower": "9.2K",
+    "votingPower": "9.1K",
     "nftCount": 15,
     "topNFTId": "10",
     "holder_address": "0x472542A27301757647B81E52E8b053C42cE9979f",
@@ -444,7 +444,7 @@
     "owner": "0x30b171cc3FdA751707BcFf7b8d300Faf10A531dC",
     "votingPower": "8.0K",
     "nftCount": 8,
-    "topNFTId": "1425",
+    "topNFTId": "1443",
     "holder_address": "0x30b171cc3FdA751707BcFf7b8d300Faf10A531dC",
     "ens_name": null,
     "percentage_of_total_vp": 0.38
@@ -452,7 +452,7 @@
   {
     "rank": 46,
     "owner": "0x13c32b686D3b9B5578a22dbfDD031AcC64F4990c",
-    "votingPower": "7.7K",
+    "votingPower": "7.6K",
     "nftCount": 1,
     "topNFTId": "5174",
     "holder_address": "0x13c32b686D3b9B5578a22dbfDD031AcC64F4990c",
@@ -482,9 +482,9 @@
   {
     "rank": 49,
     "owner": "0xc3D6E35Ec016370c0ACea7E6474171fA14218C10",
-    "votingPower": "7.3K",
+    "votingPower": "7.2K",
     "nftCount": 10,
-    "topNFTId": "5315",
+    "topNFTId": "5316",
     "holder_address": "0xc3D6E35Ec016370c0ACea7E6474171fA14218C10",
     "ens_name": null,
     "percentage_of_total_vp": 0.34
@@ -522,7 +522,7 @@
   {
     "rank": 53,
     "owner": "0x66bE1Da4E559fb6032Be5E4d56FD7905E94Cb7b0",
-    "votingPower": "6.8K",
+    "votingPower": "6.7K",
     "nftCount": 16,
     "topNFTId": "5341",
     "holder_address": "0x66bE1Da4E559fb6032Be5E4d56FD7905E94Cb7b0",
@@ -532,12 +532,12 @@
   {
     "rank": 54,
     "owner": "0xac4Dd773B0E88CaA7E5d1fA75D3605ab1bd557a7",
-    "votingPower": "6.8K",
+    "votingPower": "6.7K",
     "nftCount": 16,
     "topNFTId": "3520",
     "holder_address": "0xac4Dd773B0E88CaA7E5d1fA75D3605ab1bd557a7",
     "ens_name": null,
-    "percentage_of_total_vp": 0.32
+    "percentage_of_total_vp": 0.31
   },
   {
     "rank": 55,
@@ -577,12 +577,12 @@
     "topNFTId": "1780",
     "holder_address": "0x3021338C74f10CEf1ECe6404Ac1498c2559f7a5c",
     "ens_name": null,
-    "percentage_of_total_vp": 0.28
+    "percentage_of_total_vp": 0.29
   },
   {
     "rank": 59,
     "owner": "0x9B81FCdb243fF7137aFCB77209d1D4BE9dC3a6b2",
-    "votingPower": "6.0K",
+    "votingPower": "5.9K",
     "nftCount": 1,
     "topNFTId": "251",
     "holder_address": "0x9B81FCdb243fF7137aFCB77209d1D4BE9dC3a6b2",
@@ -632,7 +632,7 @@
   {
     "rank": 64,
     "owner": "0x8554600829b7E5909586F94585A5A55640745553",
-    "votingPower": "5.8K",
+    "votingPower": "5.7K",
     "nftCount": 1,
     "topNFTId": "107",
     "holder_address": "0x8554600829b7E5909586F94585A5A55640745553",
@@ -642,7 +642,7 @@
   {
     "rank": 65,
     "owner": "0x345183a7f823BFE41bA7A52bc04265E264a6Ddd9",
-    "votingPower": "5.7K",
+    "votingPower": "5.6K",
     "nftCount": 4,
     "topNFTId": "1058",
     "holder_address": "0x345183a7f823BFE41bA7A52bc04265E264a6Ddd9",
@@ -662,7 +662,7 @@
   {
     "rank": 67,
     "owner": "0x4b95CCcC4fa36A008e0b2DEF47ab50FeF070109c",
-    "votingPower": "5.6K",
+    "votingPower": "5.5K",
     "nftCount": 1,
     "topNFTId": "4987",
     "holder_address": "0x4b95CCcC4fa36A008e0b2DEF47ab50FeF070109c",
@@ -672,7 +672,7 @@
   {
     "rank": 68,
     "owner": "0x75fCb27a66dC718Fe531c832D46663b9A316ad8B",
-    "votingPower": "5.5K",
+    "votingPower": "5.4K",
     "nftCount": 3,
     "topNFTId": "3698",
     "holder_address": "0x75fCb27a66dC718Fe531c832D46663b9A316ad8B",
@@ -702,7 +702,7 @@
   {
     "rank": 71,
     "owner": "0x8546E9C90005c2B492F7C1A431e38809541124c3",
-    "votingPower": "5.4K",
+    "votingPower": "5.3K",
     "nftCount": 2,
     "topNFTId": "1476",
     "holder_address": "0x8546E9C90005c2B492F7C1A431e38809541124c3",
@@ -732,7 +732,7 @@
   {
     "rank": 74,
     "owner": "0x432e0aBaD14B4559347FDF685069dE74476Aa7e8",
-    "votingPower": "5.1K",
+    "votingPower": "5.0K",
     "nftCount": 15,
     "topNFTId": "1242",
     "holder_address": "0x432e0aBaD14B4559347FDF685069dE74476Aa7e8",
@@ -754,7 +754,7 @@
     "owner": "0x2c9C3050B242Df683c5Db26A0c5874c938E06B8F",
     "votingPower": "4.9K",
     "nftCount": 17,
-    "topNFTId": "267",
+    "topNFTId": "310",
     "holder_address": "0x2c9C3050B242Df683c5Db26A0c5874c938E06B8F",
     "ens_name": null,
     "percentage_of_total_vp": 0.23
@@ -762,7 +762,7 @@
   {
     "rank": 77,
     "owner": "0x747EFCBE90243Caa7A21b15143F716743ac252FC",
-    "votingPower": "4.9K",
+    "votingPower": "4.8K",
     "nftCount": 1,
     "topNFTId": "3257",
     "holder_address": "0x747EFCBE90243Caa7A21b15143F716743ac252FC",
@@ -781,16 +781,6 @@
   },
   {
     "rank": 79,
-    "owner": "0xB58B6e6C33871c4f199216A072FE7D227459f21B",
-    "votingPower": "4.8K",
-    "nftCount": 8,
-    "topNFTId": "26",
-    "holder_address": "0xB58B6e6C33871c4f199216A072FE7D227459f21B",
-    "ens_name": null,
-    "percentage_of_total_vp": 0.23
-  },
-  {
-    "rank": 80,
     "owner": "0xcf0508D48F5dd7C7E3C1d962EeCb2AE5f5C8dfb7",
     "votingPower": "4.8K",
     "nftCount": 1,
@@ -800,17 +790,17 @@
     "percentage_of_total_vp": 0.23
   },
   {
-    "rank": 81,
-    "owner": "0x5D2d79C1Fa0171Cb536B3F34669b593fd9f5c1a6",
+    "rank": 80,
+    "owner": "0xB58B6e6C33871c4f199216A072FE7D227459f21B",
     "votingPower": "4.8K",
-    "nftCount": 20,
-    "topNFTId": "4126",
-    "holder_address": "0x5D2d79C1Fa0171Cb536B3F34669b593fd9f5c1a6",
+    "nftCount": 8,
+    "topNFTId": "26",
+    "holder_address": "0xB58B6e6C33871c4f199216A072FE7D227459f21B",
     "ens_name": null,
-    "percentage_of_total_vp": 0.22
+    "percentage_of_total_vp": 0.23
   },
   {
-    "rank": 82,
+    "rank": 81,
     "owner": "0x318b01Ab7b0fafBC4dAd578488674643206fE192",
     "votingPower": "4.8K",
     "nftCount": 2,
@@ -820,7 +810,7 @@
     "percentage_of_total_vp": 0.22
   },
   {
-    "rank": 83,
+    "rank": 82,
     "owner": "0x0F45156F109e474295913D78036FA213b1745D5A",
     "votingPower": "4.8K",
     "nftCount": 1,
@@ -830,9 +820,19 @@
     "percentage_of_total_vp": 0.22
   },
   {
+    "rank": 83,
+    "owner": "0x5D2d79C1Fa0171Cb536B3F34669b593fd9f5c1a6",
+    "votingPower": "4.8K",
+    "nftCount": 20,
+    "topNFTId": "4128",
+    "holder_address": "0x5D2d79C1Fa0171Cb536B3F34669b593fd9f5c1a6",
+    "ens_name": null,
+    "percentage_of_total_vp": 0.22
+  },
+  {
     "rank": 84,
     "owner": "0xadaA0CBeC66C670d2598a2635C88bA55A8200E3D",
-    "votingPower": "4.8K",
+    "votingPower": "4.7K",
     "nftCount": 5,
     "topNFTId": "330",
     "holder_address": "0xadaA0CBeC66C670d2598a2635C88bA55A8200E3D",
@@ -932,7 +932,7 @@
   {
     "rank": 94,
     "owner": "0xC7e879B2c583c076D1BA0f442dEaf247a03E8598",
-    "votingPower": "4.5K",
+    "votingPower": "4.4K",
     "nftCount": 20,
     "topNFTId": "12",
     "holder_address": "0xC7e879B2c583c076D1BA0f442dEaf247a03E8598",
@@ -962,9 +962,9 @@
   {
     "rank": 97,
     "owner": "0x9320ddCe4899584aEb9aBbe8b5d310aA5fe11D5c",
-    "votingPower": "4.4K",
+    "votingPower": "4.3K",
     "nftCount": 20,
-    "topNFTId": "5002",
+    "topNFTId": "5009",
     "holder_address": "0x9320ddCe4899584aEb9aBbe8b5d310aA5fe11D5c",
     "ens_name": null,
     "percentage_of_total_vp": 0.2
@@ -982,7 +982,7 @@
   {
     "rank": 99,
     "owner": "0x66C12cc019B358137FC3F8527425328c39919716",
-    "votingPower": "4.2K",
+    "votingPower": "4.1K",
     "nftCount": 1,
     "topNFTId": "1938",
     "holder_address": "0x66C12cc019B358137FC3F8527425328c39919716",
@@ -992,7 +992,7 @@
   {
     "rank": 100,
     "owner": "0x61a20C873f0eb9f357d9f2653AC8EbA2Aa198101",
-    "votingPower": "4.2K",
+    "votingPower": "4.1K",
     "nftCount": 1,
     "topNFTId": "5403",
     "holder_address": "0x61a20C873f0eb9f357d9f2653AC8EbA2Aa198101",

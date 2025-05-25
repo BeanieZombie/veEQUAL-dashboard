@@ -43,19 +43,56 @@ class ResilientViemClient {
         return await operation(client);
       } catch (error) {
         lastError = error as Error;
-        console.warn(`RPC attempt ${attempt + 1} failed with ${this.currentRpc}:`, error);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        
+        // Check if this is a rate limiting error
+        const isRateLimited = this.isRateLimitError(errorMessage);
+        
+        if (isRateLimited) {
+          console.warn(`RPC rate limited on attempt ${attempt + 1} with ${this.currentRpc}:`, errorMessage);
+        } else {
+          console.warn(`RPC attempt ${attempt + 1} failed with ${this.currentRpc}:`, error);
+        }
 
         if (attempt < maxRetries - 1) {
-          // Mark current RPC as failed and try next one
-          if (this.currentRpc) {
-            await sonicRPCProvider.markRPCFailed(this.currentRpc);
+          if (isRateLimited) {
+            // For rate limits, just switch to next RPC without marking as permanently failed
+            console.log('Rate limit detected, switching to next RPC endpoint...');
+            await this.createClient(true);
+            // Add a small delay for rate limited requests
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          } else {
+            // For other errors, mark current RPC as failed and try next one
+            if (this.currentRpc) {
+              await sonicRPCProvider.markRPCFailed(this.currentRpc);
+            }
+            await this.createClient(true);
           }
-          await this.createClient(true);
         }
       }
     }
 
     throw new Error(`All RPC attempts failed. Last error: ${lastError?.message}`);
+  }
+
+  private isRateLimitError(errorMessage: string): boolean {
+    const rateLimitIndicators = [
+      'rate limit',
+      'too many requests',
+      'call rate limit exhausted',
+      'retry in',
+      'rate exceeded',
+      'throttled',
+      'request limit',
+      'quota exceeded',
+      'api rate limit',
+      'requests per second',
+      'rpm limit',
+      'rps limit'
+    ];
+    
+    const lowerMessage = errorMessage.toLowerCase();
+    return rateLimitIndicators.some(indicator => lowerMessage.includes(indicator));
   }
 
   // Convenience methods that automatically retry

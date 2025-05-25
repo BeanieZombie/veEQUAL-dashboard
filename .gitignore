@@ -106,6 +106,17 @@ web_modules/
 .env.production.local
 .env.local
 
+# DuckDB write-ahead log
+*.wal
+
+# Local data files (e.g. Parquet, DuckDB)
+/data/*.parquet
+/data/*.duckdb
+/data/*.duckdb.wal
+
+# Audit files
+FINAL_AUDIT.md
+
 # parcel-bundler cache (https://parceljs.org/)
 
 .parcel-cache
@@ -195,6 +206,7 @@ src/styles.css
 *CLEANUP*.md
 *AUDIT*.md
 PROJECT_*.md
+WORKING_LOG.md
 
 # Temporary and backup files
 *.bak
