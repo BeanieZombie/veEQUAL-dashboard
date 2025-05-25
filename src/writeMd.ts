@@ -343,6 +343,46 @@ export async function writeMd(): Promise<void> {
     markdown += `Total Owners: **${totalOwners.toLocaleString()}**, Total NFTs: **${totalNFTs.toLocaleString()}**\n`;
     markdown += `Last built: **${lastBuiltDate}**\n\n`;
 
+    // Get pending unlock dates for dynamic TOC generation
+    const currentDateForToc = new Date();
+    const currentDateStrForToc = currentDateForToc.toISOString().split('T')[0];
+    const ninetyDaysFromNowForToc = new Date();
+    ninetyDaysFromNowForToc.setDate(currentDateForToc.getDate() + 90);
+
+    const pendingUnlocksForTocQuery = `
+      SELECT DISTINCT unlock_date
+      FROM venfts
+      WHERE unlock_date IS NOT NULL
+        AND unlock_date > '${currentDateStrForToc}'
+        AND unlock_date <= '${ninetyDaysFromNowForToc.toISOString().split('T')[0]}'
+        AND CAST(token_balance_raw AS DECIMAL(38,0)) > 0
+      ORDER BY unlock_date ASC
+    `;
+
+    const pendingUnlocksForTocResult = (await db.query(pendingUnlocksForTocQuery) as any).toArray();
+    const pendingUnlockDates = pendingUnlocksForTocResult.map((row: any) => formatUnlockDateDisplay(row.unlock_date));
+
+    // Table of Contents
+    markdown += `## Table of Contents\n\n`;
+    markdown += `1. [Executive Summary](#executive-summary)\n`;
+    markdown += `2. [Voting Power Distribution](#voting-power-distribution)\n`;
+    markdown += `3. [Unlock Schedule Analysis (Based on Token Balance)](#unlock-schedule-analysis-based-on-token-balance)\n`;
+    markdown += `4. [Governance Risk Analysis](#governance-risk-analysis)\n`;
+    markdown += `5. [Top 10 NFTs by Balance](#top-10-nfts-by-balance)\n`;
+    markdown += `6. [Top 10 Holders by Total Voting Power](#top-10-holders-by-total-voting-power)\n`;
+    markdown += `7. [Unlockable veEQUAL](#unlockable-veequal)\n`;
+    markdown += `8. [Pending NFT Unlock: 90 Days](#pending-nft-unlock-90-days)\n`;
+    
+    // Add dynamic pending unlock date subsections
+    pendingUnlockDates.forEach((date: string) => {
+      const isUnlockingSoonDate = isUnlockingSoon(date, 30);
+      const anchor = date.replace(/\./g, '').replace(/\s/g, '-').toLowerCase();
+      markdown += `   - [${date}${isUnlockingSoonDate ? ' ⚠️' : ''}](#${anchor}${isUnlockingSoonDate ? '-️' : ''})\n`;
+    });
+    
+    markdown += `9. [veEQUAL Leaderboard](#veequal-leaderboard)\n\n`;
+    markdown += `---\n\n`;
+
     // Executive Summary with Risk Assessment
     const top1Percentage = grandTotalVotingPower > 0 ? (top1Power / grandTotalVotingPower) * 100 : 0;
     const top10Percentage = grandTotalVotingPower > 0 ? (top10Power / grandTotalVotingPower) * 100 : 0;

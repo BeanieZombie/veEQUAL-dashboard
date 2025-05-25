@@ -44,10 +44,10 @@ class ResilientViemClient {
       } catch (error) {
         lastError = error as Error;
         const errorMessage = error instanceof Error ? error.message : String(error);
-        
+
         // Check if this is a rate limiting error
         const isRateLimited = this.isRateLimitError(errorMessage);
-        
+
         if (isRateLimited) {
           console.warn(`RPC rate limited on attempt ${attempt + 1} with ${this.currentRpc}:`, errorMessage);
         } else {
@@ -90,7 +90,7 @@ class ResilientViemClient {
       'rpm limit',
       'rps limit'
     ];
-    
+
     const lowerMessage = errorMessage.toLowerCase();
     return rateLimitIndicators.some(indicator => lowerMessage.includes(indicator));
   }
