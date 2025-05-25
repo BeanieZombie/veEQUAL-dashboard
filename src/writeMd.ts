@@ -129,18 +129,18 @@ function formatUnlockDateDisplay(unlockDateStr: string | null | undefined): stri
 
 // function calculateGiniCoefficient(values: number[]): number {
 //   if (values.length === 0) return 0;
-  
+
 //   const sortedValues = values.sort((a, b) => a - b);
 //   const n = sortedValues.length;
 //   const sum = sortedValues.reduce((acc, val) => acc + val, 0);
-  
+
 //   if (sum === 0) return 0;
-  
+
 //   let numerator = 0;
 //   for (let i = 0; i < n; i++) {
 //     numerator += (2 * (i + 1) - n - 1) * sortedValues[i];
 //   }
-  
+
 //   return numerator / (n * sum);
 // }
 
@@ -242,7 +242,7 @@ export async function writeMd(): Promise<void> {
     // 5. Advanced Analytics - Concentration Risk
     // const votingPowers = leaderboardHoldersData.map(h => h.total_voting_power);
     // const giniCoefficient = calculateGiniCoefficient(votingPowers); // Gini is now fetched from the database
-    
+
     // Fetch Gini from the concentration table (most recent record)
     const concentrationStatsQuery = `
       SELECT gini_coefficient
@@ -252,13 +252,13 @@ export async function writeMd(): Promise<void> {
     `;
     const concentrationStatsResult = (await db.query(concentrationStatsQuery) as any).toArray();
     const giniCoefficient = concentrationStatsResult[0]?.gini_coefficient || 0;
-    
+
     // Calculate top percentile concentrations
     const totalHolders = leaderboardHoldersData.length;
     const top1Count = Math.max(1, Math.ceil(totalHolders * 0.01));
     const top5Count = Math.max(1, Math.ceil(totalHolders * 0.05));
     const top10Count = Math.max(1, Math.ceil(totalHolders * 0.10));
-    
+
     const top1Power = leaderboardHoldersData.slice(0, top1Count).reduce((sum, h) => sum + h.total_voting_power, 0);
     const top5Power = leaderboardHoldersData.slice(0, top5Count).reduce((sum, h) => sum + h.total_voting_power, 0);
     const top10Power = leaderboardHoldersData.slice(0, top10Count).reduce((sum, h) => sum + h.total_voting_power, 0);
@@ -293,14 +293,14 @@ export async function writeMd(): Promise<void> {
       { min: 100, max: 999, label: '100-1K' },
       { min: 0, max: 99, label: '<100' }
     ];
-    
+
     const powerDistribution: PowerDistributionBand[] = distributionBands.map(band => {
-      const holders = leaderboardHoldersData.filter(h => 
+      const holders = leaderboardHoldersData.filter(h =>
         h.total_voting_power >= band.min && h.total_voting_power <= band.max
       );
       const totalPower = holders.reduce((sum, h) => sum + h.total_voting_power, 0);
       const percentage = grandTotalVotingPower > 0 ? (totalPower / grandTotalVotingPower) * 100 : 0;
-      
+
       return {
         range: band.label,
         count: holders.length,
@@ -344,7 +344,7 @@ export async function writeMd(): Promise<void> {
     // Executive Summary with Risk Assessment
     const top1Percentage = grandTotalVotingPower > 0 ? (top1Power / grandTotalVotingPower) * 100 : 0;
     const top10Percentage = grandTotalVotingPower > 0 ? (top10Power / grandTotalVotingPower) * 100 : 0;
-    
+
     markdown += `## Executive Summary\n\n`;
     markdown += `| Metric | Value | Risk Level |\n`;
     markdown += `|--------|-------|------------|\n`;
@@ -387,7 +387,7 @@ export async function writeMd(): Promise<void> {
       markdown += '    title Token Balance Unlock Timeline\n'; // Updated title
       markdown += '    dateFormat  YYYY-MM\n';
       markdown += '    section Unlocks\n';
-      
+
       unlockScheduleData.slice(0, 6).forEach(item => {
         const startDate = item.month;
         const endDate = item.month;
@@ -422,7 +422,7 @@ export async function writeMd(): Promise<void> {
     markdown += `    B --> E[Controls ${top1Percentage.toFixed(1)}% of votes]\n`;
     markdown += `    C --> F[Controls ${(grandTotalVotingPower > 0 ? (top5Power / grandTotalVotingPower) * 100 : 0).toFixed(1)}% of votes]\n`;
     markdown += `    D --> G[Controls ${top10Percentage.toFixed(1)}% of votes]\n`;
-    
+
     if (top1Percentage >= 50) {
       markdown += `    E --> H[CRITICAL: Governance centralization risk]\n`;
     } else if (top10Percentage >= 60) {
@@ -459,17 +459,17 @@ export async function writeMd(): Promise<void> {
     const currentDate = new Date();
     const ninetyDaysFromNow = new Date();
     ninetyDaysFromNow.setDate(currentDate.getDate() + 90);
-    
+
     const pendingUnlocksQuery = `
       SELECT token_id, owner, balance_raw, token_balance_raw, unlock_date
       FROM venfts
-      WHERE unlock_date IS NOT NULL 
+      WHERE unlock_date IS NOT NULL
         AND unlock_date > '${currentDate.toISOString().split('T')[0]}'
         AND unlock_date <= '${ninetyDaysFromNow.toISOString().split('T')[0]}'
         AND CAST(token_balance_raw AS DECIMAL(38,0)) > 0
       ORDER BY CAST(token_balance_raw AS DECIMAL(38,0)) DESC
     `;
-    
+
     const pendingUnlocksResult = (await db.query(pendingUnlocksQuery) as any).toArray();
     const pendingUnlocks: NftRow[] = pendingUnlocksResult.map((row: any) => row as NftRow);
 
