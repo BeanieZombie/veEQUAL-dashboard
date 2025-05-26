@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun --watch src/update.ts",
-    "build": "bun build src/update.ts --outdir dist --target node",
+    "build": "bun build src/update.ts --outdir dist --target bun",
     "test": "bun tests/comprehensive_tests.ts",
     "test:quick": "bun tests/quick_test.ts",
     "test:db": "bun tests/check_db.ts",
