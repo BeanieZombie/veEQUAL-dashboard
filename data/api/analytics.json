@@ -113,7 +113,7 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "384.12"
+      "avgPower": "384.11"
     },
     {
       "groupType": "Top 10",
@@ -159,5 +159,5 @@
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T18:21:00.979Z"
+  "lastUpdated": "2025-05-26T18:25:56.734Z"
 }
