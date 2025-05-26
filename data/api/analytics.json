@@ -12,7 +12,7 @@
     {
       "tier": "Major Holder (20K-50K)",
       "holderCount": 17,
-      "tierVotingPower": "497.6K",
+      "tierVotingPower": "497.5K",
       "powerPercentage": 23.6,
       "holderPercentage": 0.46,
       "avgPowerPerHolder": "29.3K",
@@ -21,7 +21,7 @@
     {
       "tier": "Equalest (5K-20K)",
       "holderCount": 48,
-      "tierVotingPower": "414.4K",
+      "tierVotingPower": "414.3K",
       "powerPercentage": 19.65,
       "holderPercentage": 1.3,
       "avgPowerPerHolder": "8.6K",
@@ -113,12 +113,12 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "383.71"
+      "avgPower": "383.69"
     },
     {
       "groupType": "Top 10",
       "holderCount": 10,
-      "totalPower": "699.1K",
+      "totalPower": "699.0K",
       "avgPower": "69.9K"
     }
   ],
@@ -155,9 +155,9 @@
       "range": "Equal (<1K)",
       "nftCount": 4655,
       "totalPower": "416.1K",
-      "avgPower": "89.40",
+      "avgPower": "89.39",
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T21:55:53.167Z"
+  "lastUpdated": "2025-05-26T22:05:51.252Z"
 }
