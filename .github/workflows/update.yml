@@ -31,15 +31,20 @@ jobs:
       run: |
         bun --version || { echo "Bun installation failed"; exit 1; }
         echo "Bun installation validated successfully"
-        # Verify DuckDB can be imported
-        echo "Testing DuckDB module..."
-        bun -e "import('duckdb').then(() => console.log('✅ DuckDB module loaded successfully')).catch(err => { console.error('❌ DuckDB import failed:', err); process.exit(1); })"
 
     - name: Install dependencies
       run: |
         bun install
-        # Rebuild native bindings for Ubuntu environment
+        # Explicitly rebuild DuckDB native bindings for Ubuntu environment
         bun install --force-rebuild duckdb
+        # Verify that the native bindings exist after rebuilding
+        if [ ! -f "node_modules/duckdb/lib/binding/duckdb.node" ]; then
+          echo "Error: DuckDB native bindings not found after rebuild"
+          exit 1
+        fi
+        # Verify DuckDB module can be imported
+        echo "Testing DuckDB module..."
+        bun -e "import('duckdb').then(() => console.log('✅ DuckDB module loaded successfully')).catch(err => { console.error('❌ DuckDB import failed:', err); process.exit(1); })"
 
     - name: Create data directory
       run: mkdir -p data
@@ -56,6 +61,15 @@ jobs:
         done
         if [ $? -ne 0 ]; then
           echo "Error: Data pipeline failed after 5 attempts"
+          exit 1
+        fi
+        # Verify the output files exist immediately after pipeline execution
+        if [ ! -f "data/veEqual.duckdb" ]; then
+          echo "Error: Database file not created during pipeline"
+          exit 1
+        fi
+        if [ ! -f "veEQUAL.md" ]; then
+          echo "Error: Markdown report not created during pipeline"
           exit 1
         fi
         echo "Data pipeline completed successfully"
