@@ -4,7 +4,7 @@
     "totalTrueBalance": "2.7M",
     "totalNFTs": 4934,
     "uniqueHolders": 3683,
-    "lastUpdated": "2025-05-26T18:29:19.681Z"
+    "lastUpdated": "2025-05-26T18:33:46.403Z"
   },
   "topNFTs": [
     {
@@ -29,7 +29,7 @@
       "unlockDate": "2025-11-06",
       "owner": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
       "trueBalance": "68.7K",
-      "votingPower": "61.7K"
+      "votingPower": "61.6K"
     },
     {
       "rank": 4,
@@ -80,6 +80,22 @@
       "votingPower": "39.8K"
     },
     {
+      "rank": 11,
+      "nftId": "2506",
+      "unlockDate": "2025-07-31",
+      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+      "trueBalance": "42.2K",
+      "votingPower": "15.1K"
+    },
+    {
+      "rank": 13,
+      "nftId": "2508",
+      "unlockDate": "2025-09-04",
+      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+      "trueBalance": "42.2K",
+      "votingPower": "23.2K"
+    },
+    {
       "rank": 10,
       "nftId": "2505",
       "unlockDate": "2025-06-26",
@@ -94,22 +110,6 @@
       "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
       "trueBalance": "42.2K",
       "votingPower": "20.0K"
-    },
-    {
-      "rank": 13,
-      "nftId": "2508",
-      "unlockDate": "2025-09-04",
-      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-      "trueBalance": "42.2K",
-      "votingPower": "23.2K"
-    },
-    {
-      "rank": 11,
-      "nftId": "2506",
-      "unlockDate": "2025-07-31",
-      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-      "trueBalance": "42.2K",
-      "votingPower": "15.1K"
     },
     {
       "rank": 14,
@@ -420,7 +420,7 @@
     {
       "rank": 2,
       "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-      "votingPower": "73.2K",
+      "votingPower": "73.1K",
       "totalTrueBalance": "75.1K",
       "nftCount": 5,
       "topNFTId": "4112"
@@ -460,7 +460,7 @@
     {
       "rank": 7,
       "owner": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
-      "votingPower": "61.7K",
+      "votingPower": "61.6K",
       "totalTrueBalance": "68.7K",
       "nftCount": 2,
       "topNFTId": "1756"
