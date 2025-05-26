@@ -40,7 +40,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.bun/install/cache # Cache Bun's global installation cache
-        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+        key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }} # Use specific bun.lockb at root
         restore-keys: |
           ${{ runner.os }}-bun-
 
@@ -49,21 +49,22 @@ jobs:
         bun --version || { echo "Bun installation failed"; exit 1; }
         echo "Bun installation validated successfully"
 
-    - name: Install dependencies and rebuild DuckDB
+    - name: Install project dependencies
+      run: bun install # Install all dependencies, utilizing cache
+
+    - name: Clean and Rebuild DuckDB
       run: |
         echo "Cleaning up previous DuckDB artifacts..."
         rm -rf node_modules/duckdb
-
-        echo "Installing all dependencies..."
-        bun install
-
         echo "Forcing rebuild of DuckDB native bindings..."
-        bun install --force-rebuild duckdb
+        bun install --force-rebuild duckdb # This will install duckdb if not present and force rebuild
 
+    - name: Verify DuckDB bindings and Test Import
+      run: |
         echo "Verifying DuckDB native bindings..."
         if [ ! -f "node_modules/duckdb/lib/binding/duckdb.node" ]; then
           echo "Error: DuckDB native bindings not found after rebuild (duckdb.node missing)"
-          ls -l node_modules/duckdb/lib/binding/ # List contents for debugging
+          ls -l node_modules/duckdb/lib/binding/ || echo "Directory node_modules/duckdb/lib/binding/ does not exist or is empty."
           exit 1
         fi
 
