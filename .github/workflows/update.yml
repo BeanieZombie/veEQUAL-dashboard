@@ -33,12 +33,13 @@ jobs:
     - name: Install Build Tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3 make g++ cmake
+        # Ensure build-essential, python3, make, g++, and cmake are installed
+        sudo apt-get install -y build-essential python3 make g++ cmake
 
     - name: Configure Bun Cache
       uses: actions/cache@v4
       with:
-        path: ~/.bun/install/cache
+        path: ~/.bun/install/cache # Cache Bun's global installation cache
         key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
         restore-keys: |
           ${{ runner.os }}-bun-
@@ -48,18 +49,25 @@ jobs:
         bun --version || { echo "Bun installation failed"; exit 1; }
         echo "Bun installation validated successfully"
 
-    - name: Install dependencies
+    - name: Install dependencies and rebuild DuckDB
       run: |
+        echo "Cleaning up previous DuckDB artifacts..."
+        rm -rf node_modules/duckdb
+
+        echo "Installing all dependencies..."
         bun install
-        # Explicitly rebuild DuckDB native bindings for Ubuntu environment
+
+        echo "Forcing rebuild of DuckDB native bindings..."
         bun install --force-rebuild duckdb
-        # Verify that the native bindings exist after rebuilding
+
+        echo "Verifying DuckDB native bindings..."
         if [ ! -f "node_modules/duckdb/lib/binding/duckdb.node" ]; then
-          echo "Error: DuckDB native bindings not found after rebuild"
+          echo "Error: DuckDB native bindings not found after rebuild (duckdb.node missing)"
+          ls -l node_modules/duckdb/lib/binding/ # List contents for debugging
           exit 1
         fi
-        # Verify DuckDB module can be imported
-        echo "Testing DuckDB module..."
+
+        echo "Testing DuckDB module import..."
         bun -e "import('duckdb').then(() => console.log('✅ DuckDB module loaded successfully')).catch(err => { console.error('❌ DuckDB import failed:', err); process.exit(1); })"
 
     - name: Create data directory
