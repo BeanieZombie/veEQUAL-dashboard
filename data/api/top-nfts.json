@@ -4,499 +4,349 @@
     "nftId": "1120",
     "unlockDate": "2025-11-13",
     "owner": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
-    "votingPower": "66.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "66.5K"
   },
   {
     "rank": 2,
     "nftId": "106",
     "unlockDate": "2025-11-13",
     "owner": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
-    "votingPower": "65.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "65.5K"
   },
   {
     "rank": 3,
     "nftId": "1756",
     "unlockDate": "2025-11-06",
     "owner": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
-    "votingPower": "62.0K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "61.7K"
   },
   {
     "rank": 4,
     "nftId": "1778",
     "unlockDate": "2025-11-06",
     "owner": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
-    "votingPower": "60.2K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "59.9K"
   },
   {
     "rank": 5,
     "nftId": "1761",
     "unlockDate": "2025-11-06",
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-    "votingPower": "52.9K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "52.7K"
   },
   {
     "rank": 6,
-    "nftId": "143",
-    "unlockDate": "2025-11-13",
-    "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
-    "votingPower": "47.0K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
-  },
-  {
-    "rank": 7,
     "nftId": "9",
     "unlockDate": "2025-11-13",
     "owner": "0x300f31c44F6Aaf8c0925e25B2C655926FFa9eA45",
-    "votingPower": "47.0K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "46.8K"
+  },
+  {
+    "rank": 7,
+    "nftId": "143",
+    "unlockDate": "2025-11-13",
+    "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
+    "votingPower": "46.8K"
   },
   {
     "rank": 8,
     "nftId": "23",
     "unlockDate": "2025-11-06",
     "owner": "0xa064B34DC0aEeF23e48B400DC4b0A3f940B55865",
-    "votingPower": "40.4K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "40.3K"
   },
   {
     "rank": 9,
     "nftId": "1751",
     "unlockDate": "2025-11-06",
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-    "votingPower": "40.0K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "39.9K"
   },
   {
     "rank": 10,
     "nftId": "1069",
     "unlockDate": "2025-11-13",
     "owner": "0x7a4a37dd112e8BBC6799B26F82Faa76c3Fc94078",
-    "votingPower": "36.9K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "36.7K"
   },
   {
     "rank": 11,
     "nftId": "1765",
     "unlockDate": "2025-11-06",
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-    "votingPower": "36.7K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "36.5K"
   },
   {
     "rank": 12,
     "nftId": "163",
     "unlockDate": "2025-11-13",
     "owner": "0xC606e3D6C5dd451aB79B554d3A560833FFF2E5Dc",
-    "votingPower": "31.9K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "31.8K"
   },
   {
     "rank": 13,
     "nftId": "196",
     "unlockDate": "2025-11-06",
     "owner": "0xa064B34DC0aEeF23e48B400DC4b0A3f940B55865",
-    "votingPower": "31.1K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "31.0K"
   },
   {
     "rank": 14,
     "nftId": "5",
     "unlockDate": "2025-11-13",
     "owner": "0x04fd414cAcdbd8742C8ADC46230BB11445203C99",
-    "votingPower": "28.2K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "28.1K"
   },
   {
     "rank": 15,
     "nftId": "108",
     "unlockDate": "2025-09-11",
     "owner": "0x424e5AF4A2FB8933f1d31cc5b00B105049a9A09d",
-    "votingPower": "23.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1757548800
+    "votingPower": "23.6K"
   },
   {
     "rank": 16,
     "nftId": "2508",
     "unlockDate": "2025-09-04",
     "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "votingPower": "23.5K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1756944000
+    "votingPower": "23.3K"
   },
   {
     "rank": 17,
     "nftId": "242",
     "unlockDate": "2025-11-13",
     "owner": "0x8fcf29F004fdfb0b8C2EC7c3C219CF57fb7D2ff9",
-    "votingPower": "21.1K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "21.0K"
   },
   {
     "rank": 18,
     "nftId": "2507",
     "unlockDate": "2025-08-21",
     "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "votingPower": "20.2K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1755734400
+    "votingPower": "20.0K"
   },
   {
     "rank": 19,
     "nftId": "1032",
     "unlockDate": "2025-11-13",
     "owner": "0x5a4CC0a1a90fE4a57B4Bc09d81687123bF665EC2",
-    "votingPower": "18.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "18.7K"
   },
   {
     "rank": 20,
     "nftId": "2655",
     "unlockDate": "2025-10-02",
     "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
-    "votingPower": "18.4K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1759363200
+    "votingPower": "18.3K"
   },
   {
     "rank": 21,
     "nftId": "4112",
     "unlockDate": "2025-11-20",
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "18.1K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "18.1K"
   },
   {
     "rank": 22,
     "nftId": "2543",
     "unlockDate": "2025-11-13",
     "owner": "0xe9b502c1b4f246cc3f2f9Bf3d048d75164f1BCf0",
-    "votingPower": "17.3K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "17.3K"
   },
   {
     "rank": 23,
-    "nftId": "4113",
+    "nftId": "2397",
     "unlockDate": "2025-11-20",
-    "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "16.6K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "owner": "0x1295c6d02137402a0799C6397A8161c2590805c2",
+    "votingPower": "17.0K"
   },
   {
     "rank": 24,
-    "nftId": "2397",
-    "unlockDate": "2025-11-13",
-    "owner": "0x1295c6d02137402a0799C6397A8161c2590805c2",
-    "votingPower": "16.4K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "nftId": "4113",
+    "unlockDate": "2025-11-20",
+    "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
+    "votingPower": "16.6K"
   },
   {
     "rank": 25,
     "nftId": "2506",
     "unlockDate": "2025-07-31",
     "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "votingPower": "15.3K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1753920000
+    "votingPower": "15.2K"
   },
   {
     "rank": 26,
     "nftId": "2",
     "unlockDate": "2025-10-23",
     "owner": "0x74293A57d7f6B9F6C5580CE50aaE3f10A0a09C56",
-    "votingPower": "14.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1761177600
+    "votingPower": "14.8K"
   },
   {
     "rank": 27,
     "nftId": "139",
     "unlockDate": "2025-11-13",
     "owner": "0xd87EcC6C74F486B044824a222326A96F696fCfA2",
-    "votingPower": "14.7K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "14.7K"
   },
   {
     "rank": 28,
     "nftId": "5915",
     "unlockDate": "2025-10-30",
     "owner": "0x137a48f028BE804425428cdd1591675A583235e0",
-    "votingPower": "14.5K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1761782400
+    "votingPower": "14.4K"
   },
   {
     "rank": 29,
-    "nftId": "3565",
-    "unlockDate": "2025-10-02",
-    "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
-    "votingPower": "14.2K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1759363200
-  },
-  {
-    "rank": 30,
     "nftId": "2113",
     "unlockDate": "2025-11-13",
     "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
-    "votingPower": "14.2K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "14.1K"
+  },
+  {
+    "rank": 30,
+    "nftId": "3565",
+    "unlockDate": "2025-10-02",
+    "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
+    "votingPower": "14.1K"
   },
   {
     "rank": 31,
     "nftId": "401",
     "unlockDate": "2025-11-20",
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "13.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "13.7K"
   },
   {
     "rank": 32,
     "nftId": "447",
     "unlockDate": "2025-11-20",
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "12.7K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "12.6K"
   },
   {
     "rank": 33,
     "nftId": "4545",
     "unlockDate": "2025-11-20",
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "12.3K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "12.2K"
   },
   {
     "rank": 34,
     "nftId": "915",
     "unlockDate": "2025-09-18",
     "owner": "0x5B3067C5e26fEC823d6fBf8F315e43632658D2F6",
-    "votingPower": "9.9K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1758153600
+    "votingPower": "9.9K"
   },
   {
     "rank": 35,
     "nftId": "1351",
     "unlockDate": "2025-11-20",
     "owner": "0xdc46Bb979Bf5102d78ece8e9A91DbAec932e756a",
-    "votingPower": "9.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "9.7K"
   },
   {
     "rank": 36,
     "nftId": "2536",
     "unlockDate": "2025-11-13",
     "owner": "0x2b75BAc8d122A55534C946950E2751DC0366e9a0",
-    "votingPower": "9.6K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "9.6K"
   },
   {
     "rank": 37,
     "nftId": "5918",
     "unlockDate": "2025-10-30",
     "owner": "0x137a48f028BE804425428cdd1591675A583235e0",
-    "votingPower": "9.5K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1761782400
+    "votingPower": "9.4K"
   },
   {
     "rank": 38,
     "nftId": "1039",
     "unlockDate": "2025-11-13",
     "owner": "0x0a3043F9d2b1c6cCfc492EB59Af5156F378c57BD",
-    "votingPower": "9.4K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "9.4K"
   },
   {
     "rank": 39,
     "nftId": "4642",
     "unlockDate": "2025-11-20",
     "owner": "0x95C73fBE7274BeC91657C8146018AB4B25e15AB7",
-    "votingPower": "9.4K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "9.3K"
   },
   {
     "rank": 40,
     "nftId": "5917",
     "unlockDate": "2025-10-30",
     "owner": "0x137a48f028BE804425428cdd1591675A583235e0",
-    "votingPower": "9.3K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1761782400
+    "votingPower": "9.2K"
   },
   {
     "rank": 41,
     "nftId": "727",
     "unlockDate": "2025-11-13",
     "owner": "0x18907a779cFcF032be79e9f638319a10861Fa41B",
-    "votingPower": "8.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "8.8K"
   },
   {
     "rank": 42,
     "nftId": "2351",
     "unlockDate": "2025-10-30",
     "owner": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
-    "votingPower": "8.6K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1761782400
+    "votingPower": "8.6K"
   },
   {
     "rank": 43,
     "nftId": "1153",
     "unlockDate": "2025-11-20",
     "owner": "0x4A21B7DB2439B1c792f11FC5cEd890E8C193f367",
-    "votingPower": "7.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "7.8K"
   },
   {
     "rank": 44,
     "nftId": "5174",
     "unlockDate": "2025-11-06",
     "owner": "0x13c32b686D3b9B5578a22dbfDD031AcC64F4990c",
-    "votingPower": "7.6K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762387200
+    "votingPower": "7.6K"
   },
   {
     "rank": 45,
     "nftId": "508",
     "unlockDate": "2025-11-20",
     "owner": "0x95C73fBE7274BeC91657C8146018AB4B25e15AB7",
-    "votingPower": "7.4K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "7.4K"
   },
   {
     "rank": 46,
     "nftId": "2505",
     "unlockDate": "2025-06-26",
     "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "votingPower": "7.2K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1750896000
+    "votingPower": "7.1K"
   },
   {
     "rank": 47,
     "nftId": "2352",
     "unlockDate": "2025-10-30",
     "owner": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
-    "votingPower": "6.9K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1761782400
+    "votingPower": "6.9K"
   },
   {
     "rank": 48,
     "nftId": "69",
     "unlockDate": "2025-11-20",
     "owner": "0xB11b08BB78E16B35703E79c340F8A58926649111",
-    "votingPower": "6.8K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1763596800
+    "votingPower": "6.8K"
   },
   {
     "rank": 49,
     "nftId": "4",
     "unlockDate": "2025-11-13",
     "owner": "0xA740522eCaff98D1F2eBB29d5CAA19Fd4cF5D92F",
-    "votingPower": "6.7K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "6.6K"
   },
   {
     "rank": 50,
     "nftId": "5979",
     "unlockDate": "2025-11-13",
     "owner": "0x0Db5eEa0b9F8653c721fa906668554487DE4c792",
-    "votingPower": "6.6K",
-    "is_locked": true,
-    "owner_ens_name": null,
-    "lock_end_timestamp": 1762992000
+    "votingPower": "6.6K"
   }
 ]

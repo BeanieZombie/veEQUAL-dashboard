@@ -42,11 +42,11 @@ export async function generateDashboardData(): Promise<DashboardData> {
     // Summary statistics
     const summaryResult = await db.query(`
       SELECT
-        SUM(balance_formatted) as total_voting_power,
+        SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
         COUNT(*) as total_nfts,
         COUNT(DISTINCT owner) as unique_holders
       FROM venfts
-      WHERE balance_formatted > 0
+      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
     `);
 
     const summaryArray = (summaryResult as any).toArray();
@@ -60,14 +60,14 @@ export async function generateDashboardData(): Promise<DashboardData> {
     // Top NFTs by voting power
     const topNFTsResult = await db.query(`
       SELECT
-        ROW_NUMBER() OVER (ORDER BY balance_formatted DESC) as rank,
+        ROW_NUMBER() OVER (ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC) as rank,
         token_id as nft_id,
         unlock_date,
         owner,
-        balance_formatted as voting_power
+        CAST(balance_raw AS DOUBLE) / 1e18 as voting_power
       FROM venfts
-      WHERE balance_formatted > 0
-      ORDER BY balance_formatted DESC
+      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
+      ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC
       LIMIT 50
     `);
     const topNFTsArray = (topNFTsResult as any).toArray();
@@ -83,11 +83,11 @@ export async function generateDashboardData(): Promise<DashboardData> {
       FROM (
         SELECT
           owner,
-          SUM(balance_formatted) as total_voting_power,
+          SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
           COUNT(*) as nft_count,
-          FIRST(token_id ORDER BY balance_formatted DESC) as top_nft_id
+          FIRST(token_id ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC) as top_nft_id
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
         GROUP BY owner
       )
       ORDER BY total_voting_power DESC
@@ -100,14 +100,14 @@ export async function generateDashboardData(): Promise<DashboardData> {
       WITH power_ranges AS (
         SELECT
           CASE
-            WHEN balance_formatted >= 20000 THEN 'M.E.G.A (≥20K)'
-            WHEN balance_formatted >= 5000 THEN 'Equalest (5K-20K)'
-            WHEN balance_formatted >= 1000 THEN 'More Equal (1K-5K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 20000 THEN 'M.E.G.A (≥20K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 5000 THEN 'Equalest (5K-20K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 1000 THEN 'More Equal (1K-5K)'
             ELSE 'Equal (<1K)'
           END as range,
-          balance_formatted as voting_power
+          CAST(balance_raw AS DOUBLE) / 1e18 as voting_power
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
       )
       SELECT
         range,
@@ -130,9 +130,9 @@ export async function generateDashboardData(): Promise<DashboardData> {
       SELECT
         unlock_date as date,
         COUNT(*) as count,
-        SUM(balance_formatted) as total_power
+        SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_power
       FROM venfts
-      WHERE balance_formatted > 0 AND unlock_date IS NOT NULL
+      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0 AND unlock_date IS NOT NULL
       GROUP BY unlock_date
       ORDER BY unlock_date
       LIMIT 20
@@ -202,34 +202,34 @@ export async function generateWalletNFTMapping(): Promise<void> {
 
   try {
     const result = await db.query(`
-      SELECT 
+      SELECT
         owner,
-        SUM(balance_formatted) as total_voting_power,
+        SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
         COUNT(*) as nft_count
-      FROM venfts 
-      WHERE balance_formatted > 0
+      FROM venfts
+      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
       GROUP BY owner
       ORDER BY total_voting_power DESC
     `);
 
     const resultArray = (result as any).toArray();
     const walletMapping: Record<string, any> = {};
-    
+
     for (const row of resultArray) {
       // Get individual NFTs for this wallet
       const nftsResult = await db.query(`
-        SELECT 
+        SELECT
           token_id as nft_id,
-          balance_formatted as voting_power,
+          CAST(balance_raw AS DOUBLE) / 1e18 as voting_power,
           unlock_date,
           unlock_timestamp
-        FROM venfts 
-        WHERE owner = '${row.owner}' AND balance_formatted > 0
-        ORDER BY balance_formatted DESC
+        FROM venfts
+        WHERE owner = '${row.owner}' AND CAST(balance_raw AS DOUBLE) / 1e18 > 0
+        ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC
       `);
 
       const nftsArray = (nftsResult as any).toArray();
-      
+
       walletMapping[row.owner] = {
         totalVotingPower: formatNumber(row.total_voting_power),
         nftCount: Number(row.nft_count),
@@ -269,15 +269,15 @@ export async function generateAdvancedAnalytics(): Promise<void> {
     // Top 10 vs rest analysis
     const top10Result = await db.query(`
       WITH top_holders AS (
-        SELECT 
+        SELECT
           owner,
-          SUM(balance_formatted) as total_voting_power,
-          ROW_NUMBER() OVER (ORDER BY SUM(balance_formatted) DESC) as rank
-        FROM venfts 
-        WHERE balance_formatted > 0
+          SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
+          ROW_NUMBER() OVER (ORDER BY SUM(CAST(balance_raw AS DOUBLE) / 1e18) DESC) as rank
+        FROM venfts
+        WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
         GROUP BY owner
       )
-      SELECT 
+      SELECT
         CASE WHEN rank <= 10 THEN 'Top 10' ELSE 'Rest' END as group_type,
         COUNT(*) as holder_count,
         SUM(total_voting_power) as total_power,
@@ -292,15 +292,15 @@ export async function generateAdvancedAnalytics(): Promise<void> {
       WITH nft_ranges AS (
         SELECT
           CASE
-            WHEN balance_formatted >= 50000 THEN 'M.E.G.A (≥50K)'
-            WHEN balance_formatted >= 20000 THEN 'Major (20K-50K)'
-            WHEN balance_formatted >= 5000 THEN 'Equalest (5K-20K)'
-            WHEN balance_formatted >= 1000 THEN 'More Equal (1K-5K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 50000 THEN 'M.E.G.A (≥50K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 20000 THEN 'Major (20K-50K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 5000 THEN 'Equalest (5K-20K)'
+            WHEN CAST(balance_raw AS DOUBLE) / 1e18 >= 1000 THEN 'More Equal (1K-5K)'
             ELSE 'Equal (<1K)'
           END as range,
-          balance_formatted
+          CAST(balance_raw AS DOUBLE) / 1e18 as balance_formatted
         FROM venfts
-        WHERE balance_formatted > 0
+        WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
       )
       SELECT
         range,

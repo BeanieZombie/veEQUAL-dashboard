@@ -42,7 +42,7 @@ class ResilientViemClient {
             const nextRPC = await sonicRPCProvider.getNextRPC();
             console.log(`Switching to RPC: ${nextRPC}`);
             this.client = this.createClient();
-            
+
             // Wait before retry with exponential backoff
             await new Promise(resolve =>
               setTimeout(resolve, this.retryDelay * Math.pow(2, attempt))

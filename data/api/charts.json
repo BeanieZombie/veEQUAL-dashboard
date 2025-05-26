@@ -7,13 +7,13 @@
     },
     {
       "range": "Equalest (5K-20K)",
-      "count": 50,
-      "percentage": 1.01
+      "count": 49,
+      "percentage": 0.99
     },
     {
       "range": "More Equal (1K-5K)",
-      "count": 213,
-      "percentage": 4.32
+      "count": 214,
+      "percentage": 4.34
     },
     {
       "range": "Equal (<1K)",
@@ -25,67 +25,67 @@
     {
       "date": "2025-05-29",
       "count": 16,
-      "totalPower": "16.94"
+      "totalPower": "13.28"
     },
     {
       "date": "2025-06-05",
       "count": 28,
-      "totalPower": "37.57"
+      "totalPower": "34.94"
     },
     {
       "date": "2025-06-12",
       "count": 13,
-      "totalPower": "65.09"
+      "totalPower": "62.36"
     },
     {
       "date": "2025-06-19",
       "count": 407,
-      "totalPower": "15.0K"
+      "totalPower": "14.5K"
     },
     {
       "date": "2025-06-26",
       "count": 412,
-      "totalPower": "13.3K"
+      "totalPower": "13.0K"
     },
     {
       "date": "2025-07-03",
       "count": 277,
-      "totalPower": "4.1K"
+      "totalPower": "4.0K"
     },
     {
       "date": "2025-07-10",
       "count": 326,
-      "totalPower": "6.9K"
+      "totalPower": "6.8K"
     },
     {
       "date": "2025-07-17",
       "count": 232,
-      "totalPower": "5.4K"
+      "totalPower": "5.3K"
     },
     {
       "date": "2025-07-24",
       "count": 93,
-      "totalPower": "5.4K"
+      "totalPower": "5.3K"
     },
     {
       "date": "2025-07-31",
       "count": 77,
-      "totalPower": "19.8K"
+      "totalPower": "19.6K"
     },
     {
       "date": "2025-08-07",
       "count": 137,
-      "totalPower": "6.7K"
+      "totalPower": "6.6K"
     },
     {
       "date": "2025-08-14",
       "count": 114,
-      "totalPower": "10.8K"
+      "totalPower": "10.7K"
     },
     {
       "date": "2025-08-21",
       "count": 124,
-      "totalPower": "27.6K"
+      "totalPower": "27.4K"
     },
     {
       "date": "2025-08-28",
@@ -95,17 +95,17 @@
     {
       "date": "2025-09-04",
       "count": 76,
-      "totalPower": "38.5K"
+      "totalPower": "38.3K"
     },
     {
       "date": "2025-09-11",
       "count": 100,
-      "totalPower": "40.7K"
+      "totalPower": "40.5K"
     },
     {
       "date": "2025-09-18",
       "count": 50,
-      "totalPower": "20.5K"
+      "totalPower": "20.4K"
     },
     {
       "date": "2025-09-25",
@@ -115,12 +115,12 @@
     {
       "date": "2025-10-02",
       "count": 159,
-      "totalPower": "71.7K"
+      "totalPower": "71.3K"
     },
     {
       "date": "2025-10-09",
       "count": 53,
-      "totalPower": "21.6K"
+      "totalPower": "21.5K"
     }
   ]
 }

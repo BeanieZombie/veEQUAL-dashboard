@@ -4,16 +4,16 @@ CREATE TABLE unlock_hist AS
 WITH daily_unlocks AS (
   SELECT
     CAST(unlock_date AS DATE) as specific_unlock_date,
-    SUM(balance_formatted) as total_amount_unlocking
+    SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_amount_unlocking
   FROM venfts
-  WHERE balance_formatted > 0 AND unlock_timestamp > 0 -- Exclude 'Never' and potentially invalid past dates if not handled by 'Expired'
+  WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0 AND unlock_timestamp > 0 -- Exclude 'Never' and potentially invalid past dates if not handled by 'Expired'
   GROUP BY CAST(unlock_date AS DATE)
 ),
 unlock_buckets AS (
   SELECT
     token_id,
     owner,
-    balance_formatted,
+    CAST(balance_raw AS DOUBLE) / 1e18 as balance_formatted,
     unlock_date, -- This is the specific unlock date for each NFT
     unlock_timestamp,
     CASE
@@ -27,7 +27,7 @@ unlock_buckets AS (
       ELSE '2+ Years'
     END as unlock_bucket
   FROM venfts
-  WHERE balance_formatted > 0
+  WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
 )
 SELECT
   b.unlock_bucket,
@@ -36,7 +36,7 @@ SELECT
   COUNT(DISTINCT b.owner) as holder_count,
   SUM(b.balance_formatted) as total_voting_power, -- This is the amount per bucket/specific_date combination
   du.total_amount_unlocking as total_daily_amount_unlocking, -- Amount unlocking on this specific day
-  ROUND(SUM(b.balance_formatted) * 100.0 / (SELECT SUM(balance_formatted) FROM unlock_buckets WHERE unlock_timestamp > 0), 2) as percentage_of_supply,
+  ROUND(SUM(b.balance_formatted) * 100.0 / (SELECT SUM(CAST(balance_raw AS DOUBLE) / 1e18) FROM venfts WHERE unlock_timestamp > 0), 2) as percentage_of_supply,
   ROUND(AVG(b.balance_formatted), 2) as avg_voting_power
 FROM unlock_buckets b
 LEFT JOIN daily_unlocks du ON CAST(b.unlock_date AS DATE) = du.specific_unlock_date

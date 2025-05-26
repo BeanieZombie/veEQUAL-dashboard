@@ -1,5 +1,12 @@
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 
+# Business confidential documents
+GTM_PROJECT_BRIEF.md
+BUSINESS_*.md
+STRATEGY_*.md
+ROADMAP_*.md
+INTERNAL_*.md
+
 # Logs
 
 logs

@@ -16,16 +16,16 @@ class FetchRateLimiter {
   private windowStart = Date.now();
   private windowMs = 60000; // 1 minute window
   private maxRequestsPerWindow = 1000; // Conservative limit
-  
+
   async checkLimit(): Promise<void> {
     const now = Date.now();
-    
+
     // Reset window if needed
     if (now - this.windowStart >= this.windowMs) {
       this.requestCount = 0;
       this.windowStart = now;
     }
-    
+
     // Check if we're hitting limits
     if (this.requestCount >= this.maxRequestsPerWindow) {
       const waitTime = this.windowMs - (now - this.windowStart);
@@ -34,10 +34,10 @@ class FetchRateLimiter {
       this.requestCount = 0;
       this.windowStart = Date.now();
     }
-    
+
     this.requestCount++;
   }
-  
+
   getStats() {
     return {
       requestCount: this.requestCount,
@@ -74,7 +74,7 @@ async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
   return retryWithBackoff(async () => {
     // Apply rate limiting for enterprise reliability
     await rateLimiter.checkLimit();
-    
+
     const multicalls = tokenIds.flatMap(tokenId => [
       {
         address: veEqualAddress,
@@ -107,10 +107,12 @@ async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
       const ownerResult = results[i * 3 + 1];
       const lockedEndResult = results[i * 3 + 2];
 
-      // Skip if any call failed
+      // Skip if any call failed or balance is null/undefined
       if (balanceResult.status === 'failure' ||
           ownerResult.status === 'failure' ||
-          lockedEndResult.status === 'failure') {
+          lockedEndResult.status === 'failure' ||
+          balanceResult.result == null) {
+        console.warn(`Skipping NFT ${tokenIds[i]} due to invalid multicall results`);
         continue;
       }
 
@@ -184,15 +186,27 @@ export async function fetchSnapshot(): Promise<void> {
       // Insert/update data in database
       if (allNFTs.length > 0) {
         for (const nft of allNFTs) {
-          const unlockDate = formatUnlockDate(nft.lockedEnd);
+          // Validate NFT data before insertion
+          if (nft.balance == null) {
+            console.warn(`Skipping NFT ${nft.tokenId} due to null balance`);
+            continue;
+          }
 
-          // Delete existing record first, then insert (DuckDB approach)
-          await db.query(`DELETE FROM venfts WHERE token_id = ${nft.tokenId}`);
-          await db.query(`
-            INSERT INTO venfts
-            (token_id, owner, balance_raw, unlock_timestamp, unlock_date, snapshot_time)
-            VALUES (${nft.tokenId}, '${nft.owner}', '${nft.balance}', ${nft.lockedEnd}, '${unlockDate}', CURRENT_TIMESTAMP)
-          `);
+          const unlockDate = formatUnlockDate(nft.lockedEnd);
+          const balanceFormatted = Number(nft.balance) / 1e18; // Convert wei to human-readable
+
+          try {
+            // Delete existing record first, then insert (DuckDB approach)
+            await db.query(`DELETE FROM venfts WHERE token_id = ${nft.tokenId}`);
+            await db.query(`
+              INSERT INTO venfts
+              (token_id, owner, balance_raw, balance_formatted, unlock_timestamp, unlock_date, snapshot_time)
+              VALUES (${nft.tokenId}, '${nft.owner}', '${nft.balance}', ${balanceFormatted}, ${nft.lockedEnd}, '${unlockDate}', CURRENT_TIMESTAMP)
+            `);
+          } catch (dbError) {
+            console.error(`Database insertion failed for NFT ${nft.tokenId}:`, dbError);
+            totalErrors++;
+          }
         }
       }
 
@@ -205,7 +219,7 @@ export async function fetchSnapshot(): Promise<void> {
     } catch (error) {
       totalErrors++;
       console.error(`Error processing batch ${Math.floor(i / PARALLEL) + 1}:`, error);
-      
+
       // For enterprise reliability, continue processing other batches
       if (totalErrors > chunks.length * 0.1) { // Fail if >10% error rate
         throw new Error(`Too many batch failures (${totalErrors}), aborting`);
@@ -218,7 +232,7 @@ export async function fetchSnapshot(): Promise<void> {
   const count = (countResult as any).toArray()[0].count;
   const duration = Date.now() - startTime;
   const nftsPerSecond = (totalNFTs / (duration / 1000)).toFixed(2);
-  
+
   console.log(`Snapshot complete: ${count} active NFTs stored`);
   console.log(`📈 Performance: ${nftsPerSecond} NFTs/sec, ${totalErrors} errors, ${duration}ms total`);
 }

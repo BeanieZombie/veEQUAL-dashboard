@@ -375,14 +375,14 @@ export async function writeMd(): Promise<void> {
     markdown += `6. [Top 10 Holders by Total Voting Power](#top-10-holders-by-total-voting-power)\n`;
     markdown += `7. [Unlockable veEQUAL](#unlockable-veequal)\n`;
     markdown += `8. [Pending NFT Unlock: 90 Days](#pending-nft-unlock-90-days)\n`;
-    
+
     // Add dynamic pending unlock date subsections
     pendingUnlockDates.forEach((date: string) => {
       const isUnlockingSoonDate = isUnlockingSoon(date, 30);
       const anchor = date.replace(/\./g, '').replace(/\s/g, '-').toLowerCase();
       markdown += `   - [${date}${isUnlockingSoonDate ? ' ⚠️' : ''}](#${anchor}${isUnlockingSoonDate ? '-️' : ''})\n`;
     });
-    
+
     markdown += `9. [veEQUAL Leaderboard](#veequal-leaderboard)\n\n`;
     markdown += `---\n\n`;
 

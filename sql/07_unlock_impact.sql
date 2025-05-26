@@ -2,24 +2,24 @@
 DROP TABLE IF EXISTS unlock_impact;
 CREATE TABLE unlock_impact AS
 WITH monthly_unlocks AS (
-  SELECT 
+  SELECT
     DATE_TRUNC('month', unlock_date::DATE) as unlock_month,
     COUNT(*) as unlocking_nfts,
-    SUM(balance_formatted) as unlocking_power,
+    SUM(CAST(balance_raw AS DOUBLE) / 1e18) as unlocking_power,
     COUNT(DISTINCT owner) as affected_holders
-  FROM venfts 
-  WHERE balance_formatted > 0 AND unlock_date IS NOT NULL
+  FROM venfts
+  WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0 AND unlock_date IS NOT NULL
   GROUP BY DATE_TRUNC('month', unlock_date::DATE)
 ),
 total_metrics AS (
-  SELECT 
-    SUM(balance_formatted) as total_voting_power,
+  SELECT
+    SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
     COUNT(*) as total_nfts,
     COUNT(DISTINCT owner) as total_holders
-  FROM venfts 
-  WHERE balance_formatted > 0
+  FROM venfts
+  WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
 )
-SELECT 
+SELECT
   u.unlock_month,
   u.unlocking_nfts,
   u.unlocking_power,

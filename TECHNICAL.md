@@ -1116,7 +1116,7 @@ Returns the top 50 holders by voting power with governance tier classification.
 ```typescript
 interface Holder {
   owner: string;                 // Wallet address
-  votingPower: number;           // Raw voting power amount
+  votingPower: number;           // Raw voting power
   formattedVotingPower: string;  // Human-readable power (e.g., "1.2M")
   nftCount: number;              // Number of NFTs owned
   tier: string;                  // Governance tier classification
@@ -1777,7 +1777,7 @@ const configSchema = Joi.object({
   VE_EQUAL: Joi.string().regex(/^0x[a-fA-F0-9]{40}$/).required(),
   CHAIN_ID: Joi.number().default(146),
 
-  // Performance validation
+  // Performance optimization
   CHUNK_SIZE: Joi.number().min(100).max(1000).default(500),
   PARALLEL_REQUESTS: Joi.number().min(1).max(10).default(4),
 
@@ -2220,6 +2220,8 @@ spec:
   ],
   "env": {
     "NODE_ENV": "production",
+    "PORT": "3000",
+    "DB_FILE": "/app/data/veEqual.duckdb",
     "SONIC_RPC_URL": "@sonic_rpc_url",
     "VE_EQUAL": "@ve_equal_address"
   },
@@ -2478,7 +2480,7 @@ kubectl rollout undo deployment/veequal-dashboard -n veequal-dashboard
 # Restore from backup taken before deployment
 ```
 
-### Monitoring & Observability
+## Monitoring & Observability
 
 ### Overview
 
@@ -2845,8 +2847,6 @@ groups:
   - alert: DatabaseConnectionsHigh
     expr: db_connections_active > 80
     for: 2m
-    labels:
-      severity: warning
     annotations:
       summary: High database connection usage
       description: "{{ $value }} active connections"
