@@ -42,7 +42,7 @@
       "tierVotingPower": "175.5K",
       "powerPercentage": 8.32,
       "holderPercentage": 93.97,
-      "avgPowerPerHolder": "50.72",
+      "avgPowerPerHolder": "50.71",
       "avgNftsPerHolder": 1.125397284021959
     }
   ],
@@ -113,7 +113,7 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "383.78"
+      "avgPower": "383.77"
     },
     {
       "groupType": "Top 10",
@@ -159,5 +159,5 @@
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T21:19:36.289Z"
+  "lastUpdated": "2025-05-26T21:26:16.325Z"
 }
