@@ -162,32 +162,6 @@ class SonicRPCProvider {
     this.currentRpcIndex = 0;
     return this.getCurrentRPC();
   }
-
-  async handleRateLimitedRPC(): Promise<string> {
-    // For rate limits, just rotate to next RPC without marking as permanently failed
-    console.log('Rate limit detected, rotating to next RPC...');
-    return await this.getNextRPC();
-  }
-
-  isRateLimitError(errorMessage: string): boolean {
-    const rateLimitIndicators = [
-      'rate limit',
-      'too many requests',
-      'call rate limit exhausted',
-      'retry in',
-      'rate exceeded',
-      'throttled',
-      'request limit',
-      'quota exceeded',
-      'api rate limit',
-      'requests per second',
-      'rpm limit',
-      'rps limit'
-    ];
-
-    const lowerMessage = errorMessage.toLowerCase();
-    return rateLimitIndicators.some(indicator => lowerMessage.includes(indicator));
-  }
 }
 
 // Singleton instance

@@ -106,17 +106,6 @@ web_modules/
 .env.production.local
 .env.local
 
-# DuckDB write-ahead log
-*.wal
-
-# Local data files (e.g. Parquet, DuckDB)
-/data/*.parquet
-/data/*.duckdb
-/data/*.duckdb.wal
-
-# Audit files
-FINAL_AUDIT.md
-
 # parcel-bundler cache (https://parceljs.org/)
 
 .parcel-cache
@@ -185,34 +174,12 @@ dist
 # Finder (MacOS) folder config
 .DS_Store
 data/*.duckdb
-data/*.duckdb.wal
-data/*.duckdb.tmp
 docs/rill/
 *.code-workspace
 
-# Development and test files
-test-rpc.ts
-test-*.ts
-*test*.html
-debug*.html
-index*.html
-.github/workflows/test-local.yml
-
-# Old dashboard files
-js/dashboard.js
-js/dashboard-lite.js
-src/styles.css
-
-# Cleanup audit files
-*CLEANUP*.md
-*AUDIT*.md
-PROJECT_*.md
+# Development artifacts (private, not for public repo)
 WORKING_LOG.md
-
-# Temporary and backup files
-*.bak
-*.tmp
-*.log
-*.parquet
-bun.lockb
-src/equalGovernance.ts
+FINAL_AUDIT.md
+*_LOG.md
+*_AUDIT.md
+*.log.md

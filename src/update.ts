@@ -1,32 +1,32 @@
 import { fetchSnapshot } from '../lib/fetch.ts';
 import { runAllSql } from '../lib/runSql.ts';
 import { writeMd } from './writeMd.ts';
-import { exportDashboardJSON } from './generateJSON.ts';
+import { exportDashboardJSON, generateWalletNFTMapping, generateAdvancedAnalytics } from './generateJSON.ts';
 import { db } from '../lib/db.ts';
 
 async function main() {
-  console.log('🚀 Starting veEQUAL data pipeline...');
+  console.log('Starting veEQUAL dashboard update...');
 
   try {
-    // Step 1: Fetch snapshot data from blockchain
-    console.log('📥 Fetching blockchain data...');
+    // Step 1: Fetch snapshot data
     await fetchSnapshot();
 
     // Step 2: Run SQL transformations
-    console.log('⚙️ Processing data transformations...');
     await runAllSql();
 
     // Step 3: Generate markdown report
-    console.log('📄 Generating markdown report...');
     await writeMd();
 
-    // Step 4: Generate JSON data for API endpoints
-    console.log('📊 Generating JSON data...');
+    // Step 4: Export JSON data for frontend
     await exportDashboardJSON();
 
-    console.log('✅ Data pipeline completed successfully!');
-    console.log('📊 Data available via API endpoints');
-    console.log('📄 Markdown report: veEQUAL.md');
+    // Step 5: Generate wallet-to-NFT mapping
+    await generateWalletNFTMapping();
+
+    // Step 6: Generate advanced analytics
+    await generateAdvancedAnalytics();
+
+    console.log('Update completed successfully!');
 
   } catch (error) {
     console.error('Update failed:', error);

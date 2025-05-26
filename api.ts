@@ -90,12 +90,12 @@ async function handleApiRequest(pathname: string): Promise<Response> {
           SELECT
             token_id,
             owner,
-            CAST(balance_raw AS DECIMAL(38,0)) / 1e18 as voting_power,
+            balance_formatted,
             unlock_date,
             snapshot_time
           FROM venfts
-          WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
-          ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC
+          WHERE balance_formatted > 0
+          ORDER BY balance_formatted DESC
           LIMIT ${limit}
         `);
         const nfts = (nftsResult as any).toArray();
@@ -105,10 +105,10 @@ async function handleApiRequest(pathname: string): Promise<Response> {
           data: nfts.map((nft: any) => ({
             tokenId: String(nft.token_id),
             owner: nft.owner,
-            votingPower: Math.round(Number(nft.voting_power)),
-            formattedVotingPower: Number(nft.voting_power) >= 1000000
-              ? `${(Number(nft.voting_power) / 1000000).toFixed(2)}M`
-              : `${(Number(nft.voting_power) / 1000).toFixed(2)}K`,
+            votingPower: Math.round(Number(nft.balance_formatted)),
+            formattedVotingPower: Number(nft.balance_formatted) >= 1000000
+              ? `${(Number(nft.balance_formatted) / 1000000).toFixed(2)}M`
+              : `${(Number(nft.balance_formatted) / 1000).toFixed(2)}K`,
             unlockDate: nft.unlock_date,
             lastUpdated: nft.snapshot_time
           })),
