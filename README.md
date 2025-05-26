@@ -250,4 +250,3 @@ Data collected: [DATE]. Available: https://github.com/BeanieZombie/veEQUAL-dashb
 ---
 
 *Built with care for the Equalizer community*
-# YAML syntax fixed - trigger workflow test
