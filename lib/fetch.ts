@@ -1,5 +1,4 @@
-import { formatUnits } from 'viem';
-import { publicClient, veEqualAddress, veEqualAbi } from './viemClient.ts';
+import { resilientClient, veEqualAddress, veEqualAbi } from './viemClient.ts';
 import { getMaxNFTId } from './getMaxNFTId.ts';
 import { db } from './db.ts';
 import { CHUNK_SIZE, PARALLEL } from '../src/constants.ts';
@@ -10,6 +9,45 @@ interface NFTData {
   balance: bigint;
   lockedEnd: bigint;
 }
+
+// Enterprise-grade rate limiting and tracking
+class FetchRateLimiter {
+  private requestCount = 0;
+  private windowStart = Date.now();
+  private windowMs = 60000; // 1 minute window
+  private maxRequestsPerWindow = 1000; // Conservative limit
+  
+  async checkLimit(): Promise<void> {
+    const now = Date.now();
+    
+    // Reset window if needed
+    if (now - this.windowStart >= this.windowMs) {
+      this.requestCount = 0;
+      this.windowStart = now;
+    }
+    
+    // Check if we're hitting limits
+    if (this.requestCount >= this.maxRequestsPerWindow) {
+      const waitTime = this.windowMs - (now - this.windowStart);
+      console.log(`Rate limit reached. Waiting ${waitTime}ms...`);
+      await sleep(waitTime);
+      this.requestCount = 0;
+      this.windowStart = Date.now();
+    }
+    
+    this.requestCount++;
+  }
+  
+  getStats() {
+    return {
+      requestCount: this.requestCount,
+      windowStart: this.windowStart,
+      remainingRequests: this.maxRequestsPerWindow - this.requestCount
+    };
+  }
+}
+
+const rateLimiter = new FetchRateLimiter();
 
 async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -34,6 +72,9 @@ async function retryWithBackoff<T>(
 
 async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
   return retryWithBackoff(async () => {
+    // Apply rate limiting for enterprise reliability
+    await rateLimiter.checkLimit();
+    
     const multicalls = tokenIds.flatMap(tokenId => [
       {
         address: veEqualAddress,
@@ -55,7 +96,7 @@ async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
       },
     ]);
 
-    const results = await publicClient.multicall({
+    const results = await resilientClient.multicall({
       contracts: multicalls,
     });
 
@@ -100,6 +141,14 @@ function formatUnlockDate(timestamp: bigint): string {
 
 export async function fetchSnapshot(): Promise<void> {
   console.log('Starting veEQUAL snapshot...');
+  const startTime = Date.now();
+
+  // Health check before starting
+  const healthCheck = await resilientClient.healthCheck();
+  if (!healthCheck.healthy) {
+    throw new Error(`RPC health check failed for ${healthCheck.rpc}`);
+  }
+  console.log(`✅ RPC health check passed: ${healthCheck.rpc} (Block: ${healthCheck.latestBlock})`);
 
   const maxId = await getMaxNFTId();
   console.log(`Fetching data for NFTs 1 to ${maxId}...`);
@@ -117,6 +166,9 @@ export async function fetchSnapshot(): Promise<void> {
 
   console.log(`Processing ${chunks.length} chunks with ${PARALLEL} parallel workers...`);
 
+  let totalNFTs = 0;
+  let totalErrors = 0;
+
   // Process chunks in parallel batches
   for (let i = 0; i < chunks.length; i += PARALLEL) {
     const batch = chunks.slice(i, i + PARALLEL);
@@ -125,33 +177,48 @@ export async function fetchSnapshot(): Promise<void> {
     try {
       const results = await Promise.all(promises);
       const allNFTs = results.flat();
+      totalNFTs += allNFTs.length;
 
       console.log(`Batch ${Math.floor(i / PARALLEL) + 1}: Found ${allNFTs.length} active NFTs`);
 
       // Insert/update data in database
       if (allNFTs.length > 0) {
         for (const nft of allNFTs) {
-          const balanceFormatted = parseFloat(formatUnits(nft.balance, 18));
           const unlockDate = formatUnlockDate(nft.lockedEnd);
 
           // Delete existing record first, then insert (DuckDB approach)
           await db.query(`DELETE FROM venfts WHERE token_id = ${nft.tokenId}`);
           await db.query(`
             INSERT INTO venfts
-            (token_id, owner, balance_raw, balance_formatted, unlock_timestamp, unlock_date, snapshot_time)
-            VALUES (${nft.tokenId}, '${nft.owner}', '${nft.balance}', ${balanceFormatted}, ${nft.lockedEnd}, '${unlockDate}', CURRENT_TIMESTAMP)
+            (token_id, owner, balance_raw, unlock_timestamp, unlock_date, snapshot_time)
+            VALUES (${nft.tokenId}, '${nft.owner}', '${nft.balance}', ${nft.lockedEnd}, '${unlockDate}', CURRENT_TIMESTAMP)
           `);
         }
       }
 
+      // Log rate limiting stats for monitoring
+      const stats = rateLimiter.getStats();
+      if (i % 10 === 0) { // Log every 10 batches
+        console.log(`📊 Rate limit stats: ${stats.requestCount}/${1000} requests, ${stats.remainingRequests} remaining`);
+      }
+
     } catch (error) {
+      totalErrors++;
       console.error(`Error processing batch ${Math.floor(i / PARALLEL) + 1}:`, error);
-      throw error;
+      
+      // For enterprise reliability, continue processing other batches
+      if (totalErrors > chunks.length * 0.1) { // Fail if >10% error rate
+        throw new Error(`Too many batch failures (${totalErrors}), aborting`);
+      }
     }
   }
 
-  // Get final count
+  // Get final count and performance metrics
   const countResult = await db.query('SELECT COUNT(*) as count FROM venfts');
   const count = (countResult as any).toArray()[0].count;
+  const duration = Date.now() - startTime;
+  const nftsPerSecond = (totalNFTs / (duration / 1000)).toFixed(2);
+  
   console.log(`Snapshot complete: ${count} active NFTs stored`);
+  console.log(`📈 Performance: ${nftsPerSecond} NFTs/sec, ${totalErrors} errors, ${duration}ms total`);
 }

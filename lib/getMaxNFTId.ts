@@ -1,11 +1,11 @@
-import { publicClient, veEqualAddress, veAbi } from './viemClient.ts';
+import { resilientClient, veEqualAddress, veAbi } from './viemClient.ts';
 
 const CHUNK_BLOCKS = 10000n;
 
 export async function getMaxNFTId(): Promise<bigint> {
   console.log('Scanning for maximum NFT ID...');
 
-  const latestBlock = await publicClient.getBlockNumber();
+  const latestBlock = await resilientClient.getBlockNumber();
   let maxTokenId = 0n;
 
   // Get contract creation block or start from a reasonable block
@@ -20,7 +20,7 @@ export async function getMaxNFTId(): Promise<bigint> {
     console.log(`Scanning blocks ${fromBlock} to ${toBlock}...`);
 
     try {
-      const logs = await publicClient.getLogs({
+      const logs = await resilientClient.getLogs({
         address: veEqualAddress,
         event: {
           type: 'event',
