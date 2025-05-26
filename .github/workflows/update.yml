@@ -5,7 +5,10 @@ on:
     # Run daily at 00:33 UTC
     - cron: 33 0 * * *
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - fix/**
+      - feature/**
   workflow_dispatch:
 
 jobs:
@@ -26,6 +29,19 @@ jobs:
       uses: oven-sh/setup-bun@v1
       with:
         bun-version: 1.0.2 # Pin stable version to avoid runtime crashes
+
+    - name: Install Build Tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3 make g++ cmake
+
+    - name: Configure Bun Cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.bun/install/cache
+        key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+        restore-keys: |
+          ${{ runner.os }}-bun-
 
     - name: Validate Bun Installation
       run: |
