@@ -152,6 +152,25 @@
             }
         }
     </style>
+
+    <!-- Mermaid.js for rendering charts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({ 
+                startOnLoad: true,
+                theme: 'default',
+                themeVariables: {
+                    primaryColor: '#667eea',
+                    primaryTextColor: '#2d3748',
+                    primaryBorderColor: '#667eea',
+                    lineColor: '#4a5568',
+                    secondaryColor: '#e2e8f0',
+                    tertiaryColor: '#f7fafc'
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div class="container">
