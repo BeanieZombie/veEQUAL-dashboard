@@ -131,7 +131,7 @@ jobs:
             console.log('✅ DuckDB database created successfully');
             
             // Test a simple query
-            db.all('SELECT 1 as test', [], (err, rows) => {
+            db.all('SELECT 1 as test', (err, rows) => {
               if (err) {
                 console.error('❌ DuckDB query test failed:', err);
                 process.exit(1);
