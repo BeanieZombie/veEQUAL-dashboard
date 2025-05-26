@@ -113,12 +113,12 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "383.77"
+      "avgPower": "383.76"
     },
     {
       "groupType": "Top 10",
       "holderCount": 10,
-      "totalPower": "699.2K",
+      "totalPower": "699.1K",
       "avgPower": "69.9K"
     }
   ],
@@ -140,7 +140,7 @@
     {
       "range": "Equalest (5K-20K)",
       "nftCount": 50,
-      "totalPower": "488.0K",
+      "totalPower": "487.9K",
       "avgPower": "9.8K",
       "percentage": 1.01
     },
@@ -159,5 +159,5 @@
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T21:26:16.325Z"
+  "lastUpdated": "2025-05-26T21:31:37.819Z"
 }

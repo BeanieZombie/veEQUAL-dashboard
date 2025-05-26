@@ -4,7 +4,7 @@
     "totalTrueBalance": "2.7M",
     "totalNFTs": 4934,
     "uniqueHolders": 3683,
-    "lastUpdated": "2025-05-26T21:26:12.544Z"
+    "lastUpdated": "2025-05-26T21:31:34.119Z"
   },
   "topNFTs": [
     {
@@ -412,7 +412,7 @@
     {
       "rank": 1,
       "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-      "votingPower": "128.9K",
+      "votingPower": "128.8K",
       "totalTrueBalance": "143.8K",
       "nftCount": 3,
       "topNFTId": "1761"
