@@ -3,10 +3,10 @@
     {
       "tier": "M.E.G.A Whale (≥50K)",
       "holderCount": 9,
-      "tierVotingPower": "653.0K",
+      "tierVotingPower": "652.9K",
       "powerPercentage": 30.94,
       "holderPercentage": 0.24,
-      "avgPowerPerHolder": "72.6K",
+      "avgPowerPerHolder": "72.5K",
       "avgNftsPerHolder": 2.4444444444444446
     },
     {
@@ -113,7 +113,7 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "384.09"
+      "avgPower": "384.08"
     },
     {
       "groupType": "Top 10",
@@ -159,5 +159,5 @@
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T18:33:50.336Z"
+  "lastUpdated": "2025-05-26T18:38:16.915Z"
 }
