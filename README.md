@@ -2,163 +2,137 @@
 
 [![Update veEQUAL Dashboard](https://github.com/BeanieZombie/veEQUAL-dashboard/actions/workflows/update.yml/badge.svg)](https://github.com/BeanieZombie/veEQUAL-dashboard/actions/workflows/update.yml)
 
-A comprehensive analytics dashboard for tracking veEQUAL (vote-escrowed EQUAL) token holders and governance metrics on the Sonic blockchain. Built with modern data infrastructure for real-time insights and automated reporting.
+A comprehensive analytics platform for veEQUAL governance tracking on Sonic blockchain.
 
-## 🚀 Features
+## Documentation
 
-- **Real-time Analytics**: Automated hourly data collection and processing
-- **Comprehensive Dashboard**: Interactive visualizations with multiple metric views
-- **Top Holders Tracking**: Ranked lists of voting power and governance influence
-- **Historical Analysis**: Time-series data with trend analysis and forecasting
-- **NFT Management**: Individual veEQUAL NFT tracking and unlock schedules
-- **Governance Insights**: Concentration analysis and voting power distribution
-- **API Endpoints**: RESTful API for external integrations
-- **Automated Reporting**: Markdown reports with dynamic table of contents
+This README provides a quick start guide. For comprehensive technical information, implementation details, and advanced features, please refer to the [Technical Documentation](TECHNICAL.md).
 
-## 🛠 Technology Stack
-
-- **Runtime**: [Bun](https://bun.sh) 1.1+ (JavaScript/TypeScript runtime)
-- **Database**: [DuckDB](https://duckdb.org) with Parquet file storage
-- **Blockchain**: [Viem](https://viem.sh) for Ethereum/Sonic interactions
-- **Data Format**: [Apache Parquet](https://parquet.apache.org) for efficient analytics
-- **CI/CD**: GitHub Actions for automated data updates
-- **API**: Bun native HTTP server with JSON endpoints
-
-## 📊 API Endpoints
-
-The dashboard provides several API endpoints for external integrations:
-
-### Core Data
-- `GET /api/summary` - Overall statistics and key metrics
-- `GET /api/top-holders` - Top 50 veEQUAL holders by voting power
-- `GET /api/top-nfts` - Top 50 individual NFTs by value
-- `GET /api/analytics` - Comprehensive analytics data
-
-### Visualizations
-- `GET /api/charts` - Chart data for visualizations
-- `GET /api/dashboard` - Dashboard configuration and metrics
-
-### Utility
-- `GET /api/wallet-nfts?address={wallet}` - NFTs owned by specific wallet
-
-All endpoints return JSON data with appropriate caching headers.
-
-## 🚀 Quick Start
+## Installation
 
 ### Prerequisites
-```bash
-# Install Bun (macOS/Linux)
-curl -fsSL https://bun.sh/install | bash
 
-# Or using Homebrew
-brew install oven-sh/bun/bun
-```
+- `Bun >= 1.0` - [Installation Guide](https://bun.sh/docs/installation)
+- `Node.js >= 18` (if using npm/yarn instead of Bun)
+- `Git` for cloning the repository
 
-### Installation & Setup
+### Install from Source
+
+1. Clone the repository and navigate to the directory:
+
 ```bash
-# Clone the repository
 git clone https://github.com/BeanieZombie/veEQUAL-dashboard.git
 cd veEQUAL-dashboard
+```
 
-# Install dependencies
+2. Install dependencies:
+
+```bash
 bun install
-
-# Run initial data collection
-bun run update
 ```
 
-### Development
+3. Run the data collection and API server:
+
 ```bash
-# Start the API server (development mode)
+# Update data and start API server
 bun run dev
-
-# Or start the API server (production mode)
-bun run start
-
-# Run data update pipeline
-bun run update
-
-# Generate markdown report
-bun run md
 ```
 
-### API Server
+The API server will be available at `http://localhost:3000`.
+
+## Usage
+
+### API Endpoints
+
+The dashboard provides several REST API endpoints for accessing veEQUAL data:
+
+| Endpoint | Description | Response Format |
+|----------|-------------|----------------|
+| `/api/summary` | Key metrics and totals | JSON |
+| `/api/holders` | Top 50 holders by voting power | JSON |
+| `/api/nfts` | Top 50 individual NFTs | JSON |
+| `/data/api/dashboard.json` | Complete dashboard data | JSON |
+
+### Example Usage
+
 ```bash
-# Start API server on http://localhost:3000
-bun run start
-
-# Access endpoints
+# Get summary statistics
 curl http://localhost:3000/api/summary
-curl http://localhost:3000/api/top-holders
+
+# Get top holders
+curl http://localhost:3000/api/holders
+
+# Get top NFTs
+curl http://localhost:3000/api/nfts
 ```
 
-## 📁 Project Structure
-
-```
-├── api.ts                 # Main API server and endpoints
-├── src/                   # Core TypeScript modules
-│   ├── update.ts         # Data collection pipeline
-│   ├── generateJSON.ts   # JSON API generation
-│   ├── writeMd.ts        # Markdown report generation
-│   ├── constants.ts      # Configuration constants
-│   └── abi/              # Smart contract ABIs
-├── lib/                   # Utility libraries
-│   ├── db.ts            # DuckDB database operations
-│   ├── rpcProvider.ts   # Blockchain RPC connections
-│   └── formatUtils.ts   # Data formatting utilities
-├── sql/                   # SQL queries for data processing
-├── data/                  # Generated data files
-│   ├── *.parquet        # Parquet data files
-│   ├── veEqual.duckdb   # DuckDB database
-│   └── api/             # Generated JSON API files
-└── .github/workflows/    # GitHub Actions automation
+**Example Response** (`/api/summary`):
+```json
+{
+  "totalVotingPower": "2.1M",
+  "totalNFTs": 4934,
+  "uniqueHolders": 3684,
+  "lastUpdated": "2025-05-25T22:10:34.641Z"
+}
 ```
 
-## 🔄 Data Pipeline
+### Data Collection
+
+To manually update the dataset:
+
+```bash
+# Collect fresh data from Sonic blockchain
+bun run update
+```
+
+This process:
+1. Fetches all veEQUAL NFT data from Sonic blockchain
+2. Processes data through 8 SQL transformation stages
+3. Generates optimized JSON API endpoints
+4. Updates Parquet files and DuckDB database
+
+## Architecture
 
 The system operates on a multi-stage data pipeline:
 
-1. **Collection**: Fetches all veEQUAL NFT data from Sonic blockchain
-2. **Processing**: Aggregates data using SQL queries in DuckDB
-3. **Export**: Generates Parquet files for efficient analytics
-4. **API Generation**: Creates JSON endpoints for web consumption
-5. **Reporting**: Produces markdown reports with insights
+1. **Data Collection**: Retrieves veEQUAL NFT data from Sonic (Chain ID 146) using Viem
+2. **Processing**: Aggregates and analyzes data using DuckDB with SQL transformations
+3. **Storage**: Exports to Parquet format for efficient analytics
+4. **API Generation**: Creates JSON endpoints with pre-computed responses
+5. **Reporting**: Generates markdown reports with governance insights
 
-### Key Data Models
-- **Owner Daily**: Daily holder snapshots and changes
-- **Total Supply**: Historical supply metrics and trends
-- **Concentration**: Holder concentration and distribution analysis
-- **Unlock History**: Token unlock schedules and impact analysis
-- **Wallet Changes**: Wallet-level activity tracking
-- **NFT Details**: Individual NFT metadata and valuations
+### Governance Analysis
 
-## 📈 Analytics Features
+The platform categorizes holders into governance tiers based on voting power:
 
-### Governance Metrics
-- **Voting Power Distribution**: Concentration analysis across holders
-- **Top Holders Tracking**: Leaderboards with historical changes
-- **Governance Concentration**: Decentralization metrics and trends
+- **M.E.G.A Whale (≥50K)**: Maximum governance influence
+- **Major Holder (20K-50K)**: Significant voting power
+- **Equalest (5K-20K)**: Core participants
+- **More Equal (1K-5K)**: Active members
+- **Equal (<1K)**: Base participants
 
-### Financial Analysis
-- **Token Unlock Schedules**: Future unlock events and impact
-- **Historical Valuations**: Price trends and market analysis
-- **Liquidity Analysis**: Lock duration and unlock patterns
+## Environment Variables
 
-### Operational Insights
-- **Data Freshness**: Real-time monitoring of data collection
-- **System Health**: Pipeline performance and error tracking
-- **Usage Analytics**: API endpoint performance metrics
+```bash
+# Optional: Custom RPC endpoint (defaults to automatic discovery)
+SONIC_RPC_URL=https://rpc.soniclabs.com
 
-## 🚀 Deployment
+# Optional: API server port (defaults to 3000)
+PORT=3000
 
-### GitHub Actions (Automated)
-The repository includes automated data updates via GitHub Actions:
-- Runs every hour to collect fresh data
-- Updates all Parquet files and JSON APIs
-- Commits changes back to the repository
-- Maintains historical data integrity
+# Optional: veEQUAL contract address (defaults to mainnet)
+VE_EQUAL=0x3045119766352fF250b3d45312Bd0973CBF7235a
+```
 
-### Local Deployment
+## Deployment
+
+### Automated (GitHub Actions)
+The repository includes automated data updates:
+- Runs daily at 00:33 UTC
+- Updates all datasets and API endpoints
+- Commits changes automatically
+
+### Manual Deployment
 ```bash
 # Production server
 bun run start
@@ -170,50 +144,38 @@ bun run dev
 bun run update
 ```
 
-### Environment Variables
-```bash
-# Optional: Custom RPC endpoint
-SONIC_RPC_URL=https://rpc.soniclabs.com
+## Limitations
 
-# Optional: API server port
-PORT=3000
+This dashboard is designed specifically for veEQUAL governance analysis on Sonic blockchain. Applications beyond this scope should be approached with caution:
+
+- **Network Dependency**: Requires stable connection to Sonic RPC endpoints
+- **Data Scope**: Limited to veEQUAL NFT contract data only
+- **Historical Data**: Limited by blockchain history availability
+- **Real-time Updates**: Data freshness depends on collection schedule (daily updates)
+
+## Reference
+
+When referencing this dashboard in academic papers or technical reports, please specify the exact version and data collection date for reproducibility.
+
+Example citation format:
+```
+veEQUAL Dashboard v1.0.0 - Governance analytics for Equalizer DEX on Sonic blockchain.
+Data collected: [DATE]. Available: https://github.com/BeanieZombie/veEQUAL-dashboard
 ```
 
-## 🔍 Generated Files
+## License
 
-### Data Files
-- `data/*.parquet` - Efficient columnar data for analytics
-- `data/veEqual.duckdb` - Complete SQLite-compatible database
-- `data/api/*.json` - Pre-generated API responses
+**Business Source License 1.1** - See [LICENSE.md](LICENSE.md)
+- Free for research, development, and non-commercial use
+- Commercial use requires 5,000+ veEQUAL tokens
+- Converts to MIT License in 2029
 
-### Reports
-- `veEQUAL.md` - Comprehensive markdown report with insights
-- Auto-generated table of contents with upcoming unlock warnings
+## Links
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the Business Source License 1.1 (BSL 1.1).
-
-**Commercial Use**: Requires holding a minimum of 5,000 veEQUAL tokens.
-**Open Source**: Freely available for non-commercial use, research, and development.
-
-The license automatically converts to Apache License 2.0 after the Change Date specified in LICENSE.md.
-
-## 🔗 Links
-
-- **Live Dashboard**: [View on GitHub Pages](https://beaniebozombie.github.io/veEQUAL-dashboard/)
-- **API Documentation**: Available at `/api/` endpoints when server is running
-- **Sonic Blockchain**: [Sonic Labs](https://soniclabs.com)
-- **EQUAL Protocol**: [Equalizer DEX](https://equal.fi)
+- **[Live Data](https://beaniebozombie.github.io/veEQUAL-dashboard/)** - View the dashboard
+- **[Sonic](https://soniclabs.com)** - Layer 1 blockchain
+- **[Equalizer Exchange](https://equalizer.exchange)** - DeFi protocol
 
 ---
 
-Built with ❤️ using [Bun](https://bun.sh) | Powered by [DuckDB](https://duckdb.org) | Data via [Sonic](https://soniclabs.com)
+*Built with care for the Equalizer community*
