@@ -5,39 +5,6 @@ description: "REST API endpoints for veEQUAL governance data"
 ---
 
 <style>
-    body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #333;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        line-height: 1.6;
-        min-height: 100vh;
-        margin: 0;
-        padding: 0;
-    }
-    
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem;
-    }
-    
-    .header {
-        text-align: center;
-        color: white;
-        margin-bottom: 3rem;
-    }
-    
-    .header h1 {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    .header p {
-        font-size: 1.2rem;
-        opacity: 0.9;
-    }
-    
     .api-section {
         background: white;
         border-radius: 15px;
@@ -73,12 +40,13 @@ description: "REST API endpoints for veEQUAL governance data"
         color: #ffffff;
         padding: 0.75rem 1rem;
         border-radius: 6px;
-        font-family: 'Monaco', 'Menlo', monospace;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
         font-size: 0.9rem;
         margin: 1rem 0;
         display: flex;
         align-items: center;
         gap: 1rem;
+        flex-wrap: wrap;
     }
     
     .method {
@@ -107,6 +75,30 @@ description: "REST API endpoints for veEQUAL governance data"
         background: #3730a3;
     }
     
+    .interactive-button {
+        background: #059669;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        margin-left: 0.5rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .interactive-button:hover {
+        background: #047857;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .interactive-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
     .description {
         color: #6b7280;
         margin-bottom: 1rem;
@@ -118,9 +110,9 @@ description: "REST API endpoints for veEQUAL governance data"
         border-radius: 6px;
         padding: 1rem;
         margin-top: 1rem;
-        font-family: 'Monaco', 'Menlo', monospace;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
         font-size: 0.85rem;
-        max-height: 200px;
+        max-height: 300px;
         overflow-y: auto;
     }
     
@@ -131,6 +123,57 @@ description: "REST API endpoints for veEQUAL governance data"
         font-size: 0.9rem;
     }
     
+    .response-container {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-top: 1rem;
+        display: none;
+    }
+    
+    .response-container.active {
+        display: block;
+    }
+    
+    .response-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .status-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: bold;
+    }
+    
+    .status-200 {
+        background: #dcfce7;
+        color: #166534;
+    }
+    
+    .status-error {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+    
+    .response-body {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        padding: 1rem;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 0.85rem;
+        max-height: 400px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+    }
+    
     .nav-links {
         text-align: center;
         margin-top: 2rem;
@@ -139,26 +182,46 @@ description: "REST API endpoints for veEQUAL governance data"
     .nav-links a {
         display: inline-block;
         padding: 12px 24px;
-        background: rgba(255, 255, 255, 0.2);
+        background: #4f46e5;
         color: white;
         text-decoration: none;
         border-radius: 8px;
         margin: 0 0.5rem;
         transition: background 0.3s ease;
+        font-weight: 600;
     }
     
     .nav-links a:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: #3730a3;
+    }
+    
+    .loading {
+        color: #6b7280;
+        font-style: italic;
+        animation: pulse 1.5s ease-in-out infinite alternate;
+    }
+    
+    @keyframes pulse {
+        from { opacity: 1; }
+        to { opacity: 0.5; }
+    }
+    
+    kbd {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        color: #374151;
+        display: inline-block;
+        font-size: 0.8em;
+        font-weight: 700;
+        line-height: 1;
+        padding: 2px 4px;
+        white-space: nowrap;
     }
 </style>
 
-<div class="container">
-    <div class="header">
-        <h1>🔌 veEQUAL API</h1>
-        <p>REST API endpoints for veEQUAL governance analytics</p>
-    </div>
-    
-    <div class="api-section">
+<div class="api-section">
         <h2>📊 Dashboard Endpoints</h2>
         
         <div class="endpoint">
@@ -169,7 +232,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/dashboard.json</code>
-                <a href="dashboard.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('dashboard.json', 'dashboard-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="dashboard-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="dashboard-status"></span>
+                </div>
+                <div class="response-body" id="dashboard-body"></div>
             </div>
             <div class="response-example">
                 <h4>Response Example:</h4>
@@ -192,7 +262,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/analytics.json</code>
-                <a href="analytics.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('analytics.json', 'analytics-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="analytics-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="analytics-status"></span>
+                </div>
+                <div class="response-body" id="analytics-body"></div>
             </div>
             <div class="response-example">
                 <h4>Response Example:</h4>
@@ -215,7 +292,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/summary.json</code>
-                <a href="summary.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('summary.json', 'summary-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="summary-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="summary-status"></span>
+                </div>
+                <div class="response-body" id="summary-body"></div>
             </div>
         </div>
     </div>
@@ -231,7 +315,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/top-holders.json</code>
-                <a href="top-holders.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('top-holders.json', 'top-holders-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="top-holders-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="top-holders-status"></span>
+                </div>
+                <div class="response-body" id="top-holders-body"></div>
             </div>
             <div class="response-example">
                 <h4>Response Example:</h4>
@@ -254,7 +345,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/top-nfts.json</code>
-                <a href="top-nfts.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('top-nfts.json', 'top-nfts-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="top-nfts-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="top-nfts-status"></span>
+                </div>
+                <div class="response-body" id="top-nfts-body"></div>
             </div>
             <div class="response-example">
                 <h4>Response Example:</h4>
@@ -277,7 +375,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/wallet-nfts.json</code>
-                <a href="wallet-nfts.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('wallet-nfts.json', 'wallet-nfts-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="wallet-nfts-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="wallet-nfts-status"></span>
+                </div>
+                <div class="response-body" id="wallet-nfts-body"></div>
             </div>
         </div>
     </div>
@@ -293,7 +398,14 @@ description: "REST API endpoints for veEQUAL governance data"
             <div class="endpoint-url">
                 <span class="method">GET</span>
                 <code>/data/api/charts.json</code>
-                <a href="charts.json" class="try-button">Try it</a>
+                <button class="interactive-button" onclick="queryEndpoint('charts.json', 'charts-response')">Try it live</button>
+            </div>
+            <div class="response-container" id="charts-response">
+                <div class="response-header">
+                    <h4>Response:</h4>
+                    <span class="status-badge" id="charts-status"></span>
+                </div>
+                <div class="response-body" id="charts-body"></div>
             </div>
         </div>
     </div>
@@ -301,6 +413,9 @@ description: "REST API endpoints for veEQUAL governance data"
     <div class="api-section">
         <h2>🔧 Usage Information</h2>
         <div style="color: #6b7280;">
+            <h3>Interactive Testing</h3>
+            <p>Click the <strong>Try it live</strong> buttons to query endpoints directly from this page. Use <kbd>Ctrl+Shift+T</kbd> to test all endpoints at once.</p>
+            
             <h3>Rate Limits</h3>
             <p>No rate limits currently enforced. Data is updated daily via GitHub Actions.</p>
             
@@ -320,4 +435,61 @@ description: "REST API endpoints for veEQUAL governance data"
         <a href="../../veEQUAL.md">📊 Full Report</a>
         <a href="https://github.com/BeanieZombie/veEQUAL-dashboard">📂 Source Code</a>
     </div>
-</div>
+
+<script>
+async function queryEndpoint(endpoint, responseId) {
+    const responseContainer = document.getElementById(responseId);
+    const statusElement = document.getElementById(responseId.replace('-response', '-status'));
+    const bodyElement = document.getElementById(responseId.replace('-response', '-body'));
+    
+    // Show response container and loading state
+    responseContainer.classList.add('active');
+    statusElement.textContent = 'Loading...';
+    statusElement.className = 'status-badge loading';
+    bodyElement.textContent = 'Fetching data...';
+    
+    try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        
+        // Update status badge
+        if (response.ok) {
+            statusElement.textContent = `${response.status} OK`;
+            statusElement.className = 'status-badge status-200';
+        } else {
+            statusElement.textContent = `${response.status} Error`;
+            statusElement.className = 'status-badge status-error';
+        }
+        
+        // Format and display response
+        bodyElement.textContent = JSON.stringify(data, null, 2);
+        
+    } catch (error) {
+        statusElement.textContent = 'Network Error';
+        statusElement.className = 'status-badge status-error';
+        bodyElement.textContent = `Error: ${error.message}`;
+    }
+}
+
+// Add keyboard shortcut to test all endpoints
+document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+        const endpoints = [
+            'dashboard.json',
+            'analytics.json', 
+            'summary.json',
+            'top-holders.json',
+            'top-nfts.json',
+            'wallet-nfts.json',
+            'charts.json'
+        ];
+        
+        endpoints.forEach((endpoint, index) => {
+            setTimeout(() => {
+                const responseId = endpoint.replace('.json', '-response');
+                queryEndpoint(endpoint, responseId);
+            }, index * 500); // Stagger requests by 500ms
+        });
+    }
+});
+</script>
