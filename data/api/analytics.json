@@ -39,7 +39,7 @@
     {
       "tier": "Equal (<1K)",
       "holderCount": 3461,
-      "tierVotingPower": "175.8K",
+      "tierVotingPower": "175.7K",
       "powerPercentage": 8.33,
       "holderPercentage": 93.97,
       "avgPowerPerHolder": "50.78",
@@ -113,12 +113,12 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "384.11"
+      "avgPower": "384.10"
     },
     {
       "groupType": "Top 10",
       "holderCount": 10,
-      "totalPower": "699.8K",
+      "totalPower": "699.7K",
       "avgPower": "70.0K"
     }
   ],
@@ -159,5 +159,5 @@
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T18:25:56.734Z"
+  "lastUpdated": "2025-05-26T18:29:21.140Z"
 }
