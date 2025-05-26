@@ -1,5 +1,6 @@
 name: Update veEQUAL Data & Deploy API
 
+# Workflow to update veEQUAL data and deploy to GitHub Pages
 on:
   schedule:
     # Run daily at 00:33 UTC
