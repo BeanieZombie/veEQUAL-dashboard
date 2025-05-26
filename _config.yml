@@ -49,6 +49,11 @@ defaults:
       path: "*.md"
     values:
       layout: "default"
+  - scope:
+      path: "veEQUAL.md"
+    values:
+      layout: "default"
+      permalink: "/veEQUAL.html"
 
 # Titles from headings
 titles_from_headings:
@@ -82,7 +87,6 @@ exclude:
 # Include specific files
 include:
   - data/api/
-  - veEQUAL.md
 
 # Collections configuration
 collections_dir: ""
