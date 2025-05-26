@@ -173,6 +173,7 @@ Data collected: [DATE]. Available: https://github.com/BeanieZombie/veEQUAL-dashb
 ## Links
 
 - **[Live Data](https://beaniebozombie.github.io/veEQUAL-dashboard/)** - View the dashboard
+- **[Latest Report](veEQUAL.md)** - Comprehensive governance analysis report
 - **[Sonic](https://soniclabs.com)** - Layer 1 blockchain
 - **[Equalizer Exchange](https://equalizer.exchange)** - DeFi protocol
 
