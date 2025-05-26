@@ -38,6 +38,41 @@ plugins:
 optional_front_matter:
   remove_originals: true
 
+# Exclude files and directories from Jekyll processing
+exclude:
+  - vendor/
+  - .bundle/
+  - node_modules/
+  - Gemfile
+  - Gemfile.lock
+  - package.json
+  - package-lock.json
+  - bun.lockb
+  - tsconfig.json
+  - vitest.config.ts
+  - src/
+  - lib/
+  - sql/
+  - tests/
+  - "*.ts"
+  - "*.js"
+  - "*.sh"
+  - data/*.parquet
+  - data/*.duckdb
+  - data/*.wal
+  - .github/
+  - .gitignore
+  - LICENSE
+  - README.md
+  - TECHNICAL.md
+  - GTM_PROJECT_BRIEF.md
+  - PROJECT_STATUS_REPORT.md
+  - "*.code-workspace"
+
+# Include specific files
+include:
+  - data/api/
+
 # Default layouts
 defaults:
   - scope:
@@ -60,29 +95,6 @@ titles_from_headings:
   enabled: true
   strip_title: true
   collections: true
-
-# Exclude files from processing
-exclude:
-  - node_modules/
-  - bun.lockb
-  - package.json
-  - tsconfig.json
-  - "*.ts"
-  - "*.js"
-  - lib/
-  - src/
-  - sql/
-  - tests/
-  - data/*.parquet
-  - data/*.duckdb
-  - data/*.wal
-  - .github/
-  - .gitignore
-  - LICENSE
-  - README.md
-  - TECHNICAL.md
-  - GTM_PROJECT_BRIEF.md
-  - "*.code-workspace"
 
 # Include specific files
 include:
