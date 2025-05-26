@@ -72,22 +72,6 @@
     "votingPower": "39.8K"
   },
   {
-    "rank": 11,
-    "nftId": "2506",
-    "unlockDate": "2025-07-31",
-    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "trueBalance": "42.2K",
-    "votingPower": "15.1K"
-  },
-  {
-    "rank": 13,
-    "nftId": "2508",
-    "unlockDate": "2025-09-04",
-    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "trueBalance": "42.2K",
-    "votingPower": "23.2K"
-  },
-  {
     "rank": 10,
     "nftId": "2505",
     "unlockDate": "2025-06-26",
@@ -104,12 +88,28 @@
     "votingPower": "20.0K"
   },
   {
+    "rank": 13,
+    "nftId": "2508",
+    "unlockDate": "2025-09-04",
+    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+    "trueBalance": "42.2K",
+    "votingPower": "23.2K"
+  },
+  {
+    "rank": 11,
+    "nftId": "2506",
+    "unlockDate": "2025-07-31",
+    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+    "trueBalance": "42.2K",
+    "votingPower": "15.1K"
+  },
+  {
     "rank": 14,
     "nftId": "1765",
     "unlockDate": "2025-11-06",
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
     "trueBalance": "40.7K",
-    "votingPower": "36.5K"
+    "votingPower": "36.4K"
   },
   {
     "rank": 15,
@@ -117,7 +117,7 @@
     "unlockDate": "2025-09-11",
     "owner": "0x424e5AF4A2FB8933f1d31cc5b00B105049a9A09d",
     "trueBalance": "40.0K",
-    "votingPower": "23.6K"
+    "votingPower": "23.5K"
   },
   {
     "rank": 16,
@@ -149,7 +149,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0x04fd414cAcdbd8742C8ADC46230BB11445203C99",
     "trueBalance": "30.0K",
-    "votingPower": "28.1K"
+    "votingPower": "28.0K"
   },
   {
     "rank": 20,
@@ -213,7 +213,7 @@
     "unlockDate": "2025-10-23",
     "owner": "0x74293A57d7f6B9F6C5580CE50aaE3f10A0a09C56",
     "trueBalance": "18.0K",
-    "votingPower": "14.8K"
+    "votingPower": "14.7K"
   },
   {
     "rank": 28,

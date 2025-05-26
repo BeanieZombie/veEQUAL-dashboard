@@ -4,7 +4,7 @@
     "totalTrueBalance": "2.7M",
     "totalNFTs": 4934,
     "uniqueHolders": 3683,
-    "lastUpdated": "2025-05-26T20:05:45.919Z"
+    "lastUpdated": "2025-05-26T20:58:28.885Z"
   },
   "topNFTs": [
     {
@@ -80,22 +80,6 @@
       "votingPower": "39.8K"
     },
     {
-      "rank": 11,
-      "nftId": "2506",
-      "unlockDate": "2025-07-31",
-      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-      "trueBalance": "42.2K",
-      "votingPower": "15.1K"
-    },
-    {
-      "rank": 13,
-      "nftId": "2508",
-      "unlockDate": "2025-09-04",
-      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-      "trueBalance": "42.2K",
-      "votingPower": "23.2K"
-    },
-    {
       "rank": 10,
       "nftId": "2505",
       "unlockDate": "2025-06-26",
@@ -112,12 +96,28 @@
       "votingPower": "20.0K"
     },
     {
+      "rank": 13,
+      "nftId": "2508",
+      "unlockDate": "2025-09-04",
+      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+      "trueBalance": "42.2K",
+      "votingPower": "23.2K"
+    },
+    {
+      "rank": 11,
+      "nftId": "2506",
+      "unlockDate": "2025-07-31",
+      "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+      "trueBalance": "42.2K",
+      "votingPower": "15.1K"
+    },
+    {
       "rank": 14,
       "nftId": "1765",
       "unlockDate": "2025-11-06",
       "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
       "trueBalance": "40.7K",
-      "votingPower": "36.5K"
+      "votingPower": "36.4K"
     },
     {
       "rank": 15,
@@ -125,7 +125,7 @@
       "unlockDate": "2025-09-11",
       "owner": "0x424e5AF4A2FB8933f1d31cc5b00B105049a9A09d",
       "trueBalance": "40.0K",
-      "votingPower": "23.6K"
+      "votingPower": "23.5K"
     },
     {
       "rank": 16,
@@ -157,7 +157,7 @@
       "unlockDate": "2025-11-13",
       "owner": "0x04fd414cAcdbd8742C8ADC46230BB11445203C99",
       "trueBalance": "30.0K",
-      "votingPower": "28.1K"
+      "votingPower": "28.0K"
     },
     {
       "rank": 20,
@@ -221,7 +221,7 @@
       "unlockDate": "2025-10-23",
       "owner": "0x74293A57d7f6B9F6C5580CE50aaE3f10A0a09C56",
       "trueBalance": "18.0K",
-      "votingPower": "14.8K"
+      "votingPower": "14.7K"
     },
     {
       "rank": 28,
@@ -428,7 +428,7 @@
     {
       "rank": 3,
       "owner": "0xa064B34DC0aEeF23e48B400DC4b0A3f940B55865",
-      "votingPower": "71.2K",
+      "votingPower": "71.1K",
       "totalTrueBalance": "79.4K",
       "nftCount": 3,
       "topNFTId": "23"
@@ -468,7 +468,7 @@
     {
       "rank": 8,
       "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
-      "votingPower": "60.9K",
+      "votingPower": "60.8K",
       "totalTrueBalance": "65.1K",
       "nftCount": 2,
       "topNFTId": "143"
@@ -508,7 +508,7 @@
     {
       "rank": 13,
       "owner": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
-      "votingPower": "34.6K",
+      "votingPower": "34.5K",
       "totalTrueBalance": "40.3K",
       "nftCount": 6,
       "topNFTId": "2351"
@@ -564,7 +564,7 @@
     {
       "rank": 20,
       "owner": "0x04fd414cAcdbd8742C8ADC46230BB11445203C99",
-      "votingPower": "28.1K",
+      "votingPower": "28.0K",
       "totalTrueBalance": "30.0K",
       "nftCount": 1,
       "topNFTId": "5"
@@ -572,7 +572,7 @@
     {
       "rank": 21,
       "owner": "0x08Eb99E41A37cf7898EE1979C14F461Cd42d6792",
-      "votingPower": "23.3K",
+      "votingPower": "23.2K",
       "totalTrueBalance": "23.9K",
       "nftCount": 19,
       "topNFTId": "194"
@@ -852,7 +852,7 @@
     {
       "rank": 56,
       "owner": "0x0Db5eEa0b9F8653c721fa906668554487DE4c792",
-      "votingPower": "6.6K",
+      "votingPower": "6.5K",
       "totalTrueBalance": "7.0K",
       "nftCount": 1,
       "topNFTId": "5979"
