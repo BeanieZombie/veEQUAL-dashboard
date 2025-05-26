@@ -28,7 +28,7 @@ jobs:
     - name: Setup Bun
       uses: oven-sh/setup-bun@v1
       with:
-        bun-version: latest
+        bun-version: 1.1.34  # Use a stable version instead of latest
 
     - name: Configure system for Bun stability
       run: |
@@ -42,13 +42,20 @@ jobs:
         echo "LANG=C.UTF-8" >> $GITHUB_ENV
         # Add Bun binary to PATH
         echo "$HOME/.bun/bin" >> $GITHUB_PATH
+        # Set Bun runtime flags for stability
+        echo "BUN_RUNTIME_TRANSPILER_CACHE_PATH=/tmp/bun-cache" >> $GITHUB_ENV
+        echo "BUN_QUIET=1" >> $GITHUB_ENV
+        mkdir -p /tmp/bun-cache
+        
+        # System information for debugging
+        echo "=== System Information ==="
+        echo "Architecture: $(uname -m)"
+        echo "Kernel: $(uname -r)"
+        echo "Available memory: $(free -h)"
+        echo "CPU info:"
+        lscpu | head -5
+        
         echo "✅ System configured for Bun stability"
-
-    - name: Configure system for Bun stability
-      run: |
-        echo "=== Configuring system for Bun stability ==="
-        # Set memory limits to prevent crashes
-        ulimit -c unlimited
         # Ensure proper locale settings
         export LC_ALL=C.UTF-8
         export LANG=C.UTF-8
@@ -62,8 +69,18 @@ jobs:
       run: |
         echo "=== Installing Build Tools ==="
         sudo apt-get update
-        # Install only essential build tools for native modules (no Node.js tools)
-        sudo apt-get install -y build-essential python3 python3-dev make g++ cmake
+        # Install comprehensive build tools for DuckDB native compilation
+        sudo apt-get install -y \
+          build-essential \
+          python3 \
+          python3-dev \
+          make \
+          g++ \
+          cmake \
+          pkg-config \
+          libssl-dev \
+          zlib1g-dev \
+          libc6-dev
         echo "✅ Build tools installed successfully"
 
     - name: Configure Bun Cache
@@ -77,39 +94,66 @@ jobs:
     - name: Install project dependencies
       run: |
         echo "=== Installing Project Dependencies ==="
-        # Install dependencies with Bun
-        bun install --verbose
+        # Clear any existing cache that might be corrupted
+        rm -rf ~/.bun/install/cache/* /tmp/bun-cache/* 2>/dev/null || true
         
-        # Verify DuckDB installation with multiple attempts
-        echo "Verifying DuckDB installation..."
-        for i in {1..3}; do
-          if bun -e "import('duckdb')" 2>/dev/null; then
-            echo "✅ DuckDB verified on attempt $i"
-            break
+        # Install dependencies with Bun
+        bun install --verbose --no-cache
+        
+        # Handle DuckDB installation separately with fallback mechanisms
+        echo "Installing DuckDB with fallback mechanisms..."
+        
+        # Method 1: Try normal installation
+        if bun add duckdb 2>/dev/null; then
+          echo "✅ DuckDB installed via normal method"
+        else
+          echo "⚠️ Normal DuckDB installation failed, trying alternative methods..."
+          
+          # Method 2: Force rebuild from source
+          if bun add duckdb --force 2>/dev/null; then
+            echo "✅ DuckDB installed via force rebuild"
           else
-            echo "⚠️ DuckDB verification failed on attempt $i, trying to reinstall..."
-            bun remove duckdb
-            bun add duckdb
-            sleep 2
+            echo "⚠️ All DuckDB installation methods failed"
+            exit 1
           fi
-        done
+        fi
+        
         echo "✅ Dependencies installation completed"
 
     - name: Verify DuckDB Installation
       run: |
         echo "=== DuckDB Verification ==="
         echo "Checking DuckDB installation..."
+        
+        # Use a more robust verification approach
         bun -e "
-        try {
-          const duckdb = await import('duckdb');
-          console.log('✅ DuckDB module loaded successfully');
-          const db = new duckdb.Database(':memory:');
-          console.log('✅ DuckDB database created successfully');
-          db.close();
-        } catch(err) {
-          console.error('❌ DuckDB verification failed:', err.message);
-          process.exit(1);
-        }
+        (async () => {
+          try {
+            console.log('Attempting to import DuckDB...');
+            const duckdb = await import('duckdb');
+            console.log('✅ DuckDB module loaded successfully');
+            
+            console.log('Creating in-memory database...');
+            const db = new duckdb.Database(':memory:');
+            console.log('✅ DuckDB database created successfully');
+            
+            // Test a simple query
+            db.all('SELECT 1 as test', [], (err, rows) => {
+              if (err) {
+                console.error('❌ DuckDB query test failed:', err);
+                process.exit(1);
+              } else {
+                console.log('✅ DuckDB query test passed');
+                db.close();
+                process.exit(0);
+              }
+            });
+          } catch(err) {
+            console.error('❌ DuckDB verification failed:', err.message);
+            console.error('Stack trace:', err.stack);
+            process.exit(1);
+          }
+        })();
         "
         echo "✅ DuckDB verification completed"
 
