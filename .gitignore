@@ -7,6 +7,11 @@ STRATEGY_*.md
 ROADMAP_*.md
 INTERNAL_*.md
 
+# Test files and development artifacts
+tests/
+*.test.ts
+*.spec.ts
+
 # Logs
 
 logs
@@ -190,3 +195,14 @@ FINAL_AUDIT.md
 *_LOG.md
 *_AUDIT.md
 *.log.md
+DUCKDB_MIGRATION_PLAN.md
+
+# Test files and development scripts
+test-*.sh
+test_*.js
+test_*.ts
+*test*.mjs
+pipeline-output.log
+
+# Database WAL files
+*.duckdb.wal

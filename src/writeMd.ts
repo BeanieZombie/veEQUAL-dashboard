@@ -18,7 +18,10 @@ interface SummaryData {
 interface NftRow {
   token_id: string;
   owner: string;
-  balance_raw: string; // Raw voting power (also used as token balance)
+  balance_raw: string; // Current voting power (wei format)
+  balance_formatted: number; // Current voting power (human-readable)
+  amount_raw: string; // Original locked amount (wei format) - from ABI locked.amount
+  amount_formatted: number; // Original locked amount (human-readable) - from ABI locked.amount
   unlock_date: string | null;
 }
 
@@ -40,7 +43,10 @@ interface LeaderboardHolder {
 interface LeaderboardNftItem {
   token_id: string;
   unlock_date: string | null;
-  balance_raw: string; // Raw token balance (same as voting power in simplified schema)
+  balance_raw: string; // Current voting power (wei format)
+  balance_formatted: number; // Current voting power (human-readable)
+  amount_raw: string; // Original locked amount (wei format) - from ABI locked.amount
+  amount_formatted: number; // Original locked amount (human-readable) - from ABI locked.amount
 }
 
 interface GrandTotalVotingPower {
@@ -192,10 +198,10 @@ export async function writeMd(): Promise<void> {
 
       // 2. Top 10 NFTs by Balance
       db.query(`
-        SELECT token_id, owner, balance_raw, unlock_date
+        SELECT token_id, owner, balance_raw, balance_formatted, amount_raw, amount_formatted, unlock_date
         FROM venfts
         WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0
-        ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC
+        ORDER BY CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) DESC
         LIMIT 10
       `).then((result: any) => result.toArray()),
 
@@ -205,7 +211,7 @@ export async function writeMd(): Promise<void> {
           od.owner,
           od.nft_count,
           od.total_voting_power,
-          SUM(CAST(vf.balance_raw AS DECIMAL(38,0)) / 1e18) as total_token_balance,
+          SUM(CAST(COALESCE(vf.amount_raw, vf.balance_raw) AS DECIMAL(38,0)) / 1e18) as total_token_balance,
           od.next_overall_unlock_date as next_unlock_date
         FROM owner_daily od
         JOIN venfts vf ON od.owner = vf.owner
@@ -220,7 +226,7 @@ export async function writeMd(): Promise<void> {
         SELECT
           od.owner,
           od.total_voting_power,
-          SUM(CAST(vf.balance_raw AS DECIMAL(38,0)) / 1e18) as total_token_balance
+          SUM(CAST(COALESCE(vf.amount_raw, vf.balance_raw) AS DECIMAL(38,0)) / 1e18) as total_token_balance
         FROM owner_daily od
         JOIN venfts vf ON od.owner = vf.owner
         WHERE od.total_voting_power > 0
@@ -244,12 +250,12 @@ export async function writeMd(): Promise<void> {
       db.query(`
         SELECT
           substr(unlock_date, 1, 7) as month,
-          SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as token_balance,
+          SUM(CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) / 1e18) as token_balance,
           COUNT(*) as nft_count
         FROM venfts
         WHERE unlock_date IS NOT NULL
           AND unlock_date > '${new Date().toISOString().split('T')[0]}'
-          AND CAST(balance_raw AS DECIMAL(38,0)) / 1e18 > 0
+          AND CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) / 1e18 > 0
         GROUP BY substr(unlock_date, 1, 7)
         ORDER BY month
         LIMIT 12
@@ -322,20 +328,23 @@ export async function writeMd(): Promise<void> {
 
       if (escapedHolderAddresses) { // Ensure there are addresses to query for
         const allNftsForLeaderboardQuery = `
-          SELECT token_id, owner, unlock_date, balance_raw
+          SELECT token_id, owner, unlock_date, balance_raw, balance_formatted, amount_raw, amount_formatted
           FROM venfts
           WHERE owner IN (${escapedHolderAddresses}) AND CAST(balance_raw AS DECIMAL(38,0)) > 0
         `;
         // Correctly access toArray()
         const allNftsForLeaderboardResult = (await db.query(allNftsForLeaderboardQuery) as any).toArray();
-        const allNftsForLeaderboard: {token_id: string, owner: string, unlock_date: string | null, balance_raw: string}[] = allNftsForLeaderboardResult;
+        const allNftsForLeaderboard: {token_id: string, owner: string, unlock_date: string | null, balance_raw: string, balance_formatted: number, amount_raw: string, amount_formatted: number}[] = allNftsForLeaderboardResult;
 
         allNftsForLeaderboard.forEach(nft => {
           nftsByOwnerForLeaderboard[nft.owner] = nftsByOwnerForLeaderboard[nft.owner] || [];
           nftsByOwnerForLeaderboard[nft.owner].push({
             token_id: nft.token_id,
             unlock_date: nft.unlock_date,
-            balance_raw: nft.balance_raw
+            balance_raw: nft.balance_raw,
+            balance_formatted: nft.balance_formatted,
+            amount_raw: nft.amount_raw,
+            amount_formatted: nft.amount_formatted
           });
         });
       }
@@ -444,7 +453,7 @@ export async function writeMd(): Promise<void> {
       markdown += `| Month | Token Balance | NFTs | Impact (vs Total Locked) | Risk |\n`; // Updated header
       markdown += `|-------|---------------|------|--------------------------|------|\n`; // Updated header
       // Need total locked tokens for impact calculation
-      const totalLockedTokensQuery = `SELECT SUM(CAST(balance_raw AS DECIMAL(38,0)) / 1e18) as total_locked FROM venfts WHERE CAST(balance_raw AS DECIMAL(38,0)) > 0`;
+      const totalLockedTokensQuery = `SELECT SUM(CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) / 1e18) as total_locked FROM venfts WHERE CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) > 0`;
       const totalLockedResultArray = (await db.query(totalLockedTokensQuery) as any).toArray();
       const totalLockedTokens = totalLockedResultArray[0]?.total_locked || 0;
 
@@ -483,10 +492,11 @@ export async function writeMd(): Promise<void> {
     topNfts.forEach((nft, index) => {
       const unlockWarning = isUnlockingSoon(nft.unlock_date) ? ' ⚠️' : '';
       const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
-      const tokenBalance = formatBalance(nft.balance_raw);
-      const votingPower = formatBalance(nft.balance_raw);
+      // Fallback to balance_formatted if amount_formatted is null (during transition)
+      const trueBalance = nft.amount_formatted ?? nft.balance_formatted; // True Balance: original locked amount from ABI locked.amount
+      const votingPower = nft.balance_formatted; // Voting Power: current voting power from ABI balanceOfNFT
       const nftLink = createNftLink(nft.token_id);
-      markdown += `| ${index + 1} | ${nftLink} | ${ownerLink} | ${formatVotingPower(tokenBalance)} | ${formatVotingPower(votingPower)} | ${formatUnlockDateDisplay(nft.unlock_date)}${unlockWarning} |\n`;
+      markdown += `| ${index + 1} | ${nftLink} | ${ownerLink} | ${formatVotingPower(trueBalance)} | ${formatVotingPower(votingPower)} | ${formatUnlockDateDisplay(nft.unlock_date)}${unlockWarning} |\n`;
     });
     markdown += '\n';
 
@@ -505,12 +515,12 @@ export async function writeMd(): Promise<void> {
     const currentDateStr = currentDate.toISOString().split('T')[0];
 
     const unlockableNftsQuery = `
-      SELECT token_id, owner, balance_raw, unlock_date
+      SELECT token_id, owner, balance_raw, balance_formatted, amount_raw, amount_formatted, unlock_date
       FROM venfts
       WHERE unlock_date IS NOT NULL
         AND unlock_date <= '${currentDateStr}'
         AND CAST(balance_raw AS DECIMAL(38,0)) > 0
-      ORDER BY CAST(balance_raw AS DECIMAL(38,0)) DESC
+      ORDER BY CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) DESC
     `;
 
     const unlockableNftsResult = (await db.query(unlockableNftsQuery) as any).toArray();
@@ -523,10 +533,11 @@ export async function writeMd(): Promise<void> {
       markdown += `|--------|-------|--------------|--------------|-------------|\n`;
       unlockableNfts.forEach((nft) => {
         const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
-        const tokenBalance = formatBalance(nft.balance_raw);
-        const votingPower = formatBalance(nft.balance_raw);
+        // Fallback to balance_formatted if amount_formatted is null (during transition)
+        const trueBalance = nft.amount_formatted ?? nft.balance_formatted; // True Balance: original locked amount from ABI locked.amount
+        const votingPower = nft.balance_formatted; // Voting Power: current voting power from ABI balanceOfNFT
         const nftLink = createNftLink(nft.token_id);
-        markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(tokenBalance)} | ${formatVotingPower(votingPower)} | ${formatUnlockDateDisplay(nft.unlock_date)} |\n`;
+        markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(trueBalance)} | ${formatVotingPower(votingPower)} | ${formatUnlockDateDisplay(nft.unlock_date)} |\n`;
       });
     } else {
       markdown += `*No NFTs are currently ready to unlock.*\n`;
@@ -538,13 +549,13 @@ export async function writeMd(): Promise<void> {
     ninetyDaysFromNow.setDate(currentDate.getDate() + 90);
 
     const pendingUnlocksQuery = `
-      SELECT token_id, owner, balance_raw, unlock_date
+      SELECT token_id, owner, balance_raw, balance_formatted, amount_raw, amount_formatted, unlock_date
       FROM venfts
       WHERE unlock_date IS NOT NULL
         AND unlock_date > '${currentDateStr}'
         AND unlock_date <= '${ninetyDaysFromNow.toISOString().split('T')[0]}'
         AND CAST(balance_raw AS DECIMAL(38,0)) > 0
-      ORDER BY unlock_date ASC, CAST(balance_raw AS DECIMAL(38,0)) DESC
+      ORDER BY unlock_date ASC, CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) DESC
     `;
 
     const pendingUnlocksResult = (await db.query(pendingUnlocksQuery) as any).toArray();
@@ -566,7 +577,8 @@ export async function writeMd(): Promise<void> {
 
       sortedDates.forEach(date => {
         const nftsForDate = groupedUnlocks[date];
-        const totalTokenBalance = nftsForDate.reduce((sum, nft) => sum + formatBalance(nft.balance_raw), 0);
+        // Fallback to balance_formatted if amount_formatted is null (during transition)
+        const totalTokenBalance = nftsForDate.reduce((sum, nft) => sum + (nft.amount_formatted ?? nft.balance_formatted), 0); // Use true balance for total
         const isUnlockingSoonDate = isUnlockingSoon(nftsForDate[0].unlock_date, 30);
 
         markdown += `### ${date}${isUnlockingSoonDate ? ' ⚠️' : ''}\n`;
@@ -576,10 +588,11 @@ export async function writeMd(): Promise<void> {
 
         nftsForDate.forEach((nft) => {
           const ownerLink = `[${truncateAddress(nft.owner)}](${createDebankLink(nft.owner)})`;
-          const tokenBalance = formatBalance(nft.balance_raw);
-          const votingPower = formatBalance(nft.balance_raw);
+          // Fallback to balance_formatted if amount_formatted is null (during transition)
+          const trueBalance = nft.amount_formatted ?? nft.balance_formatted; // True Balance: original locked amount from ABI locked.amount
+          const votingPower = nft.balance_formatted; // Voting Power: current voting power from ABI balanceOfNFT
           const nftLink = createNftLink(nft.token_id);
-          markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(tokenBalance)} | ${formatVotingPower(votingPower)} |\n`;
+          markdown += `| ${nftLink} | ${ownerLink} | ${formatVotingPower(trueBalance)} | ${formatVotingPower(votingPower)} |\n`;
         });
         markdown += '\n';
       });

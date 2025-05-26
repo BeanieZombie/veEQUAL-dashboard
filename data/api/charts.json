@@ -2,125 +2,125 @@
   "votingPowerDistribution": [
     {
       "range": "M.E.G.A (≥20K)",
-      "count": 18,
-      "percentage": 0.36
+      "count": 17,
+      "percentage": 0.34
     },
     {
       "range": "Equalest (5K-20K)",
-      "count": 49,
-      "percentage": 0.99
+      "count": 50,
+      "percentage": 1.01
     },
     {
       "range": "More Equal (1K-5K)",
-      "count": 214,
-      "percentage": 4.34
+      "count": 213,
+      "percentage": 4.32
     },
     {
       "range": "Equal (<1K)",
-      "count": 4653,
-      "percentage": 94.3
+      "count": 4654,
+      "percentage": 94.33
     }
   ],
   "unlockTimeline": [
     {
       "date": "2025-05-29",
       "count": 16,
-      "totalPower": "13.28"
+      "totalPower": "995.34"
     },
     {
       "date": "2025-06-05",
       "count": 28,
-      "totalPower": "34.94"
+      "totalPower": "674.48"
     },
     {
       "date": "2025-06-12",
       "count": 13,
-      "totalPower": "62.36"
+      "totalPower": "690.90"
     },
     {
       "date": "2025-06-19",
       "count": 407,
-      "totalPower": "14.5K"
+      "totalPower": "113.0K"
     },
     {
       "date": "2025-06-26",
       "count": 412,
-      "totalPower": "13.0K"
+      "totalPower": "77.7K"
     },
     {
       "date": "2025-07-03",
       "count": 277,
-      "totalPower": "4.0K"
+      "totalPower": "19.5K"
     },
     {
       "date": "2025-07-10",
       "count": 326,
-      "totalPower": "6.8K"
+      "totalPower": "27.8K"
     },
     {
       "date": "2025-07-17",
       "count": 232,
-      "totalPower": "5.3K"
+      "totalPower": "18.9K"
     },
     {
       "date": "2025-07-24",
       "count": 93,
-      "totalPower": "5.3K"
+      "totalPower": "16.6K"
     },
     {
       "date": "2025-07-31",
       "count": 77,
-      "totalPower": "19.6K"
+      "totalPower": "54.4K"
     },
     {
       "date": "2025-08-07",
       "count": 137,
-      "totalPower": "6.6K"
+      "totalPower": "16.6K"
     },
     {
       "date": "2025-08-14",
       "count": 114,
-      "totalPower": "10.7K"
+      "totalPower": "24.5K"
     },
     {
       "date": "2025-08-21",
       "count": 124,
-      "totalPower": "27.4K"
+      "totalPower": "57.6K"
     },
     {
       "date": "2025-08-28",
       "count": 79,
-      "totalPower": "6.3K"
+      "totalPower": "12.2K"
     },
     {
       "date": "2025-09-04",
       "count": 76,
-      "totalPower": "38.3K"
+      "totalPower": "69.4K"
     },
     {
       "date": "2025-09-11",
       "count": 100,
-      "totalPower": "40.5K"
+      "totalPower": "68.6K"
     },
     {
       "date": "2025-09-18",
       "count": 50,
-      "totalPower": "20.4K"
+      "totalPower": "32.5K"
     },
     {
       "date": "2025-09-25",
       "count": 34,
-      "totalPower": "7.6K"
+      "totalPower": "11.4K"
     },
     {
       "date": "2025-10-02",
       "count": 159,
-      "totalPower": "71.3K"
+      "totalPower": "101.0K"
     },
     {
       "date": "2025-10-09",
       "count": 53,
-      "totalPower": "21.5K"
+      "totalPower": "28.9K"
     }
   ]
 }

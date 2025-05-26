@@ -3,6 +3,7 @@ import { db } from '../lib/db.ts';
 export interface DashboardData {
   summary: {
     totalVotingPower: string;
+    totalTrueBalance: string; // Added for True Balance
     totalNFTs: number;
     uniqueHolders: number;
     lastUpdated: string;
@@ -12,12 +13,14 @@ export interface DashboardData {
     nftId: string;
     unlockDate: string;
     owner: string;
-    votingPower: string;
+    votingPower: string; // Current voting power
+    trueBalance: string; // Original locked amount (True Balance)
   }>;
   topHolders: Array<{
     rank: number;
     owner: string;
-    votingPower: string;
+    votingPower: string; // Total current voting power for the holder
+    totalTrueBalance: string; // Total original locked amount for the holder
     nftCount: number;
     topNFTId?: string;
   }>;
@@ -43,10 +46,11 @@ export async function generateDashboardData(): Promise<DashboardData> {
     const summaryResult = await db.query(`
       SELECT
         SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
+        SUM(CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18) as total_true_balance_value, -- Added
         COUNT(*) as total_nfts,
         COUNT(DISTINCT owner) as unique_holders
       FROM venfts
-      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
+      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0 -- Counts based on active voting power
     `);
 
     const summaryArray = (summaryResult as any).toArray();
@@ -57,17 +61,18 @@ export async function generateDashboardData(): Promise<DashboardData> {
       throw new Error('No summary data returned from database');
     }
 
-    // Top NFTs by voting power
+    // Top NFTs by true balance
     const topNFTsResult = await db.query(`
       SELECT
-        ROW_NUMBER() OVER (ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC) as rank,
+        ROW_NUMBER() OVER (ORDER BY CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18 DESC) as rank,
         token_id as nft_id,
         unlock_date,
         owner,
-        CAST(balance_raw AS DOUBLE) / 1e18 as voting_power
+        CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18 as true_balance_value,
+        CAST(balance_raw AS DOUBLE) / 1e18 as voting_power_value
       FROM venfts
-      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
-      ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC
+      WHERE CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18 > 0
+      ORDER BY true_balance_value DESC
       LIMIT 50
     `);
     const topNFTsArray = (topNFTsResult as any).toArray();
@@ -78,16 +83,18 @@ export async function generateDashboardData(): Promise<DashboardData> {
         ROW_NUMBER() OVER (ORDER BY total_voting_power DESC) as rank,
         owner,
         total_voting_power,
+        total_true_balance_value, -- Added
         nft_count,
         top_nft_id
       FROM (
         SELECT
           owner,
           SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_voting_power,
+          SUM(CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18) as total_true_balance_value, -- Added
           COUNT(*) as nft_count,
-          FIRST(token_id ORDER BY CAST(balance_raw AS DOUBLE) / 1e18 DESC) as top_nft_id
+          FIRST(token_id ORDER BY CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18 DESC) as top_nft_id -- top_nft_id by true balance
         FROM venfts
-        WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0
+        WHERE CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18 > 0 -- Consider NFTs with any value
         GROUP BY owner
       )
       ORDER BY total_voting_power DESC
@@ -95,7 +102,7 @@ export async function generateDashboardData(): Promise<DashboardData> {
     `);
     const topHoldersArray = (topHoldersResult as any).toArray();
 
-    // Voting power distribution for charts
+    // Voting power distribution for charts - remains based on current voting power
     const distributionResult = await db.query(`
       WITH power_ranges AS (
         SELECT
@@ -125,14 +132,14 @@ export async function generateDashboardData(): Promise<DashboardData> {
     `);
     const distributionArray = (distributionResult as any).toArray();
 
-    // Unlock timeline
+    // Unlock timeline (now based on True Balance)
     const unlockTimelineResult = await db.query(`
       SELECT
         unlock_date as date,
         COUNT(*) as count,
-        SUM(CAST(balance_raw AS DOUBLE) / 1e18) as total_power
+        SUM(CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18) as total_power_value
       FROM venfts
-      WHERE CAST(balance_raw AS DOUBLE) / 1e18 > 0 AND unlock_date IS NOT NULL
+      WHERE CAST(COALESCE(amount_raw, balance_raw) AS DOUBLE) / 1e18 > 0 AND unlock_date IS NOT NULL
       GROUP BY unlock_date
       ORDER BY unlock_date
       LIMIT 20
@@ -143,6 +150,7 @@ export async function generateDashboardData(): Promise<DashboardData> {
     const dashboardData: DashboardData = {
       summary: {
         totalVotingPower: formatNumber(summary.total_voting_power || 0),
+        totalTrueBalance: formatNumber(summary.total_true_balance_value || 0), // Added
         totalNFTs: Number(summary.total_nfts) || 0,
         uniqueHolders: Number(summary.unique_holders) || 0,
         lastUpdated: new Date().toISOString()
@@ -152,12 +160,14 @@ export async function generateDashboardData(): Promise<DashboardData> {
         nftId: `${row.nft_id}`,
         unlockDate: row.unlock_date || '–',
         owner: row.owner,
-        votingPower: formatNumber(row.voting_power)
+        trueBalance: formatNumber(row.true_balance_value), // Added
+        votingPower: formatNumber(row.voting_power_value)
       })),
       topHolders: topHoldersArray.map((row: any) => ({
         rank: Number(row.rank),
         owner: row.owner,
         votingPower: formatNumber(row.total_voting_power),
+        totalTrueBalance: formatNumber(row.total_true_balance_value), // Added
         nftCount: Number(row.nft_count),
         topNFTId: row.top_nft_id ? `${row.top_nft_id}` : undefined
       })),
@@ -170,7 +180,7 @@ export async function generateDashboardData(): Promise<DashboardData> {
         unlockTimeline: unlockTimelineArray.map((row: any) => ({
           date: row.date,
           count: Number(row.count),
-          totalPower: formatNumber(row.total_power)
+          totalPower: formatNumber(row.total_power_value) // Now represents True Balance
         }))
       }
     };

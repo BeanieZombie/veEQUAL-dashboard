@@ -26,15 +26,17 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Setup Bun
-      uses: oven-sh/setup-bun@v1
+      uses: oven-sh/setup-bun@v2
       with:
-        bun-version: 1.0.2 # Pin stable version to avoid runtime crashes
+        bun-version: latest # Use latest bun version
 
     - name: Install Build Tools
       run: |
+        echo "=== Installing Build Tools ==="
         sudo apt-get update
         # Ensure build-essential, python3, make, g++, and cmake are installed
         sudo apt-get install -y build-essential python3 make g++ cmake
+        echo "✅ Build tools installed successfully"
 
     - name: Configure Bun Cache
       uses: actions/cache@v4
@@ -46,33 +48,36 @@ jobs:
 
     - name: Validate Bun Installation
       run: |
-        bun --version || { echo "Bun installation failed"; exit 1; }
-        echo "Bun installation validated successfully"
+        echo "=== Validating Bun Installation ==="
+        bun --version || { echo "❌ Bun installation failed"; exit 1; }
+        echo "✅ Bun installation validated successfully"
 
     - name: Install project dependencies
-      run: bun install # Install all dependencies, utilizing cache
-
-    - name: Clean and Rebuild DuckDB
       run: |
-        echo "Cleaning up previous DuckDB artifacts..."
-        rm -rf node_modules/duckdb
-        echo "Forcing rebuild of DuckDB native bindings..."
-        bun install --force-rebuild duckdb # This will install duckdb if not present and force rebuild
+        echo "=== Installing Project Dependencies ==="
+        bun install # Install all dependencies, utilizing cache
+        echo "✅ Dependencies installation completed"
 
-    - name: Verify DuckDB bindings and Test Import
+    - name: Verify DuckDB Installation
       run: |
+        echo "=== DuckDB Verification ==="
         echo "Verifying DuckDB native bindings..."
         if [ ! -f "node_modules/duckdb/lib/binding/duckdb.node" ]; then
-          echo "Error: DuckDB native bindings not found after rebuild (duckdb.node missing)"
-          ls -l node_modules/duckdb/lib/binding/ || echo "Directory node_modules/duckdb/lib/binding/ does not exist or is empty."
+          echo "❌ ERROR: DuckDB native bindings not found (duckdb.node missing)"
+          ls -l node_modules/duckdb/lib/binding/ || echo "Directory node_modules/duckdb/lib/binding/ does not exist."
           exit 1
         fi
+        echo "✅ DuckDB native bindings found"
 
         echo "Testing DuckDB module import..."
         bun -e "import('duckdb').then(() => console.log('✅ DuckDB module loaded successfully')).catch(err => { console.error('❌ DuckDB import failed:', err); process.exit(1); })"
+        echo "✅ DuckDB verification completed"
 
     - name: Create data directory
-      run: mkdir -p data
+      run: |
+        echo "=== Creating Data Directory ==="
+        mkdir -p data
+        echo "✅ Data directory created"
 
     - name: Run data pipeline with retry logic
       run: |

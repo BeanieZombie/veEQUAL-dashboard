@@ -6,7 +6,8 @@ import { CHUNK_SIZE, PARALLEL } from '../src/constants.ts';
 interface NFTData {
   tokenId: bigint;
   owner: string;
-  balance: bigint;
+  balance: bigint; // Current voting power from balanceOfNFT
+  amount: bigint; // Original locked amount from locked.amount
   lockedEnd: bigint;
 }
 
@@ -94,6 +95,12 @@ async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
         functionName: 'locked__end',
         args: [tokenId],
       },
+      {
+        address: veEqualAddress,
+        abi: veEqualAbi,
+        functionName: 'locked',
+        args: [tokenId],
+      },
     ]);
 
     const results = await resilientClient.multicall({
@@ -103,20 +110,24 @@ async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
     const nftData: NFTData[] = [];
 
     for (let i = 0; i < tokenIds.length; i++) {
-      const balanceResult = results[i * 3];
-      const ownerResult = results[i * 3 + 1];
-      const lockedEndResult = results[i * 3 + 2];
+      const balanceResult = results[i * 4];
+      const ownerResult = results[i * 4 + 1];
+      const lockedEndResult = results[i * 4 + 2];
+      const lockedResult = results[i * 4 + 3];
 
       // Skip if any call failed or balance is null/undefined
       if (balanceResult.status === 'failure' ||
           ownerResult.status === 'failure' ||
           lockedEndResult.status === 'failure' ||
+          lockedResult.status === 'failure' ||
           balanceResult.result == null) {
         console.warn(`Skipping NFT ${tokenIds[i]} due to invalid multicall results`);
         continue;
       }
 
       const balance = balanceResult.result as bigint;
+      const lockedData = lockedResult.result as [bigint, bigint]; // [amount, end]
+      const amount = lockedData[0] < 0n ? -lockedData[0] : lockedData[0]; // Handle int128 conversion
 
       // Skip NFTs with zero balance
       if (balance === 0n) {
@@ -127,6 +138,7 @@ async function fetchNFTBatch(tokenIds: bigint[]): Promise<NFTData[]> {
         tokenId: tokenIds[i],
         owner: ownerResult.result as string,
         balance,
+        amount,
         lockedEnd: lockedEndResult.result as bigint,
       });
     }
@@ -194,14 +206,15 @@ export async function fetchSnapshot(): Promise<void> {
 
           const unlockDate = formatUnlockDate(nft.lockedEnd);
           const balanceFormatted = Number(nft.balance) / 1e18; // Convert wei to human-readable
+          const amountFormatted = Number(nft.amount) / 1e18; // Convert wei to human-readable
 
           try {
             // Delete existing record first, then insert (DuckDB approach)
             await db.query(`DELETE FROM venfts WHERE token_id = ${nft.tokenId}`);
             await db.query(`
               INSERT INTO venfts
-              (token_id, owner, balance_raw, balance_formatted, unlock_timestamp, unlock_date, snapshot_time)
-              VALUES (${nft.tokenId}, '${nft.owner}', '${nft.balance}', ${balanceFormatted}, ${nft.lockedEnd}, '${unlockDate}', CURRENT_TIMESTAMP)
+              (token_id, owner, balance_raw, balance_formatted, amount_raw, amount_formatted, unlock_timestamp, unlock_date, snapshot_time)
+              VALUES (${nft.tokenId}, '${nft.owner}', '${nft.balance}', ${balanceFormatted}, '${nft.amount}', ${amountFormatted}, ${nft.lockedEnd}, '${unlockDate}', CURRENT_TIMESTAMP)
             `);
           } catch (dbError) {
             console.error(`Database insertion failed for NFT ${nft.tokenId}:`, dbError);
