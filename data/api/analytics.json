@@ -30,7 +30,7 @@
     {
       "tier": "More Equal (1K-5K)",
       "holderCount": 148,
-      "tierVotingPower": "368.8K",
+      "tierVotingPower": "368.7K",
       "powerPercentage": 17.49,
       "holderPercentage": 4.02,
       "avgPowerPerHolder": "2.5K",
@@ -43,7 +43,7 @@
       "powerPercentage": 8.32,
       "holderPercentage": 93.97,
       "avgPowerPerHolder": "50.71",
-      "avgNftsPerHolder": 1.125397284021959
+      "avgNftsPerHolder": 1.125686217856111
     }
   ],
   "unlockImpact": [
@@ -59,11 +59,11 @@
     },
     {
       "month": "2025-07-01T00:00:00.000Z",
-      "unlockingNfts": 1005,
+      "unlockingNfts": 1006,
       "unlockingPower": "40.8K",
       "affectedHolders": 987,
       "powerImpactPercentage": 1.93,
-      "nftImpactPercentage": 20.37,
+      "nftImpactPercentage": 20.39,
       "holderImpactPercentage": 26.8,
       "cumulativePowerPercentage": 3.23
     },
@@ -110,23 +110,23 @@
   ],
   "top10Analysis": [
     {
-      "groupType": "Rest",
-      "holderCount": 3673,
-      "totalPower": "1.4M",
-      "avgPower": "383.76"
-    },
-    {
       "groupType": "Top 10",
       "holderCount": 10,
       "totalPower": "699.1K",
       "avgPower": "69.9K"
+    },
+    {
+      "groupType": "Rest",
+      "holderCount": 3673,
+      "totalPower": "1.4M",
+      "avgPower": "383.73"
     }
   ],
   "nftSizeDistribution": [
     {
       "range": "M.E.G.A (≥50K)",
       "nftCount": 5,
-      "totalPower": "305.9K",
+      "totalPower": "305.8K",
       "avgPower": "61.2K",
       "percentage": 0.1
     },
@@ -147,17 +147,17 @@
     {
       "range": "More Equal (1K-5K)",
       "nftCount": 213,
-      "totalPower": "493.8K",
+      "totalPower": "493.7K",
       "avgPower": "2.3K",
       "percentage": 4.32
     },
     {
       "range": "Equal (<1K)",
-      "nftCount": 4654,
+      "nftCount": 4655,
       "totalPower": "416.2K",
-      "avgPower": "89.43",
+      "avgPower": "89.40",
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-26T21:31:37.819Z"
+  "lastUpdated": "2025-05-26T21:47:40.837Z"
 }
