@@ -1,3 +1,10 @@
+---
+title: "veEQUAL Governance Analysis"
+description: "Comprehensive voting power distribution and governance risk analysis for veEQUAL on Sonic"
+layout: default
+permalink: /veEQUAL.html
+---
+
 # veEqualSonic
 
 Total Owners: **3,683**, Total NFTs: **4,934**

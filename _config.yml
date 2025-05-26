@@ -1,0 +1,121 @@
+# Jekyll configuration for GitHub Pages
+# veEQUAL Governance Dashboard
+
+# Site settings
+title: "veEQUAL Governance Dashboard"
+description: "Real-time voting power analysis and governance metrics for veEQUAL on Sonic"
+url: "https://veequal.zombieprotocol.xyz"
+baseurl: ""
+
+# Markdown processor configuration
+markdown: kramdown
+highlighter: rouge
+
+# Kramdown configuration for better markdown processing
+kramdown:
+  input: GFM  # GitHub Flavored Markdown
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
+  hard_wrap: false
+  auto_ids: true
+  toc_levels: 1..6
+  smart_quotes: lsquo,rsquo,ldquo,rdquo
+  enable_coderay: false
+
+# Plugin configuration (GitHub Pages supported plugins)
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-default-layout
+  - jekyll-titles-from-headings
+
+# Optional front matter for markdown files
+optional_front_matter:
+  remove_originals: true
+
+# Default layouts
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+  - scope:
+      path: "*.md"
+    values:
+      layout: "default"
+
+# Titles from headings
+titles_from_headings:
+  enabled: true
+  strip_title: true
+  collections: true
+
+# Exclude files from processing
+exclude:
+  - node_modules/
+  - bun.lockb
+  - package.json
+  - tsconfig.json
+  - "*.ts"
+  - "*.js"
+  - lib/
+  - src/
+  - sql/
+  - tests/
+  - data/*.parquet
+  - data/*.duckdb
+  - data/*.wal
+  - .github/
+  - .gitignore
+  - LICENSE
+  - README.md
+  - TECHNICAL.md
+  - GTM_PROJECT_BRIEF.md
+  - "*.code-workspace"
+
+# Include specific files
+include:
+  - data/api/
+  - veEQUAL.md
+
+# Collections configuration
+collections_dir: ""
+
+# Site navigation and structure
+navigation:
+  - title: "Dashboard"
+    url: "/"
+  - title: "Full Report"
+    url: "/veEQUAL.html"
+  - title: "API Documentation"
+    url: "/data/api/"
+
+# GitHub Pages specific settings
+github: [metadata]
+
+# Theme (using GitHub Pages supported themes)
+# Uncomment one of these if you want a specific theme:
+# theme: minima
+# remote_theme: pages-themes/minimal@v0.2.0
+
+# Custom variables for the site
+analytics:
+  enabled: true
+  
+# API endpoint configuration
+api:
+  base_url: "/data/api"
+  endpoints:
+    - dashboard.json
+    - analytics.json
+    - summary.json
+    - top-holders.json
+    - top-nfts.json
+    - wallet-nfts.json
+    - charts.json

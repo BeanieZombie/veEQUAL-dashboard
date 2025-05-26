@@ -203,11 +203,43 @@ jobs:
       uses: actions/configure-pages@v4
       continue-on-error: true
 
+    - name: Setup Ruby for Jekyll
+      if: success()
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1'
+        bundler-cache: true
+      continue-on-error: true
+
+    - name: Create Gemfile if not exists
+      if: success()
+      run: |
+        if [ ! -f "Gemfile" ]; then
+          echo "Creating Gemfile for Jekyll..."
+          cat > Gemfile << 'EOF'
+        source "https://rubygems.org"
+        gem "github-pages", group: :jekyll_plugins
+        gem "jekyll-feed", "~> 0.12"
+        gem "minima", "~> 2.5"
+        EOF
+        fi
+      continue-on-error: true
+
+    - name: Build Jekyll site
+      if: success()
+      run: |
+        # Install Jekyll dependencies
+        bundle install
+        # Build the Jekyll site
+        bundle exec jekyll build --destination ./_site
+        echo "✅ Jekyll site built successfully"
+      continue-on-error: true
+
     - name: Upload to Pages
       if: success()
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ./
+        path: ./_site
       continue-on-error: true
 
     - name: Deploy to GitHub Pages
