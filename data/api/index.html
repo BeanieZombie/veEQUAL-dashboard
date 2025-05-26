@@ -1,0 +1,323 @@
+---
+layout: default
+title: "veEQUAL API Documentation"
+description: "REST API endpoints for veEQUAL governance data"
+---
+
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #333;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 3rem;
+    }
+    
+    .header h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    .api-section {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .api-section h2 {
+        color: #4f46e5;
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 0.5rem;
+    }
+    
+    .endpoint {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .endpoint h3 {
+        color: #1f2937;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .endpoint-url {
+        background: #1f2937;
+        color: #ffffff;
+        padding: 0.75rem 1rem;
+        border-radius: 6px;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 0.9rem;
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .method {
+        background: #059669;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+    
+    .try-button {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        text-decoration: none;
+        display: inline-block;
+        transition: background 0.3s ease;
+    }
+    
+    .try-button:hover {
+        background: #3730a3;
+    }
+    
+    .description {
+        color: #6b7280;
+        margin-bottom: 1rem;
+    }
+    
+    .response-example {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-top: 1rem;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 0.85rem;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    
+    .response-example h4 {
+        color: #374151;
+        margin-bottom: 0.5rem;
+        font-family: inherit;
+        font-size: 0.9rem;
+    }
+    
+    .nav-links {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .nav-links a {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        margin: 0 0.5rem;
+        transition: background 0.3s ease;
+    }
+    
+    .nav-links a:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+</style>
+
+<div class="container">
+    <div class="header">
+        <h1>🔌 veEQUAL API</h1>
+        <p>REST API endpoints for veEQUAL governance analytics</p>
+    </div>
+    
+    <div class="api-section">
+        <h2>📊 Dashboard Endpoints</h2>
+        
+        <div class="endpoint">
+            <h3>Dashboard Summary</h3>
+            <div class="description">
+                Get key metrics and summary data for the dashboard homepage.
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/dashboard.json</code>
+                <a href="dashboard.json" class="try-button">Try it</a>
+            </div>
+            <div class="response-example">
+                <h4>Response Example:</h4>
+                <pre>{
+  "summary": {
+    "totalVotingPower": "2.11M",
+    "uniqueHolders": 3683,
+    "totalNFTs": 4934,
+    "lastUpdated": "2025-05-26T21:10:18.000Z"
+  }
+}</pre>
+            </div>
+        </div>
+        
+        <div class="endpoint">
+            <h3>Analytics Data</h3>
+            <div class="description">
+                Detailed governance analytics including concentration metrics and risk analysis.
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/analytics.json</code>
+                <a href="analytics.json" class="try-button">Try it</a>
+            </div>
+            <div class="response-example">
+                <h4>Response Example:</h4>
+                <pre>{
+  "concentration": {
+    "top_1_percent": 0.6223,
+    "top_10_percent": 0.9607,
+    "gini_coefficient": 0.9608
+  },
+  "risk_level": "CRITICAL"
+}</pre>
+            </div>
+        </div>
+        
+        <div class="endpoint">
+            <h3>Summary Report</h3>
+            <div class="description">
+                High-level summary with executive metrics.
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/summary.json</code>
+                <a href="summary.json" class="try-button">Try it</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-section">
+        <h2>👥 Holders & NFTs</h2>
+        
+        <div class="endpoint">
+            <h3>Top Holders</h3>
+            <div class="description">
+                List of top holders ranked by total voting power.
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/top-holders.json</code>
+                <a href="top-holders.json" class="try-button">Try it</a>
+            </div>
+            <div class="response-example">
+                <h4>Response Example:</h4>
+                <pre>[
+  {
+    "owner": "0x1234...5678",
+    "total_balance": 50000.5,
+    "nft_count": 3,
+    "percentage_of_total": 2.37
+  }
+]</pre>
+            </div>
+        </div>
+        
+        <div class="endpoint">
+            <h3>Top NFTs</h3>
+            <div class="description">
+                Individual NFTs ranked by balance (voting power).
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/top-nfts.json</code>
+                <a href="top-nfts.json" class="try-button">Try it</a>
+            </div>
+            <div class="response-example">
+                <h4>Response Example:</h4>
+                <pre>[
+  {
+    "token_id": 1234,
+    "owner": "0x1234...5678", 
+    "balance": 25000.25,
+    "end_date": "2025-12-31T23:59:59Z"
+  }
+]</pre>
+            </div>
+        </div>
+        
+        <div class="endpoint">
+            <h3>Wallet-NFT Mapping</h3>
+            <div class="description">
+                Complete mapping of wallet addresses to their NFT holdings.
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/wallet-nfts.json</code>
+                <a href="wallet-nfts.json" class="try-button">Try it</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-section">
+        <h2>📈 Charts & Visualization</h2>
+        
+        <div class="endpoint">
+            <h3>Chart Data</h3>
+            <div class="description">
+                Data formatted for charts and visualizations.
+            </div>
+            <div class="endpoint-url">
+                <span class="method">GET</span>
+                <code>/data/api/charts.json</code>
+                <a href="charts.json" class="try-button">Try it</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="api-section">
+        <h2>🔧 Usage Information</h2>
+        <div style="color: #6b7280;">
+            <h3>Rate Limits</h3>
+            <p>No rate limits currently enforced. Data is updated daily via GitHub Actions.</p>
+            
+            <h3>Data Freshness</h3>
+            <p>All endpoints return cached data that is refreshed daily at approximately 00:00 UTC.</p>
+            
+            <h3>CORS</h3>
+            <p>Cross-origin requests are supported for web applications.</p>
+            
+            <h3>Authentication</h3>
+            <p>No authentication required. All endpoints are publicly accessible.</p>
+        </div>
+    </div>
+    
+    <div class="nav-links">
+        <a href="../../">🏠 Dashboard</a>
+        <a href="../../veEQUAL.md">📊 Full Report</a>
+        <a href="https://github.com/BeanieZombie/veEQUAL-dashboard">📂 Source Code</a>
+    </div>
+</div>

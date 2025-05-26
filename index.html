@@ -3,297 +3,287 @@ layout: default
 title: "veEQUAL Governance Dashboard"
 description: "Real-time voting power analysis and governance metrics for veEQUAL on Sonic"
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title | default: site.title }}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-        
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 3rem;
-        }
-        
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        }
-        
-        .card h3 {
-            color: #4f46e5;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-        
-        .metric {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-        }
-        
-        .metric.warning {
-            color: #dc2626;
-        }
-        
-        .metric.success {
-            color: #059669;
-        }
-        
-        .description {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-        
-        .actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #4f46e5;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background 0.3s ease;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-        }
-        
-        .btn:hover {
-            background: #3730a3;
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
-        }
-        
-        .btn.secondary {
-            background: #6b7280;
-            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
-        }
-        
-        .btn.secondary:hover {
-            background: #4b5563;
-        }
-        
-        .api-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .api-endpoint {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Monaco', 'Menlo', monospace;
-            font-size: 0.85rem;
-        }
-        
-        .api-endpoint a {
-            color: #4f46e5;
-            text-decoration: none;
-        }
-        
-        .api-endpoint a:hover {
-            text-decoration: underline;
-        }
-        
-        .footer {
-            text-align: center;
-            color: white;
-            opacity: 0.7;
-            margin-top: 3rem;
-            font-size: 0.9rem;
-        }
-        
-        .loading {
-            text-align: center;
-            color: #6b7280;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>veEQUAL Governance Dashboard</h1>
-            <p>Real-time analytics for Equalizer protocol governance</p>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .header {
+        text-align: center;
+        color: white;
+        margin-bottom: 3rem;
+    }
+    
+    .header h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .header p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+    
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+    
+    .card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    }
+    
+    .card h3 {
+        color: #4f46e5;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+    }
+    
+    .metric {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric.warning {
+        color: #dc2626;
+    }
+    
+    .metric.success {
+        color: #059669;
+    }
+    
+    .description {
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+    
+    .actions {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #4f46e5;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background 0.3s ease;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    
+    .btn:hover {
+        background: #3730a3;
+        box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    }
+    
+    .btn.secondary {
+        background: #6b7280;
+        box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
+    }
+    
+    .btn.secondary:hover {
+        background: #4b5563;
+    }
+    
+    .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .api-endpoint {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem;
+        font-family: 'Monaco', 'Menlo', monospace;
+        font-size: 0.85rem;
+    }
+    
+    .api-endpoint a {
+        color: #4f46e5;
+        text-decoration: none;
+    }
+    
+    .api-endpoint a:hover {
+        text-decoration: underline;
+    }
+    
+    .footer {
+        text-align: center;
+        color: white;
+        opacity: 0.7;
+        margin-top: 3rem;
+        font-size: 0.9rem;
+    }
+    
+    .loading {
+        text-align: center;
+        color: #6b7280;
+        font-style: italic;
+    }
+</style>
+
+<div class="container">
+    <div class="header">
+        <h1>veEQUAL Governance Dashboard</h1>
+        <p>Real-time analytics for Equalizer protocol governance</p>
+    </div>
+    
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Total Voting Power</h3>
+            <div class="metric" id="totalVotingPower">Loading...</div>
+            <div class="description">Total veEQUAL tokens in circulation</div>
         </div>
         
-        <div class="dashboard-grid">
-            <div class="card">
-                <h3>Total Voting Power</h3>
-                <div class="metric" id="totalVotingPower">Loading...</div>
-                <div class="description">Total veEQUAL tokens in circulation</div>
-            </div>
-            
-            <div class="card">
-                <h3>Top 1% Control</h3>
-                <div class="metric warning" id="top1Control">Loading...</div>
-                <div class="description">Voting power held by top 1% of holders</div>
-            </div>
-            
-            <div class="card">
-                <h3>Gini Coefficient</h3>
-                <div class="metric warning" id="giniCoeff">Loading...</div>
-                <div class="description">Measure of wealth inequality (0-1)</div>
-            </div>
-            
-            <div class="card">
-                <h3>Total Holders</h3>
-                <div class="metric success" id="totalHolders">Loading...</div>
-                <div class="description">Unique addresses holding veEQUAL</div>
-            </div>
-            
-            <div class="card">
-                <h3>Total NFTs</h3>
-                <div class="metric success" id="totalNFTs">Loading...</div>
-                <div class="description">Total veEQUAL NFTs minted</div>
-            </div>
-            
-            <div class="card">
-                <h3>Data Freshness</h3>
-                <div class="metric" id="lastUpdate">Loading...</div>
-                <div class="description">Last updated timestamp</div>
-            </div>
+        <div class="card">
+            <h3>Top 1% Control</h3>
+            <div class="metric warning" id="top1Control">Loading...</div>
+            <div class="description">Voting power held by top 1% of holders</div>
         </div>
         
-        <div class="actions">
-            <a href="veEQUAL.md" class="btn">📊 Full Report</a>
-            <a href="https://github.com/BeanieZombie/veEQUAL-dashboard" class="btn secondary">📂 Source Code</a>
+        <div class="card">
+            <h3>Gini Coefficient</h3>
+            <div class="metric warning" id="giniCoeff">Loading...</div>
+            <div class="description">Measure of wealth inequality (0-1)</div>
         </div>
         
-        <div class="card" style="margin-top: 2rem;">
-            <h3>🔌 API Endpoints</h3>
-            <div class="api-grid">
-                <div class="api-endpoint">
-                    <strong>Dashboard Data:</strong><br>
-                    <a href="data/api/dashboard.json">dashboard.json</a>
-                </div>
-                <div class="api-endpoint">
-                    <strong>Top Holders:</strong><br>
-                    <a href="data/api/top-holders.json">top-holders.json</a>
-                </div>
-                <div class="api-endpoint">
-                    <strong>Top NFTs:</strong><br>
-                    <a href="data/api/top-nfts.json">top-nfts.json</a>
-                </div>
-                <div class="api-endpoint">
-                    <strong>Analytics:</strong><br>
-                    <a href="data/api/analytics.json">analytics.json</a>
-                </div>
-                <div class="api-endpoint">
-                    <strong>Wallet Mapping:</strong><br>
-                    <a href="data/api/wallet-nfts.json">wallet-nfts.json</a>
-                </div>
-                <div class="api-endpoint">
-                    <strong>Summary:</strong><br>
-                    <a href="data/api/summary.json">summary.json</a>
-                </div>
-            </div>
+        <div class="card">
+            <h3>Total Holders</h3>
+            <div class="metric success" id="totalHolders">Loading...</div>
+            <div class="description">Unique addresses holding veEQUAL</div>
         </div>
         
-        <div class="footer">
-            <p>Powered by DuckDB • Built with Bun • Data sourced from Sonic blockchain</p>
+        <div class="card">
+            <h3>Total NFTs</h3>
+            <div class="metric success" id="totalNFTs">Loading...</div>
+            <div class="description">Total veEQUAL NFTs minted</div>
+        </div>
+        
+        <div class="card">
+            <h3>Data Freshness</h3>
+            <div class="metric" id="lastUpdate">Loading...</div>
+            <div class="description">Last updated timestamp</div>
         </div>
     </div>
+    
+    <div class="actions">
+        <a href="veEQUAL.md" class="btn">📊 Full Report</a>
+        <a href="https://github.com/BeanieZombie/veEQUAL-dashboard" class="btn secondary">📂 Source Code</a>
+    </div>
+    
+    <div class="card" style="margin-top: 2rem;">
+        <h3>🔌 API Endpoints</h3>
+        <div class="api-grid">
+            <div class="api-endpoint">
+                <strong>Dashboard Data:</strong><br>
+                <a href="data/api/dashboard.json">dashboard.json</a>
+            </div>
+            <div class="api-endpoint">
+                <strong>Top Holders:</strong><br>
+                <a href="data/api/top-holders.json">top-holders.json</a>
+            </div>
+            <div class="api-endpoint">
+                <strong>Top NFTs:</strong><br>
+                <a href="data/api/top-nfts.json">top-nfts.json</a>
+            </div>
+            <div class="api-endpoint">
+                <strong>Analytics:</strong><br>
+                <a href="data/api/analytics.json">analytics.json</a>
+            </div>
+            <div class="api-endpoint">
+                <strong>Wallet Mapping:</strong><br>
+                <a href="data/api/wallet-nfts.json">wallet-nfts.json</a>
+            </div>
+            <div class="api-endpoint">
+                <strong>Summary:</strong><br>
+                <a href="data/api/summary.json">summary.json</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Powered by DuckDB • Built with Bun • Data sourced from Sonic blockchain</p>
+    </div>
+</div>
 
-    <script>
-        // Load dashboard data and populate metrics
-        async function loadDashboardData() {
-            try {
-                const response = await fetch('data/api/dashboard.json');
-                const data = await response.json();
-                
-                // Update metrics using the actual API structure
-                document.getElementById('totalVotingPower').textContent = 
-                    data.summary.totalVotingPower || '2.11M';
-                    
-                // Load analytics for concentration data
-                const analyticsResponse = await fetch('data/api/analytics.json');
-                const analytics = await analyticsResponse.json();
-                
-                document.getElementById('top1Control').textContent = 
-                    analytics.concentration?.top_1_percent 
-                        ? (analytics.concentration.top_1_percent * 100).toFixed(1) + '%'
-                        : '62.2%';
-                document.getElementById('giniCoeff').textContent = 
-                    analytics.concentration?.gini_coefficient?.toFixed(4) || '0.9608';
-                    
-                document.getElementById('totalHolders').textContent = 
-                    data.summary.uniqueHolders?.toLocaleString() || '3,683';
-                document.getElementById('totalNFTs').textContent = 
-                    data.summary.totalNFTs?.toLocaleString() || '4,934';
-                document.getElementById('lastUpdate').textContent = 
-                    new Date(data.summary.lastUpdated).toLocaleDateString() || 'May 26, 2025';
-                    
-            } catch (error) {
-                console.error('Failed to load dashboard data:', error);
-                // Set fallback values
-                document.getElementById('totalVotingPower').textContent = '2.11M';
-                document.getElementById('top1Control').textContent = '62.2%';
-                document.getElementById('giniCoeff').textContent = '0.9608';
-                document.getElementById('totalHolders').textContent = '3,683';
-                document.getElementById('totalNFTs').textContent = '4,934';
-                document.getElementById('lastUpdate').textContent = 'May 26, 2025';
-            }
-        }
+<script>
+    // Load dashboard data and populate metrics
+    async function loadDashboardData() {
+        try {
+            const response = await fetch('data/api/dashboard.json');
+            const data = await response.json();
+                 // Update metrics using the actual API structure
+        document.getElementById('totalVotingPower').textContent =
+            data.summary.totalVotingPower || '2.11M';
+            
+        // Load analytics for concentration data
+        const analyticsResponse = await fetch('data/api/analytics.json');
+        const analytics = await analyticsResponse.json();
         
-        // Load data when page loads
-        loadDashboardData();
-    </script>
-</body>
-</html>
+        document.getElementById('top1Control').textContent =
+            analytics.concentration?.top_1_percent
+                ? (analytics.concentration.top_1_percent * 100).toFixed(1) + '%'
+                : '62.2%';
+        document.getElementById('giniCoeff').textContent =
+            analytics.concentration?.gini_coefficient?.toFixed(4) || '0.9608';
+            
+        document.getElementById('totalHolders').textContent =
+            data.summary.uniqueHolders?.toLocaleString() || '3,683';
+        document.getElementById('totalNFTs').textContent =
+            data.summary.totalNFTs?.toLocaleString() || '4,934';
+        document.getElementById('lastUpdate').textContent =
+            new Date(data.summary.lastUpdated).toLocaleDateString() || 'May 26, 2025';
+    } catch (error) {
+        console.error('Failed to load dashboard data:', error);
+        // Set fallback values
+        document.getElementById('totalVotingPower').textContent = '2.11M';
+        document.getElementById('top1Control').textContent = '62.2%';
+        document.getElementById('giniCoeff').textContent = '0.9608';
+        document.getElementById('totalHolders').textContent = '3,683';
+        document.getElementById('totalNFTs').textContent = '4,934';
+        document.getElementById('lastUpdate').textContent = 'May 26, 2025';
+    }
+}
+
+// Load data when page loads
+loadDashboardData();
+</script>
