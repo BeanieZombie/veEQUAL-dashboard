@@ -2,7 +2,7 @@
   {
     "rank": 1,
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-    "votingPower": "128.8K",
+    "votingPower": "128.7K",
     "totalTrueBalance": "143.8K",
     "nftCount": 3,
     "topNFTId": "1761"
@@ -10,7 +10,7 @@
   {
     "rank": 2,
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
-    "votingPower": "73.1K",
+    "votingPower": "73.0K",
     "totalTrueBalance": "75.1K",
     "nftCount": 5,
     "topNFTId": "4112"
@@ -18,7 +18,7 @@
   {
     "rank": 3,
     "owner": "0xa064B34DC0aEeF23e48B400DC4b0A3f940B55865",
-    "votingPower": "71.1K",
+    "votingPower": "71.0K",
     "totalTrueBalance": "79.4K",
     "nftCount": 3,
     "topNFTId": "23"
@@ -26,7 +26,7 @@
   {
     "rank": 4,
     "owner": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
-    "votingPower": "66.4K",
+    "votingPower": "66.3K",
     "totalTrueBalance": "71.0K",
     "nftCount": 1,
     "topNFTId": "1120"
@@ -34,7 +34,7 @@
   {
     "rank": 5,
     "owner": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
-    "votingPower": "65.4K",
+    "votingPower": "65.3K",
     "totalTrueBalance": "70.0K",
     "nftCount": 1,
     "topNFTId": "106"
@@ -50,7 +50,7 @@
   {
     "rank": 7,
     "owner": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
-    "votingPower": "61.6K",
+    "votingPower": "61.5K",
     "totalTrueBalance": "68.7K",
     "nftCount": 2,
     "topNFTId": "1756"
@@ -66,7 +66,7 @@
   {
     "rank": 9,
     "owner": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
-    "votingPower": "59.8K",
+    "votingPower": "59.7K",
     "totalTrueBalance": "66.7K",
     "nftCount": 1,
     "topNFTId": "1778"
@@ -306,7 +306,7 @@
   {
     "rank": 39,
     "owner": "0x18907a779cFcF032be79e9f638319a10861Fa41B",
-    "votingPower": "10.2K",
+    "votingPower": "10.1K",
     "totalTrueBalance": "10.9K",
     "nftCount": 10,
     "topNFTId": "727"
@@ -570,7 +570,7 @@
   {
     "rank": 72,
     "owner": "0xaA0a5D631EeF76414f50644852027b3E7cc957a2",
-    "votingPower": "5.2K",
+    "votingPower": "5.1K",
     "totalTrueBalance": "5.5K",
     "nftCount": 16,
     "topNFTId": "5351"
