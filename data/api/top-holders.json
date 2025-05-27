@@ -2,7 +2,7 @@
   {
     "rank": 1,
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
-    "votingPower": "128.5K",
+    "votingPower": "128.4K",
     "totalTrueBalance": "143.8K",
     "nftCount": 3,
     "topNFTId": "1761"
@@ -58,7 +58,7 @@
   {
     "rank": 8,
     "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
-    "votingPower": "60.7K",
+    "votingPower": "60.6K",
     "totalTrueBalance": "65.1K",
     "nftCount": 2,
     "topNFTId": "143"
@@ -114,7 +114,7 @@
   {
     "rank": 15,
     "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
-    "votingPower": "32.3K",
+    "votingPower": "32.2K",
     "totalTrueBalance": "46.0K",
     "nftCount": 2,
     "topNFTId": "2655"

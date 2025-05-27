@@ -30,7 +30,7 @@
     {
       "tier": "More Equal (1K-5K)",
       "holderCount": 149,
-      "tierVotingPower": "372.5K",
+      "tierVotingPower": "372.4K",
       "powerPercentage": 17.72,
       "holderPercentage": 4.05,
       "avgPowerPerHolder": "2.5K",
@@ -42,7 +42,7 @@
       "tierVotingPower": "174.5K",
       "powerPercentage": 8.3,
       "holderPercentage": 93.97,
-      "avgPowerPerHolder": "50.43",
+      "avgPowerPerHolder": "50.42",
       "avgNftsPerHolder": 1.125686217856111
     }
   ],
@@ -75,7 +75,7 @@
       "powerImpactPercentage": 2.4,
       "nftImpactPercentage": 9.2,
       "holderImpactPercentage": 11.19,
-      "cumulativePowerPercentage": 5.6
+      "cumulativePowerPercentage": 5.59
     },
     {
       "month": "2025-09-01T00:00:00.000Z",
@@ -113,12 +113,12 @@
       "groupType": "Rest",
       "holderCount": 3673,
       "totalPower": "1.4M",
-      "avgPower": "382.47"
+      "avgPower": "382.45"
     },
     {
       "groupType": "Top 10",
       "holderCount": 10,
-      "totalPower": "696.8K",
+      "totalPower": "696.7K",
       "avgPower": "69.7K"
     }
   ],
@@ -155,9 +155,9 @@
       "range": "Equal (<1K)",
       "nftCount": 4655,
       "totalPower": "414.4K",
-      "avgPower": "89.03",
+      "avgPower": "89.02",
       "percentage": 94.33
     }
   ],
-  "lastUpdated": "2025-05-27T09:35:16.426Z"
+  "lastUpdated": "2025-05-27T09:42:58.840Z"
 }
