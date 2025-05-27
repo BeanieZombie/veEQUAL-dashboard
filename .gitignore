@@ -206,3 +206,9 @@ pipeline-output.log
 
 # Database WAL files
 *.duckdb.wal
+
+# Security and governance assessment files (generated/temporary)
+GOVERNANCE_SECURITY_ASSESSMENT.md
+SECURITY_RESOLUTION_SUMMARY.md
+_site/GOVERNANCE_SECURITY_ASSESSMENT.html
+_site/SECURITY_RESOLUTION_SUMMARY.html

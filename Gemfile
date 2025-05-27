@@ -7,3 +7,6 @@ gem "jekyll-seo-tag"
 gem "minima", "~> 2.5"
 gem "kramdown-parser-gfm"
 gem "webrick", "~> 1.7"
+gem "nokogiri", ">= 1.16.7"
+
+gem "bundler-audit", "~> 0.9.2", group: :development
