@@ -4,7 +4,7 @@
     "totalTrueBalance": "2.7M",
     "totalNFTs": 4935,
     "uniqueHolders": 3683,
-    "lastUpdated": "2025-05-27T08:14:31.820Z"
+    "lastUpdated": "2025-05-27T08:33:16.289Z"
   },
   "topNFTs": [
     {
@@ -21,7 +21,7 @@
       "unlockDate": "2025-11-13",
       "owner": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
       "trueBalance": "70.0K",
-      "votingPower": "65.3K"
+      "votingPower": "65.2K"
     },
     {
       "rank": 3,
@@ -37,7 +37,7 @@
       "unlockDate": "2025-11-06",
       "owner": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
       "trueBalance": "66.7K",
-      "votingPower": "59.7K"
+      "votingPower": "59.6K"
     },
     {
       "rank": 5,
@@ -444,7 +444,7 @@
     {
       "rank": 5,
       "owner": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
-      "votingPower": "65.3K",
+      "votingPower": "65.2K",
       "totalTrueBalance": "70.0K",
       "nftCount": 1,
       "topNFTId": "106"
@@ -476,7 +476,7 @@
     {
       "rank": 9,
       "owner": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
-      "votingPower": "59.7K",
+      "votingPower": "59.6K",
       "totalTrueBalance": "66.7K",
       "nftCount": 1,
       "topNFTId": "1778"
