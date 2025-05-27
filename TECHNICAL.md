@@ -681,7 +681,7 @@ const tocEntries = upcomingUnlocks.map(unlock => {
 3. **Top Holders**: Leaderboard with governance tiers
 4. **Top NFTs**: Individual NFT rankings
 5. **Unlock Schedule**: Future unlock impact analysis
-6. **Governance Risk**: Concentration and centralization analysis
+6. **Governance Assessment**: Concentration and centralization analysis
 
 ## Database Schema
 
@@ -1217,7 +1217,7 @@ interface UnlockEvent {
 - Historical trend analysis
 - Governance concentration tracking
 - Unlock impact visualization
-- Risk assessment dashboards
+- Governance assessment dashboards
 
 #### GET /api/dashboard
 
@@ -1248,7 +1248,7 @@ interface WalletNFTs {
 
 #### GET /api/analytics
 
-Advanced analytics endpoint with governance risk metrics and projections.
+Advanced analytics endpoint with governance assessment metrics and projections.
 
 **Note:** Currently disabled pending schema validation. Returns 503 status.
 

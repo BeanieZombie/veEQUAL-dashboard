@@ -14,9 +14,9 @@ Track voting power distribution, analyze governance concentration, and monitor u
 
 ## What This Provides
 
-- **Governance Risk Assessment**: Gini coefficient analysis and concentration metrics for institutional due diligence
+- **Governance Assessment**: Gini coefficient analysis and concentration metrics for institutional due diligence
 - **Whale Movement Tracking**: Monitor large holder behavior and voting power shifts across governance tiers
-- **Unlock Impact Analysis**: 90-day projection of governance power changes with risk indicators
+- **Unlock Impact Analysis**: 90-day projection of governance power changes with assessment indicators
 - **Real-time APIs**: Production-ready endpoints with sub-second response times and CORS support
 - **Enterprise Analytics**: Mathematical models for regulatory compliance and governance health assessment
 
@@ -129,12 +129,12 @@ This process:
 
 **For DeFi Protocols**
 - Monitor governance health and decentralization metrics
-- Track voting power concentration risks
+- Track voting power concentration patterns
 - Analyze unlock impact on governance stability
 
 **For Institutional Investors**
 - Due diligence on governance structures
-- Risk assessment for token investments
+- Governance assessment for token investments
 - Regulatory compliance reporting
 
 **For Governance Participants**

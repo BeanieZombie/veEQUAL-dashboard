@@ -13,7 +13,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0x5f0874D5e6Aa0f6D7F51ACCf9c52e0827143F0d6",
     "trueBalance": "70.0K",
-    "votingPower": "65.3K"
+    "votingPower": "65.2K"
   },
   {
     "rank": 3,
@@ -29,7 +29,7 @@
     "unlockDate": "2025-11-06",
     "owner": "0x9A747221E5E2482EA18E161C40FC8501475ac9ad",
     "trueBalance": "66.7K",
-    "votingPower": "59.7K"
+    "votingPower": "59.6K"
   },
   {
     "rank": 5,
@@ -72,22 +72,6 @@
     "votingPower": "39.7K"
   },
   {
-    "rank": 11,
-    "nftId": "2506",
-    "unlockDate": "2025-07-31",
-    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "trueBalance": "42.2K",
-    "votingPower": "15.0K"
-  },
-  {
-    "rank": 13,
-    "nftId": "2508",
-    "unlockDate": "2025-09-04",
-    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
-    "trueBalance": "42.2K",
-    "votingPower": "23.1K"
-  },
-  {
     "rank": 10,
     "nftId": "2505",
     "unlockDate": "2025-06-26",
@@ -101,7 +85,23 @@
     "unlockDate": "2025-08-21",
     "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
     "trueBalance": "42.2K",
-    "votingPower": "19.9K"
+    "votingPower": "19.8K"
+  },
+  {
+    "rank": 13,
+    "nftId": "2508",
+    "unlockDate": "2025-09-04",
+    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+    "trueBalance": "42.2K",
+    "votingPower": "23.1K"
+  },
+  {
+    "rank": 11,
+    "nftId": "2506",
+    "unlockDate": "2025-07-31",
+    "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
+    "trueBalance": "42.2K",
+    "votingPower": "15.0K"
   },
   {
     "rank": 14,
@@ -325,7 +325,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0x2b75BAc8d122A55534C946950E2751DC0366e9a0",
     "trueBalance": "10.2K",
-    "votingPower": "9.6K"
+    "votingPower": "9.5K"
   },
   {
     "rank": 42,
@@ -349,7 +349,7 @@
     "unlockDate": "2025-10-30",
     "owner": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
     "trueBalance": "10.0K",
-    "votingPower": "8.6K"
+    "votingPower": "8.5K"
   },
   {
     "rank": 45,

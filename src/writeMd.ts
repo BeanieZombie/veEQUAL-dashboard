@@ -81,7 +81,7 @@ interface GovernanceAnalysis {
   potential_max_voting_power: number;
   current_gini: number;
   potential_gini: number;
-  concentration_risk_shift: {
+  concentration_analysis: {
     current_top1_percent: number;
     potential_top1_percent: number;
     current_top10_percent: number;
@@ -159,11 +159,20 @@ function createProgressBar(percentage: number, width: number = 20): string {
   return '█'.repeat(filled) + '░'.repeat(empty);
 }
 
-function getRiskLevel(percentage: number): string {
+function getConcentrationLevel(percentage: number): string {
   if (percentage >= 50) return 'CRITICAL';
   if (percentage >= 30) return 'HIGH';
-  if (percentage >= 15) return 'MEDIUM';
+  if (percentage >= 15) return 'MODERATE';
   return 'LOW';
+}
+
+function getGovernanceSignal(giniCoefficient: number): string {
+  // For governance tokens, high Gini indicates strong locking behavior
+  // which is typically positive for token holders
+  if (giniCoefficient >= 0.85) return 'STRONG LOCK'; // Very high concentration = strong conviction
+  if (giniCoefficient >= 0.75) return 'MODERATE LOCK'; // High concentration = moderate locking
+  if (giniCoefficient >= 0.6) return 'BALANCED'; // Medium concentration = balanced participation
+  return 'HIGH LIQUIDITY'; // Low concentration = high liquidity preference
 }
 
 function formatMonth(dateStr: string): string {
@@ -379,7 +388,7 @@ export async function writeMd(): Promise<void> {
     markdown += `1. [Executive Summary](#executive-summary)\n`;
     markdown += `2. [Voting Power Distribution](#voting-power-distribution)\n`;
     markdown += `3. [Unlock Schedule Analysis (Based on Token Balance)](#unlock-schedule-analysis-based-on-token-balance)\n`;
-    markdown += `4. [Governance Risk Analysis](#governance-risk-analysis)\n`;
+    markdown += `4. [Governance Analysis](#governance-analysis)\n`;
     markdown += `5. [Top 10 NFTs by Balance](#top-10-nfts-by-balance)\n`;
     markdown += `6. [Top 10 Holders by Total Voting Power](#top-10-holders-by-total-voting-power)\n`;
     markdown += `7. [Unlockable veEQUAL](#unlockable-veequal)\n`;
@@ -395,17 +404,17 @@ export async function writeMd(): Promise<void> {
     markdown += `9. [veEQUAL Leaderboard](#veequal-leaderboard)\n\n`;
     markdown += `---\n\n`;
 
-    // Executive Summary with Risk Assessment
+    // Executive Summary with Governance Assessment
     const top1Percentage = grandTotalVotingPower > 0 ? (top1Power / grandTotalVotingPower) * 100 : 0;
     const top10Percentage = grandTotalVotingPower > 0 ? (top10Power / grandTotalVotingPower) * 100 : 0;
 
     markdown += `## Executive Summary\n\n`;
-    markdown += `| Metric | Value | Risk Level |\n`;
+    markdown += `| Metric | Value | Assessment |\n`;
     markdown += `|--------|-------|------------|\n`;
     markdown += `| Total Voting Power | ${formatVotingPower(grandTotalVotingPower)} | - |\n`;
     markdown += `| Top 1% Control | ${top1Percentage.toFixed(2)}% | ${top1Percentage >= 50 ? 'CRITICAL' : top1Percentage >= 30 ? 'HIGH' : 'MEDIUM'} |\n`;
     markdown += `| Top 10% Control | ${top10Percentage.toFixed(2)}% | ${top10Percentage >= 80 ? 'CRITICAL' : top10Percentage >= 60 ? 'HIGH' : 'MEDIUM'} |\n`;
-    markdown += `| Gini Coefficient | ${giniCoefficient.toFixed(4)} | ${giniCoefficient >= 0.8 ? 'HIGH' : giniCoefficient >= 0.6 ? 'MEDIUM' : 'LOW'} |\n\n`;
+    markdown += `| Gini Coefficient | ${giniCoefficient.toFixed(4)} | ${getGovernanceSignal(giniCoefficient)} |\n\n`;
 
     // EQUAL Token Governance Context - REMOVED
     /*
@@ -450,8 +459,8 @@ export async function writeMd(): Promise<void> {
       });
       markdown += '```\n\n';
 
-      markdown += `| Month | Token Balance | NFTs | Impact (vs Total Locked) | Risk |\n`; // Updated header
-      markdown += `|-------|---------------|------|--------------------------|------|\n`; // Updated header
+      markdown += `| Month | Token Balance | NFTs | Impact (vs Total Locked) | Assessment |\n`; // Updated header
+      markdown += `|-------|---------------|------|--------------------------|------------|\n`; // Updated header
       // Need total locked tokens for impact calculation
       const totalLockedTokensQuery = `SELECT SUM(CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) / 1e18) as total_locked FROM venfts WHERE CAST(COALESCE(amount_raw, balance_raw) AS DECIMAL(38,0)) > 0`;
       const totalLockedResultArray = (await db.query(totalLockedTokensQuery) as any).toArray();
@@ -459,17 +468,36 @@ export async function writeMd(): Promise<void> {
 
       unlockScheduleData.forEach(item => {
         const impactPercentage = totalLockedTokens > 0 ? ((item.token_balance || 0) / totalLockedTokens) * 100 : 0; // New logic
-        const riskLevel = impactPercentage >= 10 ? 'HIGH' : impactPercentage >= 5 ? 'MEDIUM' : 'LOW';
-        markdown += `| ${formatMonth(item.month + '-01')} | ${formatVotingPower(item.token_balance || 0)} | ${item.nft_count.toLocaleString()} | ${impactPercentage.toFixed(2)}% | ${riskLevel} |\n`; // Updated data point
+        const assessmentLevel = impactPercentage >= 10 ? 'MAJOR' : impactPercentage >= 5 ? 'MODERATE' : 'MINOR';
+        markdown += `| ${formatMonth(item.month + '-01')} | ${formatVotingPower(item.token_balance || 0)} | ${item.nft_count.toLocaleString()} | ${impactPercentage.toFixed(2)}% | ${assessmentLevel} |\n`; // Updated data point
       });
       markdown += '\n';
     }
 
-    // Concentration Risk Flow (Mermaid)
-    markdown += `## Governance Risk Analysis\n\n`;
-    markdown += `<!-- The flowchart below is a static representation of general governance risk factors. -->\n`;
+    // Governance Analysis with Context
+    markdown += `## Governance Analysis\n\n`;
+    markdown += `### Key Insights\n\n`;
+    markdown += `**Gini Coefficient: ${giniCoefficient.toFixed(4)} (${getGovernanceSignal(giniCoefficient)})**\n\n`;
+    
+    // Provide context based on the Gini level
+    if (giniCoefficient >= 0.85) {
+      markdown += `- **Strong Lock Signal**: High concentration indicates committed holders are choosing to lock tokens for governance rewards\n`;
+      markdown += `- **Reduced Sell Pressure**: Most voting power is vested, reducing immediate selling pressure\n`;
+      markdown += `- **Governance Participation**: Active governance participation by committed stakeholders\n`;
+    } else if (giniCoefficient >= 0.75) {
+      markdown += `- **Moderate Lock Preference**: Moderate concentration suggests balanced locking behavior\n`;
+      markdown += `- **Mixed Sentiment**: Some holders prefer liquidity while others commit to governance\n`;
+    } else {
+      markdown += `- **High Liquidity Preference**: Lower concentration indicates preference for liquid tokens\n`;
+      markdown += `- **Governance Engagement**: Distributed voting power across many participants\n`;
+    }
+    
+    markdown += `\n**Context**: With ${(5000000).toLocaleString()}+ total EQUAL supply, the concentrated veEQUAL voting power suggests selective participation by holders who value governance rewards over liquidity.\n\n`;
+
+    markdown += `### Distribution Flow\n\n`;
+    markdown += `<!-- The flowchart below shows the governance power distribution analysis. -->\n`;
     markdown += '```mermaid\n';
-    markdown += 'flowchart TD\n'; // Add diagram type
+    markdown += 'flowchart TD\n';
     markdown += `    A[Total Holders: ${totalHolders.toLocaleString()}] --> B[Top 1%: ${top1Count} holders]\n`;
     markdown += `    A --> C[Top 5%: ${top5Count} holders]\n`;
     markdown += `    A --> D[Top 10%: ${top10Count} holders]\n`;
@@ -478,11 +506,11 @@ export async function writeMd(): Promise<void> {
     markdown += `    D --> G[Controls ${top10Percentage.toFixed(1)}% of votes]\n`;
 
     if (top1Percentage >= 50) {
-      markdown += `    E --> H[CRITICAL: Governance centralization risk]\n`;
+      markdown += `    E --> H[CRITICAL: High governance concentration]\n`;
     } else if (top10Percentage >= 60) {
-      markdown += `    G --> H[HIGH: Minority control risk]\n`;
+      markdown += `    G --> H[HIGH: Concentrated governance]\n`;
     } else {
-      markdown += `    G --> H[MEDIUM: Acceptable distribution]\n`;
+      markdown += `    G --> H[MODERATE: Distributed governance]\n`;
     }
     markdown += '```\n\n';
 
