@@ -5,7 +5,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0x28aa4F9ffe21365473B64C161b566C3CdeAD0108",
     "trueBalance": "71.0K",
-    "votingPower": "66.3K"
+    "votingPower": "66.2K"
   },
   {
     "rank": 2,
@@ -21,7 +21,7 @@
     "unlockDate": "2025-11-06",
     "owner": "0xA1B08F82506e35Ec81d7f7D5eD4a89b03B95CE55",
     "trueBalance": "68.7K",
-    "votingPower": "61.5K"
+    "votingPower": "61.4K"
   },
   {
     "rank": 4,
@@ -37,7 +37,7 @@
     "unlockDate": "2025-11-06",
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
     "trueBalance": "58.7K",
-    "votingPower": "52.6K"
+    "votingPower": "52.5K"
   },
   {
     "rank": 6,
@@ -45,7 +45,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0x300f31c44F6Aaf8c0925e25B2C655926FFa9eA45",
     "trueBalance": "50.0K",
-    "votingPower": "46.7K"
+    "votingPower": "46.6K"
   },
   {
     "rank": 7,
@@ -53,7 +53,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0xBe8DEec6dfc9441487D18E28fb2D4f72f5bE5F5A",
     "trueBalance": "50.0K",
-    "votingPower": "46.7K"
+    "votingPower": "46.6K"
   },
   {
     "rank": 8,
@@ -85,7 +85,7 @@
     "unlockDate": "2025-09-04",
     "owner": "0x44cA5F5ca91C134b09D28E2b21f5482d4c182Aef",
     "trueBalance": "42.2K",
-    "votingPower": "23.2K"
+    "votingPower": "23.1K"
   },
   {
     "rank": 10,
@@ -109,7 +109,7 @@
     "unlockDate": "2025-11-06",
     "owner": "0x5Daf884B73F6aB637D72bf09475a8455121614E6",
     "trueBalance": "40.7K",
-    "votingPower": "36.4K"
+    "votingPower": "36.3K"
   },
   {
     "rank": 15,
@@ -117,7 +117,7 @@
     "unlockDate": "2025-09-11",
     "owner": "0x424e5AF4A2FB8933f1d31cc5b00B105049a9A09d",
     "trueBalance": "40.0K",
-    "votingPower": "23.5K"
+    "votingPower": "23.4K"
   },
   {
     "rank": 16,
@@ -141,7 +141,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0xC606e3D6C5dd451aB79B554d3A560833FFF2E5Dc",
     "trueBalance": "33.9K",
-    "votingPower": "31.7K"
+    "votingPower": "31.6K"
   },
   {
     "rank": 19,
@@ -157,7 +157,7 @@
     "unlockDate": "2025-10-02",
     "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
     "trueBalance": "26.0K",
-    "votingPower": "18.3K"
+    "votingPower": "18.2K"
   },
   {
     "rank": 21,
@@ -173,7 +173,7 @@
     "unlockDate": "2025-06-19",
     "owner": "0xbF2fd2aCcB28104A307A0BA30618b95d76E817D2",
     "trueBalance": "20.3K",
-    "votingPower": "2.6K"
+    "votingPower": "2.5K"
   },
   {
     "rank": 23,
@@ -181,7 +181,7 @@
     "unlockDate": "2025-11-13",
     "owner": "0x5a4CC0a1a90fE4a57B4Bc09d81687123bF665EC2",
     "trueBalance": "20.0K",
-    "votingPower": "18.7K"
+    "votingPower": "18.6K"
   },
   {
     "rank": 24,
@@ -189,7 +189,7 @@
     "unlockDate": "2025-10-02",
     "owner": "0x17c098031735F1e9C1aAE772E558c52ec974C8Fe",
     "trueBalance": "20.0K",
-    "votingPower": "14.1K"
+    "votingPower": "14.0K"
   },
   {
     "rank": 25,
@@ -277,7 +277,7 @@
     "unlockDate": "2025-11-20",
     "owner": "0x5e97CE47d92AFCaba6e0d5A113Ec8f7309666CC7",
     "trueBalance": "14.1K",
-    "votingPower": "13.7K"
+    "votingPower": "13.6K"
   },
   {
     "rank": 36,
@@ -381,7 +381,7 @@
     "unlockDate": "2025-08-14",
     "owner": "0xD588a467C361C3F7B3a85B100FE550C61ed0B5d0",
     "trueBalance": "9.1K",
-    "votingPower": "4.0K"
+    "votingPower": "3.9K"
   },
   {
     "rank": 49,
@@ -397,6 +397,6 @@
     "unlockDate": "2025-10-30",
     "owner": "0x1708faC5dFe4C040Fa2dACeaf13cdA9dA5a5459F",
     "trueBalance": "8.0K",
-    "votingPower": "6.9K"
+    "votingPower": "6.8K"
   }
 ]
