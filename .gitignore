@@ -211,8 +211,12 @@ pipeline-output.log
 _site/
 
 # Generated API data files (automated updates create these)
-data/api/
+# Allow API files to be committed for GitHub Pages deployment
+# data/api/
 
 # Security and governance assessment files (generated/temporary)
 GOVERNANCE_SECURITY_ASSESSMENT.md
 SECURITY_RESOLUTION_SUMMARY.md
+
+# Auto-generated report files (created by GitHub Actions workflow)
+veEQUAL.md

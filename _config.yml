@@ -99,10 +99,16 @@ titles_from_headings:
 # Include specific files and configure Jekyll to serve JSON files properly
 include:
   - data/api/
+  - _site/data/api/
 
 # Keep JSON files as-is without processing
 keep_files:
   - data/api/
+
+# Ensure data directory is copied to the build
+static_files:
+  - data/api/*.json
+  - data/api/*.html
 
 # Collections configuration
 collections_dir: ""
