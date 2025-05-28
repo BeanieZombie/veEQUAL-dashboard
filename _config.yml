@@ -96,8 +96,12 @@ titles_from_headings:
   strip_title: true
   collections: true
 
-# Include specific files
+# Include specific files and configure Jekyll to serve JSON files properly
 include:
+  - data/api/
+
+# Keep JSON files as-is without processing
+keep_files:
   - data/api/
 
 # Collections configuration
