@@ -2,9 +2,9 @@
 # veEQUAL Governance Dashboard
 
 # Site settings
-title: "veEQUAL Governance Dashboard"
-description: "Real-time voting power analysis and governance metrics for veEQUAL on Sonic"
-url: "https://veequal.zombieprotocol.xyz"
+title: veEQUAL Governance Dashboard
+description: Real-time voting power analysis and governance metrics for veEQUAL on Sonic
+url: https://veequal.zombieprotocol.xyz
 baseurl: ""
 
 # Markdown processor configuration
@@ -77,18 +77,18 @@ include:
 defaults:
   - scope:
       path: ""
-      type: "pages"
+      type: pages
     values:
-      layout: "default"
+      layout: default
   - scope:
       path: "*.md"
     values:
-      layout: "default"
+      layout: default
   - scope:
-      path: "veEQUAL.md"
+      path: veEQUAL.md
     values:
-      layout: "default"
-      permalink: "/veEQUAL.html"
+      layout: default
+      permalink: /veEQUAL.html
 
 # Titles from headings
 titles_from_headings:
@@ -96,31 +96,21 @@ titles_from_headings:
   strip_title: true
   collections: true
 
-# Include specific files and configure Jekyll to serve JSON files properly
-include:
-  - data/api/
-  - _site/data/api/
-
 # Keep JSON files as-is without processing
 keep_files:
   - data/api/
-
-# Ensure data directory is copied to the build
-static_files:
-  - data/api/*.json
-  - data/api/*.html
 
 # Collections configuration
 collections_dir: ""
 
 # Site navigation and structure
 navigation:
-  - title: "Dashboard"
-    url: "/"
-  - title: "Full Report"
-    url: "/veEQUAL.html"
-  - title: "API Documentation"
-    url: "/data/api/"
+  - title: Dashboard
+    url: /
+  - title: Full Report
+    url: /veEQUAL.html
+  - title: API Documentation
+    url: /data/api/
 
 # GitHub Pages specific settings
 github: [metadata]
@@ -136,7 +126,7 @@ analytics:
 
 # API endpoint configuration
 api:
-  base_url: "/data/api"
+  base_url: /data/api
   endpoints:
     - dashboard.json
     - analytics.json
