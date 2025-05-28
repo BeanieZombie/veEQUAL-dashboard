@@ -12,13 +12,13 @@
     },
     {
       "range": "More Equal (1K-5K)",
-      "count": 213,
-      "percentage": 4.32
+      "count": 212,
+      "percentage": 4.3
     },
     {
       "range": "Equal (<1K)",
       "count": 4656,
-      "percentage": 94.33
+      "percentage": 94.35
     }
   ],
   "unlockTimeline": [
