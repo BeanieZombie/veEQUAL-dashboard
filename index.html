@@ -10,7 +10,7 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
         padding: 0;
         box-sizing: border-box;
     }
-    
+
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         line-height: 1.6;
@@ -18,14 +18,14 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         min-height: 100vh;
     }
-    
+
     .dashboard-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
         margin-bottom: 3rem;
     }
-    
+
     .card {
         background: white;
         border-radius: 15px;
@@ -33,49 +33,49 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .card:hover {
         transform: translateY(-5px);
         box-shadow: 0 15px 40px rgba(0,0,0,0.15);
     }
-    
+
     .card h3 {
         color: #4f46e5;
         margin-bottom: 1rem;
         font-size: 1.3rem;
     }
-    
+
     .metric {
         font-size: 2rem;
         font-weight: bold;
         color: #1f2937;
         margin-bottom: 0.5rem;
     }
-    
+
     .metric.warning {
         color: #dc2626;
     }
-    
+
     .metric.success {
         color: #059669;
     }
-    
+
     .metric.governance {
         color: #6366f1;
     }
-    
+
     .description {
         color: #6b7280;
         font-size: 0.9rem;
     }
-    
+
     .actions {
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
         justify-content: center;
     }
-    
+
     .btn {
         display: inline-block;
         padding: 12px 24px;
@@ -87,28 +87,28 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
         transition: background 0.3s ease;
         box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     }
-    
+
     .btn:hover {
         background: #3730a3;
         box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
     }
-    
+
     .btn.secondary {
         background: #6b7280;
         box-shadow: 0 4px 12px rgba(107, 114, 128, 0.3);
     }
-    
+
     .btn.secondary:hover {
         background: #4b5563;
     }
-    
+
     .api-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
         margin-top: 2rem;
     }
-    
+
     .api-endpoint {
         background: #f8fafc;
         border: 1px solid #e2e8f0;
@@ -117,16 +117,16 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
         font-family: 'Monaco', 'Menlo', monospace;
         font-size: 0.85rem;
     }
-    
+
     .api-endpoint a {
         color: #4f46e5;
         text-decoration: none;
     }
-    
+
     .api-endpoint a:hover {
         text-decoration: underline;
     }
-    
+
     .loading {
         text-align: center;
         color: #6b7280;
@@ -140,43 +140,43 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
             <div class="metric" id="totalVotingPower">Loading...</div>
             <div class="description">Total veEQUAL tokens in circulation</div>
         </div>
-        
+
         <div class="card">
             <h3>Top 1% Control</h3>
             <div class="metric warning" id="top1Control">Loading...</div>
             <div class="description">Voting power held by top 1% of holders</div>
         </div>
-        
+
         <div class="card">
             <h3>Gini Coefficient</h3>
             <div class="metric governance" id="giniCoeff">Loading...</div>
             <div class="description">Governance commitment signal (0-1)</div>
         </div>
-        
+
         <div class="card">
             <h3>Total Holders</h3>
             <div class="metric success" id="totalHolders">Loading...</div>
             <div class="description">Unique addresses holding veEQUAL</div>
         </div>
-        
+
         <div class="card">
             <h3>Total NFTs</h3>
             <div class="metric success" id="totalNFTs">Loading...</div>
             <div class="description">Total veEQUAL NFTs minted</div>
         </div>
-        
+
         <div class="card">
             <h3>Data Freshness</h3>
             <div class="metric" id="lastUpdate">Loading...</div>
             <div class="description">Last updated timestamp</div>
         </div>
     </div>
-    
+
     <div class="actions">
-        <a href="veEQUAL.md" class="btn">📊 Full Report</a>
+        <a href="veEQUAL.html" class="btn">📊 Full Report</a>
         <a href="https://github.com/BeanieZombie/veEQUAL-dashboard" class="btn secondary">📂 Source Code</a>
     </div>
-    
+
     <div class="card" style="margin-top: 2rem;">
         <h3>🔌 API Endpoints</h3>
         <div class="api-grid">
@@ -216,18 +216,18 @@ description: "Real-time voting power analysis and governance metrics for veEQUAL
                  // Update metrics using the actual API structure
         document.getElementById('totalVotingPower').textContent =
             data.summary.totalVotingPower || '2.11M';
-            
+
         // Load analytics for concentration data
         const analyticsResponse = await fetch('data/api/analytics.json');
         const analytics = await analyticsResponse.json();
-        
+
         document.getElementById('top1Control').textContent =
             analytics.concentration?.top_1_percent
                 ? (analytics.concentration.top_1_percent * 100).toFixed(1) + '%'
                 : '62.2%';
         document.getElementById('giniCoeff').textContent =
             analytics.concentration?.gini_coefficient?.toFixed(4) || '0.9608';
-            
+
         document.getElementById('totalHolders').textContent =
             data.summary.uniqueHolders?.toLocaleString() || '3,683';
         document.getElementById('totalNFTs').textContent =
