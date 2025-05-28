@@ -157,7 +157,7 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            mermaid.initialize({ 
+            mermaid.initialize({
                 startOnLoad: false,
                 theme: 'default',
                 themeVariables: {
@@ -169,31 +169,31 @@
                     tertiaryColor: '#f7fafc'
                 }
             });
-            
+
             // Find and render Mermaid charts
             function renderMermaidCharts() {
                 // Look for code blocks with language-mermaid class
                 const mermaidBlocks = document.querySelectorAll('code.language-mermaid, .language-mermaid code, pre.highlight code.language-mermaid');
-                
+
                 mermaidBlocks.forEach(function(block, index) {
                     const mermaidCode = block.textContent || block.innerText;
                     const mermaidId = 'mermaid-' + index;
-                    
+
                     // Create a div to hold the rendered chart
                     const mermaidDiv = document.createElement('div');
                     mermaidDiv.id = mermaidId;
                     mermaidDiv.className = 'mermaid';
                     mermaidDiv.textContent = mermaidCode;
-                    
+
                     // Replace the code block with the mermaid div
                     const parent = block.closest('pre') || block.parentNode;
                     parent.parentNode.replaceChild(mermaidDiv, parent);
                 });
-                
+
                 // Render all mermaid diagrams
                 mermaid.run();
             }
-            
+
             // Run after a short delay to ensure DOM is fully loaded
             setTimeout(renderMermaidCharts, 200);
         });

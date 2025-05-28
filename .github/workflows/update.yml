@@ -47,7 +47,7 @@ jobs:
         echo "BUN_RUNTIME_TRANSPILER_CACHE_PATH=/tmp/bun-cache" >> $GITHUB_ENV
         echo "BUN_QUIET=1" >> $GITHUB_ENV
         mkdir -p /tmp/bun-cache
-        
+
         # System information for debugging
         echo "=== System Information ==="
         echo "Architecture: $(uname -m)"
@@ -55,7 +55,7 @@ jobs:
         echo "Available memory: $(free -h)"
         echo "CPU info:"
         lscpu | head -5
-        
+
         echo "✅ System configured for Bun stability"
 
     - name: Install Build Tools
@@ -89,19 +89,19 @@ jobs:
         echo "=== Installing Project Dependencies ==="
         # Clear any existing cache that might be corrupted
         rm -rf ~/.bun/install/cache/* /tmp/bun-cache/* 2>/dev/null || true
-        
+
         # Install dependencies with Bun
         bun install --verbose --no-cache
-        
+
         # Handle DuckDB installation separately with fallback mechanisms
         echo "Installing DuckDB with fallback mechanisms..."
-        
+
         # Method 1: Try normal installation
         if bun add duckdb 2>/dev/null; then
           echo "✅ DuckDB installed via normal method"
         else
           echo "⚠️ Normal DuckDB installation failed, trying alternative methods..."
-          
+
           # Method 2: Force rebuild from source
           if bun add duckdb --force 2>/dev/null; then
             echo "✅ DuckDB installed via force rebuild"
@@ -110,14 +110,14 @@ jobs:
             exit 1
           fi
         fi
-        
+
         echo "✅ Dependencies installation completed"
 
     - name: Verify DuckDB Installation
       run: |
         echo "=== DuckDB Verification ==="
         echo "Checking DuckDB installation..."
-        
+
         # Use a more robust verification approach
         bun -e "
         (async () => {
@@ -125,11 +125,11 @@ jobs:
             console.log('Attempting to import DuckDB...');
             const duckdb = await import('duckdb');
             console.log('✅ DuckDB module loaded successfully');
-            
+
             console.log('Creating in-memory database...');
             const db = new duckdb.Database(':memory:');
             console.log('✅ DuckDB database created successfully');
-            
+
             // Test a simple query
             db.all('SELECT 1 as test', (err, rows) => {
               if (err) {
@@ -164,7 +164,7 @@ jobs:
         # Add stability flags for Bun
         export BUN_RUNTIME_TRANSPILER_CACHE_PATH=/tmp/bun-cache
         export BUN_QUIET=1
-        
+
         for i in {1..3}; do
           echo "=== Data pipeline attempt $i/3 ==="
           # Use timeout and handle segfaults gracefully
@@ -174,20 +174,20 @@ jobs:
           else
             exit_code=$?
             echo "❌ Attempt $i failed with exit code $exit_code"
-            
+
             # Check for segfault or illegal instruction
             if [ $exit_code -eq 139 ] || [ $exit_code -eq 132 ]; then
               echo "⚠️ Detected runtime crash (segfault/illegal instruction)"
               echo "Clearing Bun cache and retrying..."
               rm -rf /tmp/bun-cache ~/.bun/install/cache/* 2>/dev/null || true
             fi
-            
+
             # Show some debugging info
             echo "Current directory contents:"
             ls -la
             echo "Data directory contents:"
             ls -la data/ 2>/dev/null || echo "Data directory not found"
-            
+
             if [ $i -eq 3 ]; then
               echo "❌ Data pipeline failed after 3 attempts"
               exit 1
@@ -196,7 +196,7 @@ jobs:
             sleep 15
           fi
         done
-        
+
         # Verify the output files exist
         echo "=== Verifying pipeline outputs ==="
         if [ -f "data/veEqual.duckdb" ]; then
@@ -205,14 +205,14 @@ jobs:
           echo "❌ Database file missing"
           exit 1
         fi
-        
+
         if [ -f "veEQUAL.md" ]; then
           echo "✅ Markdown report created: $(ls -lh veEQUAL.md)"
         else
           echo "❌ Markdown report missing"
           exit 1
         fi
-        
+
         echo "✅ Data pipeline completed successfully"
       timeout-minutes: 35
       env:
@@ -269,7 +269,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add -A
         git commit -m "feat: automated data update $(date -u '+%Y-%m-%d %H:%M UTC')"
-        
+
         # Pull latest changes and push (with retry logic for conflicts)
         for i in {1..3}; do
           if git push; then

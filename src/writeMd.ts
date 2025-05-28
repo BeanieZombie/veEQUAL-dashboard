@@ -360,7 +360,16 @@ export async function writeMd(): Promise<void> {
     }
 
     // --- Start Markdown Generation ---
-    let markdown = `# veEqualSonic\n\n`; // Match title from image
+    let markdown = `---
+layout: default
+title: "veEQUAL Full Report"
+description: "Comprehensive analysis of veEQUAL token distribution and governance metrics"
+permalink: /veEQUAL.html
+---
+
+# veEqualSonic
+
+`; // Match title from image
     markdown += `Total Owners: **${totalOwners.toLocaleString()}**, Total NFTs: **${totalNFTs.toLocaleString()}**\n`;
     markdown += `Last built: **${lastBuiltDate}**\n\n`;
 
@@ -478,7 +487,7 @@ export async function writeMd(): Promise<void> {
     markdown += `## Governance Analysis\n\n`;
     markdown += `### Key Insights\n\n`;
     markdown += `**Gini Coefficient: ${giniCoefficient.toFixed(4)} (${getGovernanceSignal(giniCoefficient)})**\n\n`;
-    
+
     // Provide context based on the Gini level
     if (giniCoefficient >= 0.85) {
       markdown += `- **Strong Lock Signal**: High concentration indicates committed holders are choosing to lock tokens for governance rewards\n`;
@@ -491,7 +500,7 @@ export async function writeMd(): Promise<void> {
       markdown += `- **High Liquidity Preference**: Lower concentration indicates preference for liquid tokens\n`;
       markdown += `- **Governance Engagement**: Distributed voting power across many participants\n`;
     }
-    
+
     markdown += `\n**Context**: With ${(5000000).toLocaleString()}+ total EQUAL supply, the concentrated veEQUAL voting power suggests selective participation by holders who value governance rewards over liquidity.\n\n`;
 
     markdown += `### Distribution Flow\n\n`;

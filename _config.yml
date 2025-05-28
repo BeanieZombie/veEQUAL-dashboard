@@ -123,7 +123,7 @@ github: [metadata]
 # Custom variables for the site
 analytics:
   enabled: true
-  
+
 # API endpoint configuration
 api:
   base_url: "/data/api"

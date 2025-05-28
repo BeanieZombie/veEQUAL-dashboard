@@ -9,7 +9,7 @@ async function initializeDatabase() {
 
   try {
     console.log('Initializing DuckDB database...');
-    
+
     // Create data directory if it doesn't exist
     await Bun.write(DB_FILE.replace('/veEqual.duckdb', '/.gitkeep'), '');
 
@@ -98,7 +98,7 @@ async function initializeDatabase() {
 
     initialized = true;
     console.log('✅ Database initialization completed successfully');
-    
+
   } catch (error) {
     console.error('❌ Database initialization failed:', error);
     throw error;
